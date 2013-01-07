@@ -10,7 +10,7 @@ http://inamidst.com/phenny/
 
 import web, re
 
-search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","hot","weed","smoking","drug","penis","vagina"] #Thank KikaRz and LandMine for this
+search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","hot","weed","smoking","drug","penis","vagina"] #Thank KikaRz, LandMine and RagnarLaud for this
 search_badnicks = ["KikaRz","LandMine","LandMineMT"]
 
 class Grab(web.urllib.URLopener):
@@ -65,7 +65,7 @@ def g(phenny, input):
    for bw in search_badwords:
 	if bw in query:
 		print("[LOG]: %s queried Google Result for '%s' | DENIED: Badword" % (input.nick,query))
-		return phenny.reply("Search term contains badword")
+		return phenny.reply("Gross!")
    for bn in search_badnicks:
 	if bn in input.nick:
 		print("[LOG]: %s queried Google Result for '%s' | DENIED: Badnick" % (input.nick,query))
@@ -92,7 +92,7 @@ def gc(phenny, input):
    for bw in search_badwords:
 	if bw in query:
 		print("[LOG]: %s queried Google Result Number for '%s' | DENIED: Badword" % (input.nick,query))
-		return phenny.reply("Search term contains badword")
+		return phenny.reply("Gross!")
    for bn in search_badnicks:
 	if bn in input.nick:
 		print("[LOG]: %s queried Google Result Number for '%s' | DENIED: Badnick" % (input.nick,query))
