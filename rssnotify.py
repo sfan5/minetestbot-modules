@@ -15,7 +15,7 @@ def get_arrayindex(array,val):
 rssnotify["last_updated_feeds"] = {}
 
 rssnotify["last_update"] = time.time()
-rssnotify["dont_print_first_message"] = False
+rssnotify["dont_print_first_message"] = True
 rssnotify["update_cooldown"] = 30 # in seconds
 rssnotify["say_to_channel"] = '#minetest'
 rssnotify["show_commit_link"] = True
