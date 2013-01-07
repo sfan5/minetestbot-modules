@@ -2,6 +2,7 @@
 """
 admin.py - Phenny Admin Module
 Copyright 2008-9, Sean B. Palmer, inamidst.com
+Modified by Sfan5 2013
 Licensed under the Eiffel Forum License 2.
 
 http://inamidst.com/phenny/
@@ -40,6 +41,12 @@ def quit(phenny, input):
       __import__('os')._exit(0)
 quit.commands = ['quit']
 quit.priority = 'low'
+
+def quit2(phenny, input):
+    if input.sender.startswith('#'): input.sender = "this_is_not_a_channel" # Allows you to use it in a Channel
+    quit(phenny, input)
+quit2.rule = ('$nick', 'quit')
+quit2.priority = 'low'
 
 def msg(phenny, input): 
    # Can only be done in privmsg by an admin
