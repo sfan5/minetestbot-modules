@@ -11,7 +11,7 @@ http://inamidst.com/phenny/
 import os, re, time, random
 import web
 
-maximum = 
+maximum = 5
 
 def loadReminders(fn): 
    result = {}
