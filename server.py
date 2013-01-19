@@ -15,7 +15,6 @@ def read_server():
       bytes = bytes.split(shim, 1).pop()
       bytes = bytes.split(shim2, 1)[0]
       bytes = "<table>" + bytes + "</table>" # Root Tag needed
-      print("DBG bytes = '%s'" % bytes)
       dom = minidom.parseString(bytes)
       l = dom.getElementsByTagName("tr")
       chosen = l[int(math.floor(random.random()*(len(l)-1))+1)]
