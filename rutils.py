@@ -51,7 +51,7 @@ def b32e(phenny, input):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(base32.b32encode(q))
+        return phenny.say(base64.b32encode(q))
     except BaseException as e:
         return phenny.reply(e.message)
    
@@ -64,7 +64,7 @@ def b32d(phenny, input):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(base32.b32decode(q))
+        return phenny.say(base64.b32decode(q))
     except BaseException as e:
         return phenny.reply(e.message)
    
@@ -77,7 +77,7 @@ def b16e(phenny, input):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(base16.b16encode(q))
+        return phenny.say(base64.b16encode(q))
     except BaseException as e:
         return phenny.reply(e.message)
    
@@ -90,7 +90,7 @@ def b16d(phenny, input):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(base16.b16decode(q))
+        return phenny.say(base64.b16decode(q))
     except BaseException as e:
         return phenny.reply(e.message)
    
