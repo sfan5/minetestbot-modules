@@ -153,7 +153,7 @@ def uudecode(phenny, input):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(binascii.ua2b_uu(q + '\n'))
+        return phenny.say(binascii.a2b_uu(q + '\n'))
     except BaseException as e:
         return phenny.reply(e.message)
    
