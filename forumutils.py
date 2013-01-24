@@ -61,7 +61,7 @@ def search_forumuser(phenny, input):
     if not type(usrs) == type([]):
         return phenny.reply(usrs)
     else:
-        if len(usrs) > 6:
+        if (len(usrs) > 6 and input.sender.startswith('#')) or (len(usrs) > 25 and not input.sender.startswith('#')):
             return phenny.reply("Too many matches: %i" % len(usrs))
         else:
             for u in usrs:
