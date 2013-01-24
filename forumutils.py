@@ -7,7 +7,7 @@ Copyright 2012, Sfan5
 import web
 from xml.dom import minidom
 
-def forum_search_user(st):
+def forum_search_user(st,ignore_0posts=False):
     st = st.replace(" ", "%20")
     try:
         bytes = web.get("http://forum.minetest.net/userlist.php?username=" + st)
@@ -23,7 +23,8 @@ def forum_search_user(st):
             idx = 0
             while idx < len(l):
                 try:
-                    users.append([l[idx].firstChild.firstChild.data,l[idx+1].firstChild.data,l[idx+2].firstChild.data,l[idx+3].firstChild.data,l[idx].firstChild.getAttribute("href").split("=")[1]])
+                    if not(ignore_0posts and l[idx+2].firstChild.data == "0"):
+                        users.append([l[idx].firstChild.firstChild.data,l[idx+1].firstChild.data,l[idx+2].firstChild.data,l[idx+3].firstChild.data,l[idx].firstChild.getAttribute("href").split("=")[1]])
                     idx += 4
                 except:
                     return "Invalid Data"
@@ -57,7 +58,13 @@ def search_forumuser(phenny, input):
     arg = input.group(2)
     if not arg:
         return phenny.reply("Give me a username")
-    usrs = forum_search_user(arg)
+    ignore_0posts = False
+    if " " in arg:
+        a = arg.split(" ")
+        if a[0] == "-ignore0p":
+            arg = " ".join(a[1:])
+            ignore_0posts = True
+    usrs = forum_search_user(arg,ignore_0posts=ignore_0posts)
     if not type(usrs) == type([]):
         return phenny.reply(usrs)
     else:
