@@ -7,6 +7,8 @@ Copyright 2012, Sfan5
 import web
 from xml.dom import minidom
 
+sfu_limits = {}
+
 def strip_number(nstr):
     return nstr.replace(" ","").replace(",","").replace(".","")
 
@@ -96,7 +98,13 @@ def search_forumuser(phenny, input):
     if not type(usrs) == type([]):
         return phenny.reply(usrs)
     else:
-        if (len(usrs) > 6 and input.sender.startswith('#')) or (len(usrs) > 25 and not input.sender.startswith('#')):
+        if input.nick in sfu_limits:
+            lim = sfu_limits[input.nick]
+        elif input.sender.startswith('#'):
+            lim = 6
+        elif not input.sender.startswith('#'):
+            lim = 25
+        if len(usrs) > lim:
             return phenny.reply("Too many matches: %i" % len(usrs))
         else:
             for u in usrs:
@@ -105,6 +113,26 @@ def search_forumuser(phenny, input):
 
 search_forumuser.commands = ['searchforumuser', 'sfu']
 search_forumuser.thread = True
+
+def search_forumuser_limit(phenny, input):
+    if not input.admin or not input.owner: return
+    arg = input.group(2)
+    if not arg:
+        return phenny.reply("Give me a channel/nickname and a limit")
+    elif len(arg.split(" ")) < 2:
+        return phenny.reply("Give me a channel/nickname and a limit")
+    try:
+        if arg.split(" ")[1] == "reset":
+            sfu_limits.__delitem__(arg.split(" ")[0])
+            phenny.say("Limit reset.")
+        else:
+            sfu_limits[arg.split(" ")[0]] = int(arg.split(" ")[1])
+            phenny.say("Limit set.")
+    except:
+        return phenny.reply("Error")
+
+search_forumuser_limit.commands = ['searchforumuserlimit', 'sfulimit']
+search_forumuser_limit.priority = 'low'
 
 if __name__ == '__main__':
    print __doc__
