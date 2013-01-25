@@ -26,7 +26,8 @@ def forum_search_user(st, ignore_0posts=False, post_filter=-1):
             idx = 0
             while idx < len(l):
                 try:
-                    if not(ignore_0posts and l[idx+2].firstChild.data == "0") or not(post_filter != -1 and int(strip_number([idx+2].firstChild.data)) == post_filter):
+                    e = not( (ignore_0posts and l[idx+2].firstChild.data == "0") or (post_filter != -1 and int(strip_number(l[idx+2].firstChild.data)) != post_filter) )
+                    if e:
                         users.append([l[idx].firstChild.firstChild.data,l[idx+1].firstChild.data,l[idx+2].firstChild.data,l[idx+3].firstChild.data,l[idx].firstChild.getAttribute("href").split("=")[1]])
                     idx += 4
                 except:
@@ -65,19 +66,20 @@ def search_forumuser(phenny, input):
     post_filter = -1
     if " " in arg:
         a = arg.split(" ")
+        _args_after_flag = 0
         for i in range(0,len(a)):
             ar = a[i]
             if ar == "-ignore0p":
                 ignore_0posts = True
-                continue
             elif ar.startswith("-p") and ar != "-p": # -p4
                 try:
                     post_filter = int(ar[2:])
                 except:
                     return phenny.reply("Invalid Number")
-            if ar == "-p": # -p 4
+            elif ar == "-p": # -p 4
                 try:
                     post_filter = int(a[i+1])
+                    _args_after_flag = 1
                 except IndexError:
                     return phenny.reply("Too few arguments")
                 except ValueError:
@@ -85,9 +87,12 @@ def search_forumuser(phenny, input):
                 except:
                     return phenny.reply("Unknown Error")
             else:
-                arg = " ".join(a[i:]) # No more Flags found
-                break
-    usrs = forum_search_user(arg,ignore_0posts=ignore_0posts)
+                if _args_after_flag > 0:
+                    _args_after_flag -= 1
+                else:
+                    arg = " ".join(a[i+_args_after_flag:]) # No more Flags found
+                    break
+    usrs = forum_search_user(arg,ignore_0posts=ignore_0posts,post_filter=post_filter)
     if not type(usrs) == type([]):
         return phenny.reply(usrs)
     else:
