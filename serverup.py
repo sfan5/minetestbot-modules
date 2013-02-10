@@ -48,7 +48,9 @@ def serverup(phenny, input):
     else:
         address = arg
         ports = [30000]
-    if len(ports) > 4 and not (input.admin or input.owner): # Owner and Admins of the Bot can bypass the Limit
+    if len(ports) != 1 and input.sender.startswith('#') and not (input.admin or input.owner):
+        return phenny.reply("To check multiple Ports please use Query")
+    if len(ports) > 6 and not (input.admin or input.owner): # Owner and Admins of the Bot can bypass the Limit
         return phenny.reply("Too many Ports specified")
     for port in ports:
         repres = address + ':' + str(port)
