@@ -13,8 +13,7 @@ def serverup(phenny, input):
     if not '.' in arg:
         return phenny.reply("Invalid Address")
     if ':' in arg:
-        phenny.reply("Note: Syntax changed please use 'example.org 1337' instead of 'example.org:1337'")
-        arg = arg.split(':')[0] + ' ' + arg.split(':')[1]
+        return phenny.reply("Note: Syntax changed please use 'example.org 1337' instead of 'example.org:1337'")
     if ' ' in arg:
         address = arg.split(' ')[0]
         port = arg.split(' ')[1]
