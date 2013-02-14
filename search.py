@@ -11,7 +11,6 @@ http://inamidst.com/phenny/
 import web, re
 
 search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","hot","weed","smoking","drug","penis","vagina"] #Thank KikaRz, LandMine and RagnarLaud for this
-search_badnicks = ["KikaRz","LandMine","LandMineMT"]
 
 class Grab(web.urllib.URLopener):
    def __init__(self, *args):
@@ -59,6 +58,10 @@ def formatnumber(n):
 
 def g(phenny, input): 
    """Queries Google for the specified input."""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return # Abort function
    query = input.group(2)
    if not query: 
       return phenny.reply('.g what?')
@@ -66,10 +69,6 @@ def g(phenny, input):
 	if bw in query:
 		print("[LOG]: %s queried Google Result for '%s' | DENIED: Badword" % (input.nick,query))
 		return phenny.reply("Gross!")
-   for bn in search_badnicks:
-	if bn in input.nick:
-		print("[LOG]: %s queried Google Result for '%s' | DENIED: Badnick" % (input.nick,query))
-		return phenny.reply("Nope!")
    query = query.encode('utf-8')
    print("[LOG]: %s queried Google Result for '%s'" % (input.nick,query))
    uri = google_search(query)
@@ -85,6 +84,10 @@ g.priority = 'high'
 g.example = '.g minetest'
 
 def gc(phenny, input):
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return # Abort function
    if not input.group(2):
       return phenny.reply("No query term.")
    query = input.group(2).encode('utf-8')
@@ -93,10 +96,6 @@ def gc(phenny, input):
 	if bw in query:
 		print("[LOG]: %s queried Google Result Number for '%s' | DENIED: Badword" % (input.nick,query))
 		return phenny.reply("Gross!")
-   for bn in search_badnicks:
-	if bn in input.nick:
-		print("[LOG]: %s queried Google Result Number for '%s' | DENIED: Badnick" % (input.nick,query))
-		return phenny.reply("Nope!")
    print("[LOG]: %s queried Google Result Number for '%s'" % (input.nick,query))
    if result:
       phenny.say(query + ": " + result)

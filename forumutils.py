@@ -61,6 +61,10 @@ def formatirc_user_a(arr):
         return formartirc_user(arr[0],arr[1],arr[2],arr[3],arr[4],with_userid=True)
 
 def search_forumuser(phenny, input):
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     arg = input.group(2)
     if not arg:
         return phenny.reply("Give me a username")

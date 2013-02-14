@@ -7,6 +7,10 @@ Copyright 2012, sfan5
 import socket, time
 
 def serverup(phenny, input):
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     arg = input.group(2)
     if not arg:
         return phenny.reply("Give me a Server Address")

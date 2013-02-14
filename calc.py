@@ -30,6 +30,10 @@ subs = [
 
 def c(phenny, input): 
    """Google calculator."""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return # Abort function
    if not input.group(2):
       return phenny.reply("Nothing to calculate.")
    q = input.group(2).encode('utf-8')

@@ -132,6 +132,10 @@ def wikipedia(term, language='en', last=False):
    return sentence + ' - ' + (wikiuri % (term))
 
 def wik(phenny, input): 
+   for x in phenny.bot.commands["high"].values():
+     if x[0].__name__ == "aa_hook":
+        if x[0](phenny, input):
+            return # Abort function
    origterm = input.groups()[1]
    if not origterm: 
       return phenny.say('Perhaps you meant ".wik Zen"?')

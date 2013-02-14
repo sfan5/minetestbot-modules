@@ -7,7 +7,11 @@ About: http://inamidst.com/phenny/
 
 import random
 
-def hello(phenny, input): 
+def hello(phenny, input):
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return # Abort function
    greeting = random.choice(('Hi', 'Hey', 'Hello'))
    punctuation = random.choice(('', '!'))
    phenny.say(greeting + ' ' + input.nick + punctuation)

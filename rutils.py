@@ -7,6 +7,10 @@ import base64, binascii
 
 def rev(phenny, input): 
     """reverse string"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to reverse.")
     q = input.group(2).encode('utf-8')
@@ -21,6 +25,10 @@ rev.priority = 'low'
 
 def b64e(phenny, input): 
     """base64 encode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -34,6 +42,10 @@ b64e.priority = 'low'
 
 def b64d(phenny, input): 
     """base64 decode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
@@ -47,6 +59,10 @@ b64d.priority = 'low'
 
 def b32e(phenny, input): 
     """base32 encode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -60,6 +76,10 @@ b32e.priority = 'low'
 
 def b32d(phenny, input): 
     """base32 decode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
@@ -73,6 +93,10 @@ b32d.priority = 'low'
 
 def b16e(phenny, input): 
     """base16 encode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -99,6 +123,10 @@ b16d.priority = 'low'
 
 def crc32(phenny, input): 
     """crc32 hash"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to hash.")
     q = input.group(2).encode('utf-8')
@@ -110,6 +138,10 @@ crc32.priority = 'low'
 
 def hex_(phenny, input): 
     """hexlify http://docs.python.org/2/library/binascii.html#binascii.hexlify"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to hexlify.")
     q = input.group(2).encode('utf-8')
@@ -123,6 +155,10 @@ hex_.priority = 'low'
 
 def unhex(phenny, input): 
     """unhexlify http://docs.python.org/2/library/binascii.html#binascii.unhexlify"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to unhexlify.")
     q = input.group(2).encode('utf-8')
@@ -136,6 +172,10 @@ unhex.priority = 'low'
 
 def uuencode(phenny, input): 
     """uuencode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -149,6 +189,10 @@ uuencode.priority = 'low'
 
 def uudecode(phenny, input): 
     """uudecode"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
