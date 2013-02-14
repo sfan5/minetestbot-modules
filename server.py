@@ -8,10 +8,6 @@ import web, math, random
 from xml.dom import minidom
 
 def read_server():
-   for x in phenny.bot.commands["high"].values():
-     if x[0].__name__ == "aa_hook":
-        if x[0](phenny, input):
-           return # Abort function
    bytes = web.get("http://servers.minetest.ru/")
    shim = '<table>'
    shim2 = '</table>'
@@ -37,6 +33,10 @@ def format(name,addr,status,statuspercent):
 	else:
 		return "%s | %s   %s" % (name,addr,status)
 def server(phenny, input):
+   for x in phenny.bot.commands["high"].values():
+     if x[0].__name__ == "aa_hook":
+        if x[0](phenny, input):
+           return # Abort function
    phenny.reply(read_server())
 
 server.commands = ['sv', 'server']
