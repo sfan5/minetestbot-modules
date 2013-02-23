@@ -4,7 +4,7 @@ ai.py - Phenny AutomatedResponse Module
 Copyright 2013, Sfan5
 """
 import random, time
-ai = {}
+ar = {}
 
 ar["enable"] = True
 ar["bn"] = "minetestbot" #lowercase bot name
