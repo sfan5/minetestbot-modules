@@ -22,7 +22,7 @@ def arctl(phenny, input):
         phenny.say("AR disabled.")
 
 arctl.commands = ['ar']
-aictl.priority = 'low'
+arctl.priority = 'low'
 
 def response(personal, nick, msg):
     if personal:
