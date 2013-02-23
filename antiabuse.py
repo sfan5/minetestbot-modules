@@ -23,7 +23,8 @@ def aa_hook(phenny, input):
         ot = 0
     antiabuse["timeout"][input.nick] = time.time()
     if antiabuse["timeout"][input.nick] - antiabuse["s_timeout"] < ot:
-        return True # abort command
+        #return True # abort command
+        pass
     
     return False
 aa_hook.event = 'THISWONTHAPPEN'
