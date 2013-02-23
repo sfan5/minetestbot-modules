@@ -17,7 +17,6 @@ rssnotify["last_updated_feeds"] = {}
 rssnotify["last_update"] = time.time()
 rssnotify["dont_print_first_message"] = True
 rssnotify["update_cooldown"] = 30 # in seconds
-rssnotify["say_to_channel"] = '#minetest'
 rssnotify["show_commit_link"] = True
 rssnotify["use_git.io"] = True
 
@@ -32,7 +31,9 @@ def rsscheck(phenny, input):
     start = time.time()
     feeds = [
         'https://github.com/celeron55/minetest/commits/master.atom', 
-        'https://github.com/celeron55/minetest_game/commits/master.atom'
+        'https://github.com/celeron55/minetest_game/commits/master.atom',
+        'https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom', 
+        'https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom'
     ]
     for url in feeds:
         options = {
@@ -68,13 +69,13 @@ def rsscheck(phenny, input):
             else:               
                 commit_link = ""
             
-            
-            if commiter.lower() != commiter_realname.lower():
-                #phenny.say("GIT: %s (%s) commited to %s: %s %s %s" % (commiter,commiter_realname,reponame,last_entry.title,commit_hash,commit_time))
-                phenny.write(['PRIVMSG',rssnotify["say_to_channel"]],"GIT: %s (%s) commited to %s: %s %s %s %s" % (commiter, commiter_realname, reponame, last_entry.title, commit_hash, commit_time, commit_link))
-            else:
-                #phenny.say("GIT: %s commited to %s: %s %s %s" % (commiter,reponame,last_entry.title,commit_hash,commit_time))
-                phenny.write(['PRIVMSG',rssnotify["say_to_channel"]],"GIT: %s commited to %s: %s %s %s %s" % (commiter, reponame, last_entry.title, commit_hash, commit_time, commit_link))
+            for ch in phenny.bot.channels:
+                if commiter.lower() != commiter_realname.lower():
+                    #phenny.say("GIT: %s (%s) commited to %s: %s %s %s" % (commiter,commiter_realname,reponame,last_entry.title,commit_hash,commit_time))
+                    phenny.write(['PRIVMSG',ch],"GIT: %s (%s) commited to %s: %s %s %s %s" % (commiter, commiter_realname, reponame, last_entry.title, commit_hash, commit_time, commit_link))
+                else:
+                    #phenny.say("GIT: %s commited to %s: %s %s %s" % (commiter,reponame,last_entry.title,commit_hash,commit_time))
+                    phenny.write(['PRIVMSG',ch],"GIT: %s commited to %s: %s %s %s %s" % (commiter, reponame, last_entry.title, commit_hash, commit_time, commit_link))
     end = time.time()
     if rssnotify["dont_print_first_message"]:
         rssnotify["dont_print_first_message"] = False
