@@ -31,7 +31,7 @@ def rsscheck(phenny, input):
     start = time.time()
     feeds = [
         'https://github.com/minetest/minetest/commits/master.atom', 
-        'https://github.com/mintest/minetest_game/commits/master.atom',
+        'https://github.com/minetest/minetest_game/commits/master.atom',
         'https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom', 
         'https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom'
     ]
