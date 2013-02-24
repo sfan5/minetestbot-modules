@@ -16,7 +16,7 @@ rssnotify["last_updated_feeds"] = {}
 
 rssnotify["last_update"] = time.time()
 rssnotify["dont_print_first_message"] = True
-rssnotify["update_cooldown"] = 30 # in seconds
+rssnotify["update_cooldown"] =60 # in seconds
 rssnotify["show_commit_link"] = True
 rssnotify["use_git.io"] = True
 
@@ -30,8 +30,8 @@ def rsscheck(phenny, input):
     print("[LOG]: Checking RSS Feeds...")
     start = time.time()
     feeds = [
-        'https://github.com/celeron55/minetest/commits/master.atom', 
-        'https://github.com/celeron55/minetest_game/commits/master.atom',
+        'https://github.com/minetest/minetest/commits/master.atom', 
+        'https://github.com/mintest/minetest_game/commits/master.atom',
         'https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom', 
         'https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom'
     ]
