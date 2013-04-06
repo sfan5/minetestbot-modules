@@ -20,7 +20,7 @@ def rev(phenny, input):
     s += q[0]
     return phenny.say(s)
 
-rev.commands = ['re','rev','reverse']
+rev.commands = ['rev','reverse']
 rev.priority = 'low'
 
 def b64e(phenny, input): 
