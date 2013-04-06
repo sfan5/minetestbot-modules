@@ -1,6 +1,7 @@
 Commands
 ========
 Required arguments are enclosed in { and }, optional arguments are enclosed in \[ and \]
+
 <i>$botname</i> refers to the name of the IRC bot, e.g. MinetestBot
 
 <table>
