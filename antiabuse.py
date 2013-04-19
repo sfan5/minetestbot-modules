@@ -35,7 +35,7 @@ aa_hook.rule = r'h^'
 
 def ignore(phenny, input):
     if not input.admin or not input.owner: return
-    arg = input.group(2)
+    arg = input.group(2).strip()
     antiabuse["ignorelist"].append(arg)
     phenny.reply("'%s' added to ignore list." % arg)
 
@@ -44,7 +44,7 @@ ignore.priority = 'high'
 
 def unignore(phenny, input):
     if not input.admin or not input.owner: return
-    arg = input.group(2)
+    arg = input.group(2).strip()
     try:
         antiabuse["ignorelist"].remove(arg)
     except:
