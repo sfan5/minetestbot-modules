@@ -62,15 +62,15 @@ def rsscheck(phenny, input):
                 rssnotify["last_updated_feeds"][feednum] = -1
             if rssnotify["last_updated_feeds"][feednum] < to_unix_time(feed_entry.updated):
                 commiter_realname = feed_entry.authors[0].name
-                try:
-                    commiter = feed_entry.authors[0].href.replace('https://github.com/',"")
-                except AttributeError:
-                    commiter = commiter_realname # This will only print the Realname if the nickname couldn't be obtained
                 if commiter_realname == "":
                         try:
                             commiter_realname = feed_entry.authors[0].email
                         except AttributeError:
                             commiter_realname = "Unknown"
+                try:
+                    commiter = feed_entry.authors[0].href.replace('https://github.com/',"")
+                except AttributeError:
+                    commiter = commiter_realname # This will only print the Realname if the nickname couldn't be obtained
                 reponame = url.replace("https://github.com/","").replace("/commits/master.atom","")
                 commit_hash = feed_entry.links[0].href.replace("https://github.com/" + reponame + "/commit/","")[:10]
                 commit_time = feed_entry.updated
