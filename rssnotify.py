@@ -96,7 +96,8 @@ def rsscheck(phenny, input):
                         phenny.write(['PRIVMSG', ch],"GIT: %s commited to %s: %s %s %s %s" % (commiter, reponame, feed_entry.title, commit_hash, commit_time, commit_link))
         if len(feed.entries) > 0:
             rssnotify["last_updated_feeds"][feednum] = to_unix_time(feed.entries[0].updated)
-        print("[LOG]: Found %i RSS Update(s) for URL '%s'" % (updcnt, url))
+        if updcnt > 0:
+            print("[LOG]: Found %i RSS Update(s) for URL '%s'" % (updcnt, url))
     end = time.time()
     if rssnotify["dont_print_first_message"]:
         rssnotify["dont_print_first_message"] = False
