@@ -98,7 +98,10 @@ def server(phenny, input):
     name = server_list[choice]["name"]
     address = server_list[choice]["address"]
     clients = server_list[choice]["clients"]
-    version = server_list[choice]["version"] + " " + server_list[choice]["gameid"]
+    try:
+        version = server_list[choice]["version"] + " " + server_list[choice]["gameid"]
+    except:
+        version = server_list[choice]["version"]
     ping = server_list[choice]["ping"]
     clients_top = server_list[choice]["clients_top"]
 
