@@ -44,13 +44,13 @@ def by_players(tbl, arg):
         ranking = (-1, None)
         for i in range(0, len(tbl)):
             if int(tbl[i]["clients"]) > ranking[0]:
-                ranking = (tbl[i]["clients"], i)
+                ranking = (int(tbl[i]["clients"]), i)
         return ranking[1]
     elif arg == "least": # least
         ranking = (9999, None)
         for i in range(0, len(tbl)):
             if int(tbl[i]["clients"]) < ranking[0]:
-                ranking = (tbl[i]["clients"], i)
+                ranking = (int(tbl[i]["clients"]), i)
         return ranking[1]
     else:
         if arg.startswith("="): # support "3" and "=3"
@@ -64,6 +64,57 @@ def by_players(tbl, arg):
                 return i
         return nu
     return None
+
+def by_ping(tbl, arg):
+    if arg.startswith("<"): # less comparing
+        try:
+            nu = float(arg[1:])
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if float(tbl[i]["ping"]) < nu:
+                return i
+    elif arg.startswith(">"): # more comparing
+        try:
+            nu = int(arg[1:])
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if float(tbl[i]["ping"]) > nu:
+                return i
+    elif arg == "most": # most
+        ranking = (-1, None)
+        for i in range(0, len(tbl)):
+            if float(tbl[i]["ping"]) > ranking[0]:
+                ranking = (float(tbl[i]["ping"]), i)
+        return ranking[1]
+    elif arg == "least": # least
+        ranking = (9999, None)
+        for i in range(0, len(tbl)):
+            if float(tbl[i]["ping"]) < ranking[0]:
+                ranking = (float(tbl[i]["ping"]), i)
+        return ranking[1]
+    else:
+        if arg.startswith("="): # support "0.6" and "=0.6"
+            arg = arg[1:]
+        try:
+            nu = float(arg)
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if float(tbl[i]["clients"]) == nu:
+                return i
+        return nu
+    return None
+
+def by_index(tbl, arg):
+    if arg == "last":
+        return len(tbl) - 1
+    else:
+        try:
+            return int(arg)
+        except:
+            return None
 
 def server(phenny, input):
     for x in phenny.bot.commands["high"].values():
@@ -85,6 +136,12 @@ def server(phenny, input):
         elif arg.startswith("players:"):
             choicefunc = by_players
             carg = arg[len("players:"):]
+        elif arg.startswith("ping:"):
+            choicefunc = by_ping
+            carg = arg[len("ping:"):]
+        elif arg.startswith("i:"):
+            choicefunc = by_index
+            carg = arg[len("i:"):]
         else:
             choicefunc = by_name
             carg = None
@@ -93,7 +150,7 @@ def server(phenny, input):
     server_list = json.loads(text)["list"]
     choice = choicefunc(server_list, carg)
     if choice == None:
-        phenny.reply("No results")
+        return phenny.reply("No results")
 
     name = server_list[choice]["name"]
     address = server_list[choice]["address"]

@@ -53,6 +53,9 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td></td>                                  <td>- >{number} finds server with players > x</td>       <td></td>              </tr>
     <tr> <td></td>                                  <td>- &lt;{number} finds server with players < &lt;</td> <td></td>              </tr>
     <tr> <td></td>                                  <td>- [=]{number} finds server with x players</td>       <td></td>              </tr>
+    <tr> <td></td>                                  <td>ping:{modifier} uses Player count</td>               <td></td>              </tr>
+    <tr> <td></td>                                  <td>- same modifiers as players:</td>                    <td></td>              </tr>
+    <tr> <td></td>                                  <td>i:{number/'last'} return Server no. x</td>           <td></td>              </tr>
     <tr> <td><b>serverup.py</b></td>                <td></td>                                                <td></td>              </tr>
     <tr> <td>!up {IP/hostname} [port]</td>          <td>Check if server at IP/hostname is up</td>            <td>Anyone</td>        </tr>
     <tr> <td></td>                                  <td>Supports multiple Ports e.g. 123-456,999</td>        <td></td>              </tr>
