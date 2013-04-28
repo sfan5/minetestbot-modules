@@ -19,8 +19,8 @@ def num_badwords(sentence):
         arg[1] = arg[1].rstrip("\n\r")
         if arg[0] == "regex": rgx = re.compile(arg[1])
         for word in sentence.split(" "):
-            word = word.rstrip(",.;")
-            word = word.lstrip(",.;")
+            word = word.rstrip(",.;:")
+            word = word.lstrip(",.;:")
             if arg[0] == "raw":
                 if word.lower() == arg[1].lower():
                     badwords += 1
@@ -155,5 +155,7 @@ def badword_ctrl(phenny, input):
         chop["badword_enabled"] = True
     elif arg == "disable" or arg == "off":
         chop["badword_enabled"] = False
+    elif arg == "reload":
+        badword_list = web.get("http://sfan5.minetest.net/badwords.txt")
 
 badword_ctrl.commands = ['badword']
