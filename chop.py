@@ -158,9 +158,12 @@ def badword_ctrl(phenny, input):
     if not arg: return
     if arg == "enable" or arg == "on":
         chop["badword_enabled"] = True
+        phenny.say("done.")
     elif arg == "disable" or arg == "off":
         chop["badword_enabled"] = False
+        phenny.say("done.")
     elif arg == "reload":
         badword_list = web.get("http://sfan5.minetest.net/badwords.txt")
+        phenny.say("done.")
 
 badword_ctrl.commands = ['badword']
