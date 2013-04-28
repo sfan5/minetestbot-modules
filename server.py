@@ -153,16 +153,16 @@ def server(phenny, input):
         return phenny.reply("No results")
 
     name = server_list[choice]["name"]
-    address = server_list[choice]["address"]
+    address = server_list[choice]["address"] + ":" + server_list[choice]["port"]
     clients = server_list[choice]["clients"]
     try:
         version = server_list[choice]["version"] + " " + server_list[choice]["gameid"]
     except:
         version = server_list[choice]["version"]
     ping = server_list[choice]["ping"]
-    clients_top = server_list[choice]["clients_top"]
+    clients_max = server_list[choice]["clients_max"]
 
-    phenny.reply("%s | %s | Clients: %s/%s | Version: %s | ping: %s" % (name, address, clients, clients_top, version, ping))
+    phenny.reply("%s | %s | Clients: %s/%s | Version: %s | ping: %s" % (name, address, clients, clients_max, version, ping))
 
 server.commands = ['sv', 'server']
 server.thread = True
