@@ -14,20 +14,20 @@ badword_list = web.get("http://sfan5.minetest.net/badwords.txt")
 def num_badwords(sentence):
     badwords = 0
     for bwl in badword_list.split("\n"):
-        arg = bwl.split(" ")
-        if len(arg) < 2: continue
-        arg[1] = arg[1].rstrip("\n\r")
-        if arg[0] == "regex": rgx = re.compile(arg[1])
+        args = bwl.split(" ")
+        if len(args) < 2: continue
+        arg = ' '.join(args[1]).rstrip("\n\r")
+        if args[0] == "regex": rgx = re.compile(arg)
         for word in sentence.split(" "):
             word = word.rstrip(",.;:")
             word = word.lstrip(",.;:")
-            if arg[0] == "raw":
-                if word.lower() == arg[1].lower():
+            if args[0] == "raw":
+                if word.lower() == arg.lower():
                     badwords += 1
-            elif arg[0] == "regex":
+            elif args[0] == "regex":
                 if not rgx.match(word) == None:
                     badwords += 1
-        if arg[0] == "regex": del rgx
+        if args[0] == "regex": del rgx
         
     return badwords
 
