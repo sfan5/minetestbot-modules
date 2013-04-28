@@ -16,7 +16,7 @@ def num_badwords(sentence):
     for bwl in badword_list.split("\n"):
         args = bwl.split(" ")
         if len(args) < 2: continue
-        arg = ' '.join(args[1]).rstrip("\n\r")
+        arg = ' '.join(args[1:]).rstrip("\n\r")
         if args[0] == "regex":
             try:
                 rgx = re.compile(arg)
