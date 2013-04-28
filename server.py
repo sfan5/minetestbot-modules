@@ -153,7 +153,9 @@ def server(phenny, input):
         return phenny.reply("No results")
 
     name = server_list[choice]["name"]
-    address = server_list[choice]["address"] + ":" + server_list[choice]["port"]
+    address = server_list[choice]["address"]
+    if server_list[choice]["port"] != "30000":
+        address += ":" + server_list[choice]["port"]
     clients = server_list[choice]["clients"]
     try:
         version = server_list[choice]["version"] + " " + server_list[choice]["gameid"]
