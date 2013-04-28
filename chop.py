@@ -17,7 +17,12 @@ def num_badwords(sentence):
         args = bwl.split(" ")
         if len(args) < 2: continue
         arg = ' '.join(args[1]).rstrip("\n\r")
-        if args[0] == "regex": rgx = re.compile(arg)
+        if args[0] == "regex":
+            try:
+                rgx = re.compile(arg)
+            except Exception as e:
+                print("Error while compiling regex ''%s'': %s" % (arg, str(e)))
+                continue
         for word in sentence.split(" "):
             word = word.rstrip(",.;:")
             word = word.lstrip(",.;:")
