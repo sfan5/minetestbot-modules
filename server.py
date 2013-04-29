@@ -116,6 +116,36 @@ def by_index(tbl, arg):
         except:
             return None
 
+def by_port(tbl, arg):
+    if arg.startswith("<"): # less comparing
+        try:
+            nu = int(arg[1:])
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if int(tbl[i]["port"]) < nu:
+                return i
+    elif arg.startswith(">"): # more comparing
+        try:
+            nu = int(arg[1:])
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if int(tbl[i]["port"]) > nu:
+                return i
+    else:
+        if arg.startswith("="): # support "3" and "=3"
+            arg = arg[1:]
+        try:
+            nu = int(arg)
+        except:
+            return None
+        for i in range(0, len(tbl)):
+            if int(tbl[i]["port"]) == nu:
+                return i
+        return nu
+    return None
+
 def server(phenny, input):
     for x in phenny.bot.commands["high"].values():
        if x[0].__name__ == "aa_hook":
@@ -142,6 +172,9 @@ def server(phenny, input):
         elif arg.startswith("i:"):
             choicefunc = by_index
             carg = arg[len("i:"):]
+        elif arg.startswith("port:"):
+            choicefunc = by_port
+            carg = arg[len("port:"):]
         else:
             choicefunc = by_name
             carg = None
