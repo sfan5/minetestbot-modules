@@ -119,7 +119,7 @@ def op(phenny, input):
     if not input.sender.startswith('#'): return
     # Can only be done in a channel by an admin
     arg = input.group(2)
-    if not arg: return
+    if not arg: phenny.write(['MODE', input.sender, '+o', input.nick], "")
     arg = arg.split(" ")
     for va in arg:
         phenny.write(['MODE', input.sender, '+o', va], "")
@@ -131,7 +131,7 @@ def deop(phenny, input):
     if not input.sender.startswith('#'): return
     # Can only be done in a channel by an admin
     arg = input.group(2)
-    if not arg: return
+    if not arg: phenny.write(['MODE', input.sender, '-o', input.nick], "")
     arg = arg.split(" ")
     for va in arg:
         phenny.write(['MODE', input.sender, '-o', va], "")

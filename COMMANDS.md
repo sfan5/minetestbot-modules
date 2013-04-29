@@ -19,8 +19,8 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td><b>calc.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!c {expression}</td>                    <td>Calculate expression using Google Calculator</td>    <td>Anyone</td>        </tr>
     <tr> <td><b>chop.py</b></td>                     <td></td>                                                <td></td>              </tr>
-    <tr> <td>!op {nick} [nick] ...</td>              <td>Op nick</td>                                         <td><i>Admins</i></td> </tr>
-    <tr> <td>!deop {nick} [nick] ...</td>            <td>DeOp nick</td>                                       <td><i>Admins</i></td> </tr>
+    <tr> <td>!op [nick] ...</td>                     <td>Op nick</td>                                         <td><i>Admins</i></td> </tr>
+    <tr> <td>!deop [nick] ...</td>                   <td>DeOp nick</td>                                       <td><i>Admins</i></td> </tr>
     <tr> <td>!voice {nick} [nick] ...</td>           <td>Voice nick</td>                                      <td><i>Admins</i></td> </tr>
     <tr> <td>!devoice {nick} [nick] ...</td>         <td>DeVoice nick</td>                                    <td><i>Admins</i></td> </tr>
     <tr> <td>!ban {nick/mask} [nick/mask] ...</td>   <td>Ban nick/mask</td>                                   <td><i>Admins</i></td> </tr>
