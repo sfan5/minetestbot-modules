@@ -68,7 +68,7 @@ def kick(phenny, input):
     if not arg: return
     arg = arg.split(" ")
     if len(arg) < 2: return
-    phenny.write(['KICK', input.sender, arg[0], arg[1])
+    phenny.write(['KICK', input.sender, arg[0]], arg[1])
 
 kick.commands = ['kick']
 
