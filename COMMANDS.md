@@ -25,6 +25,8 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!devoice {nick} [nick] ...</td>         <td>DeVoice nick</td>                                    <td><i>Admins</i></td> </tr>
     <tr> <td>!ban {nick/mask} [nick/mask] ...</td>   <td>Ban nick/mask</td>                                   <td><i>Admins</i></td> </tr>
     <tr> <td>!unban {nick/mask} [nick/mask] ...</td> <td>UnBan nick/mask</td>                                 <td><i>Admins</i></td> </tr>
+    <tr> <td>!mute {nick/mask} [nick/mask] ...</td>  <td>Mute nick/mask</td>                                   <td><i>Admins</i></td> </tr>
+    <tr> <td>!unmute {nick/mask} [nick/mask]...</td> <td>UnMute nick/mask</td>                                 <td><i>Admins</i></td> </tr>
     <tr> <td>!kick {nick} {message}</td>             <td>Kick nick with message</td>                          <td><i>Admins</i></td> </tr>
     <tr> <td>!badword {on/off/reload}</td>           <td>Enable/Disable badword functionality</td>            <td><i>Admins</i></td> </tr>
     <tr> <td><b>forumutils.py</b></td>               <td></td>                                                <td></td>              </tr>

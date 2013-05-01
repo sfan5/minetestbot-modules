@@ -114,6 +114,48 @@ def unban(phenny, input):
 
 unban.commands = ['unban']
 
+def mute(phenny, input):
+    if not input.admin: return
+    if not input.sender.startswith('#'): return
+    # Can only be done in a channel by an admin
+    arg = input.group(2)
+    if not arg: return
+    arg = arg.split(" ")
+    for va in arg:
+        a = "!" in va
+        b = "@" in va
+        if not a and not b:
+            phenny.write(['MODE', input.sender, '+q', "*!*" + va + "@*"], "")
+        elif a and not b:
+            phenny.write(['MODE', input.sender, '+q', va + "@*"], "")
+        elif not a and b:
+            phenny.write(['MODE', input.sender, '+q', "*!*" + va], "")
+        else: # a and b
+            phenny.write(['MODE', input.sender, '+q', va], "")
+
+mute.commands = ['mute']
+
+def unmute(phenny, input):
+    if not input.admin: return
+    if not input.sender.startswith('#'): return
+    # Can only be done in a channel by an admin
+    arg = input.group(2)
+    if not arg: return
+    arg = arg.split(" ")
+    for va in arg:
+        a = "!" in va
+        b = "@" in va
+        if not a and not b:
+            phenny.write(['MODE', input.sender, '-q', "*!*" + va + "@*"], "")
+        elif a and not b:
+            phenny.write(['MODE', input.sender, '-q', va + "@*"], "")
+        elif not a and b:
+            phenny.write(['MODE', input.sender, '-q', "*!*" + va], "")
+        else: # a and b
+            phenny.write(['MODE', input.sender, '-q', va], "")
+
+unmute.commands = ['unmute']
+
 def op(phenny, input):
     if not input.admin: return
     if not input.sender.startswith('#'): return
