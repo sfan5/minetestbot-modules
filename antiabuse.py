@@ -8,7 +8,7 @@ import time
 antiabuse = {}
 antiabuse["timeout"] = {}
 antiabuse["ignorelist"] = ["KikaRz","LandMine","LandMineMT","markveidemanis"]
-antiabuse["s_timeout"] = 2 # in Seconds
+antiabuse["s_timeout"] = 3 # in Seconds
 
 def aa_hook(phenny, input):
     if input.admin or input.owner:
@@ -23,7 +23,7 @@ def aa_hook(phenny, input):
         ot = 0
     antiabuse["timeout"][input.nick] = time.time()
     if antiabuse["timeout"][input.nick] - antiabuse["s_timeout"] < ot:
-        #return True # abort command
+        return True # abort command
         pass
     
     return False
