@@ -83,11 +83,11 @@ def ban(phenny, input):
         a = "!" in va
         b = "@" in va
         if not a and not b:
-            phenny.write(['MODE', input.sender, '+b', "*!*" + va + "@*"], "")
+            phenny.write(['MODE', input.sender, '+b', "*!" + va + "@*"], "")
         elif a and not b:
             phenny.write(['MODE', input.sender, '+b', va + "@*"], "")
         elif not a and b:
-            phenny.write(['MODE', input.sender, '+b', "*!*" + va], "")
+            phenny.write(['MODE', input.sender, '+b', "*!" + va], "")
         else: # a and b
             phenny.write(['MODE', input.sender, '+b', va], "")
 
@@ -104,11 +104,11 @@ def unban(phenny, input):
         a = "!" in va
         b = "@" in va
         if not a and not b:
-            phenny.write(['MODE', input.sender, '-b', "*!*" + va + "@*"], "")
+            phenny.write(['MODE', input.sender, '-b', "*!" + va + "@*"], "")
         elif a and not b:
             phenny.write(['MODE', input.sender, '-b', va + "@*"], "")
         elif not a and b:
-            phenny.write(['MODE', input.sender, '-b', "*!*" + va], "")
+            phenny.write(['MODE', input.sender, '-b', "*!" + va], "")
         else: # a and b
             phenny.write(['MODE', input.sender, '-b', va], "")
 
@@ -125,11 +125,11 @@ def mute(phenny, input):
         a = "!" in va
         b = "@" in va
         if not a and not b:
-            phenny.write(['MODE', input.sender, '+q', "*!*" + va + "@*"], "")
+            phenny.write(['MODE', input.sender, '+q', "*!" + va + "@*"], "")
         elif a and not b:
             phenny.write(['MODE', input.sender, '+q', va + "@*"], "")
         elif not a and b:
-            phenny.write(['MODE', input.sender, '+q', "*!*" + va], "")
+            phenny.write(['MODE', input.sender, '+q', "*!" + va], "")
         else: # a and b
             phenny.write(['MODE', input.sender, '+q', va], "")
 
@@ -146,11 +146,11 @@ def unmute(phenny, input):
         a = "!" in va
         b = "@" in va
         if not a and not b:
-            phenny.write(['MODE', input.sender, '-q', "*!*" + va + "@*"], "")
+            phenny.write(['MODE', input.sender, '-q', "*!" + va + "@*"], "")
         elif a and not b:
             phenny.write(['MODE', input.sender, '-q', va + "@*"], "")
         elif not a and b:
-            phenny.write(['MODE', input.sender, '-q', "*!*" + va], "")
+            phenny.write(['MODE', input.sender, '-q', "*!" + va], "")
         else: # a and b
             phenny.write(['MODE', input.sender, '-q', va], "")
 
