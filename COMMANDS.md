@@ -53,18 +53,22 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td><b>seen.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!seen {person}</td>                     <td>Output when person was last seen</td>                <td>Anyone</td>        </tr>
     <tr> <td><b>server.py</b></td>                   <td></td>                                                <td></td>              </tr>
-    <tr> <td>!server [searchstring]</td>             <td>Search servers at servers.minetest.net</td>          <td>Anyone</td>        </tr>
+    <tr> <td>!server [query] [query] ...</td>        <td>Search servers at servers.minetest.net</td>          <td>Anyone</td>        </tr>
     <tr> <td></td>                                   <td>addr:{string} searches in Address</td>               <td></td>              </tr>
     <tr> <td></td>                                   <td>name:{string} searches in Server name</td>           <td></td>              </tr>
     <tr> <td></td>                                   <td>players:{modifier} uses Player count</td>            <td></td>              </tr>
-    <tr> <td></td>                                   <td>- most finds server with most players</td>           <td></td>              </tr>
-    <tr> <td></td>                                   <td>- least finds server with least players</td>         <td></td>              </tr>
-    <tr> <td></td>                                   <td>- >{number} finds server with players > x</td>       <td></td>              </tr>
-    <tr> <td></td>                                   <td>- &lt;{number} finds server with players < &lt;</td> <td></td>              </tr>
-    <tr> <td></td>                                   <td>- [=]{number} finds server with x players</td>       <td></td>              </tr>
+    <tr> <td></td>                                   <td>- most finds servers with most players</td>          <td></td>              </tr>
+    <tr> <td></td>                                   <td>- least finds servers with least players</td>        <td></td>              </tr>
+    <tr> <td></td>                                   <td>- >{number} finds servers with players > x</td>      <td></td>              </tr>
+    <tr> <td></td>                                   <td>- &lt;{num} finds servers with players &lt; x</td>   <td></td>              </tr>
+    <tr> <td></td>                                   <td>- [=]{number} finds servers with x players</td>      <td></td>              </tr>
+    <tr> <td></td>                                   <td>- !{number} finds servers with not x players</td>    <td></td>              </tr>
     <tr> <td></td>                                   <td>ping:{modifier} uses Player count</td>               <td></td>              </tr>
     <tr> <td></td>                                   <td>- same modifiers as players:</td>                    <td></td>              </tr>
+    <tr> <td></td>                                   <td>port:{modifier} uses Port</td>                       <td></td>              </tr>
+    <tr> <td></td>                                   <td>- same modifiers as players:</td>                    <td></td>              </tr>
     <tr> <td></td>                                   <td>i:{number/'last'} return Server no. x</td>           <td></td>              </tr>
+    <tr> <td></td>                                   <td>random pick random entry from results</td>           <td></td>              </tr>
     <tr> <td><b>serverup.py</b></td>                 <td></td>                                                <td></td>              </tr>
     <tr> <td>!up {IP/hostname} [port]</td>           <td>Check if server at IP/hostname is up</td>            <td>Anyone</td>        </tr>
     <tr> <td></td>                                   <td>Supports multiple Ports e.g. 123-456,999</td>        <td></td>              </tr>
