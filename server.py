@@ -181,8 +181,8 @@ def server(phenny, input):
 
     arg = input.group(2)
     if not arg:
-        choicefunc = by_random
-        carg = None
+        cfuncs = [by_random]
+        cargs = [None]
     else:
         arg = arg.split(" ")
         cfuncs = []
