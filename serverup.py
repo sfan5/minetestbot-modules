@@ -71,7 +71,7 @@ def serverup(phenny, input):
                 sock.sendto(buf, (address, port))
                 sock.close()
                 end = time.time()
-                phenny.say("%s is up (%0.3fms)" % (repres,end-start))
+                phenny.say("%s is up (%0.3fs)" % (repres,end-start))
             else:
                 phenny.say("%s seems to be down " % repres)
         except:
