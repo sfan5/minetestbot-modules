@@ -36,147 +36,106 @@ def num_badwords(sentence):
         
     return badwords
 
+def hmasktrans(va):
+    a = "!" in va
+    b = "@" in va
+    if not a and not b:
+        return "*!" + va + "@*"
+    elif a and not b:
+        return va + "@*"
+    elif not a and b:
+        return "*!" + va
+    else: # a and b
+        return va
+
+
+def chanmodefunc(phenny, input, mode, modfunc=None):
+    if modfunc == None:
+        modfunc = lambda x: x
+    arg = input.group(2)
+    if not arg: return phenny.write(['MODE', input.sender, mode, input.nick], "")
+    arg = arg.split(" ")
+    skip_next = False
+    for i in range(0, len(arg)):
+        if skip_next:
+            skip_next = False
+            continue
+        va = arg[i]
+        if va.startswith('#'):
+            if i+2 > len(arg): return phenny.reply("Too few arguments")
+            phenny.write(['MODE', va, mode, modfunc(arg[i+1])], "")
+            skip_next = True
+            continue
+        phenny.write(['MODE', input.sender, mode, modfunc(va)], "")
+
 def voice(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        phenny.write(['MODE', input.sender, '+v', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '+v')
 
 voice.commands = ['voice']
 
 def devoice(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        phenny.write(['MODE', input.sender, '-v', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '-v')
 
 devoice.commands = ['devoice']
 
 def kick(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
+    # Can only be done by an admin
     arg = input.group(2)
     if not arg: return
     arg = arg.split(" ")
     if len(arg) < 2: return
-    phenny.write(['KICK', input.sender, arg[0]], arg[1])
+    if arg[0].startswith('#'):
+        if len(arg) < 3: return
+        phenny.write(['KICK', arg[0], arg[1]], arg[2])
+    else:
+        phenny.write(['KICK', input.sender, arg[0]], arg[1])
 
 kick.commands = ['kick']
 
 def ban(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        a = "!" in va
-        b = "@" in va
-        if not a and not b:
-            phenny.write(['MODE', input.sender, '+b', "*!" + va + "@*"], "")
-        elif a and not b:
-            phenny.write(['MODE', input.sender, '+b', va + "@*"], "")
-        elif not a and b:
-            phenny.write(['MODE', input.sender, '+b', "*!" + va], "")
-        else: # a and b
-            phenny.write(['MODE', input.sender, '+b', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '+b', hmasktrans)
 
 ban.commands = ['ban']
 
 def unban(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        a = "!" in va
-        b = "@" in va
-        if not a and not b:
-            phenny.write(['MODE', input.sender, '-b', "*!" + va + "@*"], "")
-        elif a and not b:
-            phenny.write(['MODE', input.sender, '-b', va + "@*"], "")
-        elif not a and b:
-            phenny.write(['MODE', input.sender, '-b', "*!" + va], "")
-        else: # a and b
-            phenny.write(['MODE', input.sender, '-b', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '-b', hmasktrans)
 
 unban.commands = ['unban']
 
 def mute(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        a = "!" in va
-        b = "@" in va
-        if not a and not b:
-            phenny.write(['MODE', input.sender, '+q', "*!" + va + "@*"], "")
-        elif a and not b:
-            phenny.write(['MODE', input.sender, '+q', va + "@*"], "")
-        elif not a and b:
-            phenny.write(['MODE', input.sender, '+q', "*!" + va], "")
-        else: # a and b
-            phenny.write(['MODE', input.sender, '+q', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '+q', hmasktrans)
 
 mute.commands = ['mute']
 
 def unmute(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return
-    arg = arg.split(" ")
-    for va in arg:
-        a = "!" in va
-        b = "@" in va
-        if not a and not b:
-            phenny.write(['MODE', input.sender, '-q', "*!" + va + "@*"], "")
-        elif a and not b:
-            phenny.write(['MODE', input.sender, '-q', va + "@*"], "")
-        elif not a and b:
-            phenny.write(['MODE', input.sender, '-q', "*!" + va], "")
-        else: # a and b
-            phenny.write(['MODE', input.sender, '-q', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '-q', hmasktrans)
 
 unmute.commands = ['unmute']
 
 def op(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return phenny.write(['MODE', input.sender, '+o', input.nick], "")
-    arg = arg.split(" ")
-    for va in arg:
-        phenny.write(['MODE', input.sender, '+o', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '+o')
 
 op.commands = ['op']
 
 def deop(phenny, input):
     if not input.admin: return
-    if not input.sender.startswith('#'): return
-    # Can only be done in a channel by an admin
-    arg = input.group(2)
-    if not arg: return phenny.write(['MODE', input.sender, '-o', input.nick], "")
-    arg = arg.split(" ")
-    for va in arg:
-        phenny.write(['MODE', input.sender, '-o', va], "")
+    # Can only be done by an admin
+    chanmodefunc(phenny, input, '-o')
 
 deop.commands = ['deop']
 
