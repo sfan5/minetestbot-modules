@@ -40,7 +40,7 @@ def hmasktrans(va):
     a = "!" in va
     b = "@" in va
     if not a and not b:
-        return "*!" + va + "@*"
+        return va + "*!*@*"
     elif a and not b:
         return va + "@*"
     elif not a and b:
