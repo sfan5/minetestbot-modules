@@ -74,9 +74,7 @@ def g(phenny, input):
    uri = google_search(query)
    if uri: 
       phenny.reply(uri)
-      if not hasattr(phenny.bot, 'last_seen_uri'):
-         phenny.bot.last_seen_uri = {}
-      phenny.bot.last_seen_uri[input.sender] = uri
+      phenny.bot.last_seen_uri = uri
    elif uri is False: phenny.reply("Problem getting data from Google.")
    else: phenny.reply("No results found for '%s'." % query)
 g.commands = ['g']
