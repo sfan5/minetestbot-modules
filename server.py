@@ -196,7 +196,7 @@ def server(phenny, input):
                 carg = a[len("name:"):]
             elif a.startswith("players:"):
                 choicefunc = by_players
-                ca = a[len("players:"):]
+                carg = a[len("players:"):]
             elif a.startswith("ping:"):
                 choicefunc = by_ping
                 carg = a[len("ping:"):]
