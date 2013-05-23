@@ -91,9 +91,9 @@ def kick(phenny, input):
     if len(arg) < 2: return
     if arg[0].startswith('#'):
         if len(arg) < 3: return
-        phenny.write(['KICK', arg[0], arg[1]], arg[2])
+        phenny.write(['KICK', arg[0], arg[1]], ' '.join(arg[2:]))
     else:
-        phenny.write(['KICK', input.sender, arg[0]], arg[1])
+        phenny.write(['KICK', input.sender, arg[0]], ' '.join(arg[1:]))
 
 kick.commands = ['kick']
 
