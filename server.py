@@ -48,13 +48,13 @@ def by_players(tbl, arg):
         for i in range(0, len(tbl)):
             if int(tbl[i]["clients"]) > ranking[0]:
                 ranking = (int(tbl[i]["clients"]), i)
-        if ranking[1]: results.append(ranking[1])
+        results.append(ranking[1])
     elif arg == "least": # least
         ranking = (9999, None)
         for i in range(0, len(tbl)):
             if int(tbl[i]["clients"]) < ranking[0]:
                 ranking = (int(tbl[i]["clients"]), i)
-        if ranking[1]: results.append(ranking[1])
+        results.append(ranking[1])
     elif arg.startswith("!"): # not comparing
         try:
             nu = int(arg[1:])
@@ -98,13 +98,13 @@ def by_ping(tbl, arg):
         for i in range(0, len(tbl)):
             if float(tbl[i]["ping"]) > ranking[0]:
                 ranking = (float(tbl[i]["ping"]), i)
-        if ranking[1]: results.append(ranking[1])
+        results.append(ranking[1])
     elif arg == "least": # least
         ranking = (9999, None)
         for i in range(0, len(tbl)):
             if float(tbl[i]["ping"]) < ranking[0]:
                 ranking = (float(tbl[i]["ping"]), i)
-        if ranking[1]: results.append(ranking[1])
+        results.append(ranking[1])
     elif arg.startswith("!"): # not comparing
         try:
             nu = float(arg[1:])
