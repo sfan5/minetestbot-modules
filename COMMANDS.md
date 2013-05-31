@@ -5,7 +5,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
 <i>$botname</i> refers to the name of the IRC bot, e.g. MinetestBot
 
 <table>
-    <tr> <th>Command</th>                            <th>Description</th>                                     <th>Useable by</th>    </tr>
+    <tr> <th>Command</th>                            <th>Description</th>                                     <th>Usable by</th>    </tr>
     <tr> <td><b>admin.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!join {channel} [channel-key]</td>      <td>Join the specified channel</td>                      <td><i>Admins</i></td> </tr>
     <tr> <td>!part {channel}</td>                    <td>Leave the specified channel</td>                     <td><i>Admins</i></td> </tr>
