@@ -217,7 +217,7 @@ def regex(phenny, input):
         return
     q = input.group(2).encode('utf-8')
     rgx = q[:q.find("\x02")]
-    msg = q[q.find("\x02"):]
+    msg = q[q.find("\x02")+1:]
     if rgx == "" or msg == "":
         return phenny.reply("Give me a regex and a message seperated by \x02")
     try:
