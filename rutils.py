@@ -3,7 +3,7 @@
 rutils.py - Phenny Utility Module
 Copyright 2012, Sfan5
 """
-import base64, binascii
+import base64, binascii, re
 
 def rs(s):
     return repr(s)[1:-1]
@@ -206,6 +206,32 @@ def uudecode(phenny, input):
    
 uudecode.commands = ['ud','uudecode']
 uudecode.priority = 'low'
+
+def regex(phenny, input): 
+    """regex"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
+    if not input.group(2):
+        return
+    q = input.group(2).encode('utf-8')
+    rgx = q[:q.find("\x02")]
+    msg = q[q.find("\x02"):]
+    if rgx == "" or msg == "":
+        return phenny.reply("Give me a regex and a message seperated by \x02")
+    try:
+        r = re.compile(rgx)
+    except BaseException as e:
+        return phenny.reply("Failed to compile regex: " + e.message)
+    m = r.match(msg)
+    if m == None:
+        return phenny.say("false")
+    else:
+        return phenny.say("true groups=[" + ', '.join((repr(e) for e in m.groups())) + "]")
+
+regex.commands = ['re','regex']
+regex.priority = 'low'
 
 if __name__ == '__main__': 
    print __doc__.strip()

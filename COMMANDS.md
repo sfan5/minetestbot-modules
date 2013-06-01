@@ -49,6 +49,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!unhex {string}</td>                    <td>Un-"Hexlify" a string</td>                           <td>Anyone</td>        </tr>
     <tr> <td>!uuencode {string}</td>                 <td>uuencode a string</td>                               <td>Anyone</td>        </tr>
     <tr> <td>!uudecode {string}</td>                 <td>uudecode a string</td>                               <td>Anyone</td>        </tr>
+    <tr> <td>!re {regex}<i>\x02</i>{string}</td>     <td>check if regex matches, if it does print groups</td> <td>Anyone</td>        </tr>
     <tr> <td><b>search.py</b></td>                   <td></td>                                                <td></td>              </tr>
     <tr> <td>!g {string}</td>                        <td>Output first Google result for string</td>           <td>Anyone</td>        </tr>
     <tr> <td>!gc {string}</td>                       <td>Output Google result count for string</td>           <td>Anyone</td>        </tr>
