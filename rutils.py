@@ -217,18 +217,18 @@ def regex(phenny, input):
         return
     q = input.group(2).encode('utf-8')
     rgx = q[:q.find("\x02")]
-    msg = q[q.find("\x02")+1:]
-    if rgx == "" or msg == "":
+    txt = q[q.find("\x02")+1:]
+    if rgx == "" or txt == "":
         return phenny.reply("Give me a regex and a message seperated by \x02")
     try:
         r = re.compile(rgx)
     except BaseException as e:
         return phenny.reply("Failed to compile regex: " + e.message)
-    m = r.match(msg)
-    if m == None:
+    m = list(e.groups()[0] for e in list(re.finditer(rgx, txt)))
+    if m == []:
         return phenny.say("false")
     else:
-        return phenny.say("true groups=[" + ', '.join((repr(e) for e in m.groups())) + "]")
+        return phenny.say("true groups=[" + ', '.join((repr(e) for e in m)) + "]")
 
 regex.commands = ['re','regex']
 regex.priority = 'low'
