@@ -216,10 +216,10 @@ def regex(phenny, input):
     if not input.group(2):
         return
     q = input.group(2).encode('utf-8')
-    rgx = q[:q.find("°")]
-    txt = q[q.find("°")+1:]
+    rgx = q[:q.find("\xc2")]
+    txt = q[q.find("\xc2")+1:]
     if rgx == "" or txt == "":
-        return phenny.reply("Give me a regex and a message seperated by °")
+        return phenny.reply("Give me a regex and a message seperated by \xc2")
     try:
         r = re.compile(rgx)
     except BaseException as e:
