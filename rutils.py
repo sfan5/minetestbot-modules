@@ -216,10 +216,10 @@ def regex(phenny, input):
     if not input.group(2):
         return
     q = input.group(2).encode('utf-8')
-    rgx = q[:q.find("\xb0")]
-    txt = q[q.find("\xb0")+1:]
+    rgx = q[:q.find("`")]
+    txt = q[q.find("`")+1:]
     if rgx == "" or txt == "":
-        return phenny.reply("Give me a regex and a message seperated by \xb0")
+        return phenny.reply("Give me a regex and a message seperated by `")
     try:
         r = re.compile(rgx)
     except BaseException as e:
