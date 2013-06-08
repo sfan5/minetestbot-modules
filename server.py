@@ -184,10 +184,11 @@ def server(phenny, input):
         cfuncs = [by_random]
         cargs = [None]
     else:
-        arg = arg.split(" ")
+        arg = arg.strip().split(" ")
         cfuncs = []
         cargs = []
         for a in arg:
+            if a == "": continue
             if a.startswith("addr:"):
                 choicefunc = by_address
                 carg = a[len("addr:"):]
@@ -218,7 +219,6 @@ def server(phenny, input):
     text = web.get("http://servers.minetest.net/list")
     server_list = json.loads(text)["list"]
     prep_table = server_list
-    print("0 -> %r" % prep_table)
     for i in range(0, len(cfuncs)):
         choicefunc = cfuncs[i]
         carg = cargs[i]
@@ -226,27 +226,26 @@ def server(phenny, input):
         choices = choicefunc(prep_table, carg)
         if len(choices) == 0:
             return phenny.reply("No results")
-        print("%db -> %r" % (i, prep_table))
-        prep_table = []
-        for idx in range(0, len(server_list)):
-            if idx in choices:
-                prep_table.append(server_list[idx])
-        print("%da -> %r" % (i, prep_table))
+        prep_table_ = []
+        for c in choices:
+            prep_table_.append(prep_table[c])
+        prep_table = prep_table_
 
-    choice = choices[0]
-    name = server_list[choice]["name"]
-    address = server_list[choice]["address"]
-    if server_list[choice]["port"] != "30000":
-        address += ":" + server_list[choice]["port"]
-    clients = server_list[choice]["clients"]
+    choice = prep_table[0]
+    name = choice["name"]
+    address = choice["address"]
+    if choice["port"] != "30000":
+        address += ":" + choice["port"]
+    clients = choice["clients"]
     try:
-        version = server_list[choice]["version"] + " " + server_list[choice]["gameid"]
+        version = choice["version"] + " " + server_list[choice]["gameid"]
     except:
-        version = server_list[choice]["version"]
-    ping = server_list[choice]["ping"]
-    clients_max = server_list[choice]["clients_max"]
+        version = choice["version"]
+    ping = choice["ping"]
+    clients_max = choice["clients_max"]
+    clients_top = choice["clients_top"]
 
-    phenny.reply("%s | %s | Clients: %s/%s | Version: %s | ping: %s" % (name, address, clients, clients_max, version, ping))
+    phenny.reply("%s | %s | Clients: %s/%s, %s | Version: %s | ping: %s" % (name, address, clients, clients_max, clients_top, version, ping))
 
 server.commands = ['sv', 'server']
 server.thread = True
