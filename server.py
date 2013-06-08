@@ -192,7 +192,7 @@ def server(phenny, input):
                 choicefunc = by_address
                 carg = a[len("addr:"):]
             elif a.startswith("name:"):
-                choicefunc = by_address
+                choicefunc = by_name
                 carg = a[len("name:"):]
             elif a.startswith("players:"):
                 choicefunc = by_players
@@ -218,6 +218,7 @@ def server(phenny, input):
     text = web.get("http://servers.minetest.net/list")
     server_list = json.loads(text)["list"]
     prep_table = server_list
+    print("0 -> %r" % prep_table)
     for i in range(0, len(cfuncs)):
         choicefunc = cfuncs[i]
         carg = cargs[i]
@@ -225,10 +226,12 @@ def server(phenny, input):
         choices = choicefunc(prep_table, carg)
         if len(choices) == 0:
             return phenny.reply("No results")
+        print("%db -> %r" % (i, prep_table))
         prep_table = []
         for idx in range(0, len(server_list)):
             if idx in choices:
                 prep_table.append(server_list[idx])
+        print("%da -> %r" % (i, prep_table))
 
     choice = choices[0]
     name = server_list[choice]["name"]
