@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """
-wikipedia.py - Phenny Wikipedia Module
+wiki.py - Phenny Wiki Module
 Copyright 2008-9, Sean B. Palmer, inamidst.com
-Modified by Sfan5 2012
+Modified by Sfan5 2013
 Licensed under the Eiffel Forum License 2.
 
 http://inamidst.com/phenny/
@@ -138,7 +138,7 @@ def wik(phenny, input):
             return # Abort function
    origterm = input.groups()[1]
    if not origterm: 
-      return phenny.say('Perhaps you meant ".wik Zen"?')
+      return phenny.say('Perhaps you meant "!wik Zen"?')
    origterm = origterm.encode('utf-8')
    print("[LOG]: %s queried Minetest Wiki for '%s'" % (input.nick,origterm))
 
@@ -162,7 +162,7 @@ def wik(phenny, input):
       phenny.say(result)
    else: phenny.say('Can\'t find anything in Wiki for "%s".' % origterm)
 
-wik.commands = ['wik']
+wik.commands = ['wik', 'wiki']
 wik.priority = 'high'
 
 if __name__ == '__main__': 
