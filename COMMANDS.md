@@ -82,6 +82,8 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!title [link]</td>                      <td>Query Page Title</td>                                <td>Anyone</td>        </tr>
     <tr> <td><b>twitter.py</b></td>                  <td></td>                                                <td></td>              </tr>
     <tr> <td>!tw {link/username/tweet_id}</td>       <td>Query Tweet from Twitter</td>                        <td>Anyone</td>        </tr>
-    <tr> <td><b>wikipedia.py</b></td>                <td></td>                                                <td></td>              </tr>
+    <tr> <td><b>wiki.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!wik {term}</td>                        <td>Query wiki.minetest.com for term</td>                <td>Anyone</td>        </tr>
+    <tr> <td><b>devwiki.py</b></td>                  <td></td>                                                <td></td>              </tr>
+    <tr> <td>!dev {term}</td>                        <td>Query dev.minetest.net for term</td>                 <td>Anyone</td>        </tr>
 </table>
