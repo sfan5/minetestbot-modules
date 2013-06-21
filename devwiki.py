@@ -149,7 +149,6 @@ def wik(phenny, input):
       a = a.lstrip(':')
       if a.isalpha(): 
          language, term = a, b
-   term = term[0].upper() + term[1:]
    term = term.replace(' ', '_')
 
    try: result = wikipedia(term, language)
