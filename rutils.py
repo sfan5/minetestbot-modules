@@ -3,7 +3,7 @@
 rutils.py - Phenny Utility Module
 Copyright 2012, Sfan5
 """
-import base64, binascii, re
+import base64, binascii, re, random
 
 def rs(s):
     return repr(s)[1:-1]
@@ -232,6 +232,35 @@ def regex(phenny, input):
 
 regex.commands = ['re','regex']
 regex.priority = 'low'
+
+def rand(phenny, input): 
+    """Returns a random number"""
+    for x in phenny.bot.commands["high"].values():
+       if x[0].__name__ == "aa_hook":
+           if x[0](phenny, input):
+               return # Abort function
+    if not input.group(2):
+        return
+    arg = input.group(2)
+    if " " in arg:
+        try:
+            a = int(arg.split(" ")[0])
+        except ValueError:
+            return phenny.reply("Could not parse argument 1")
+        try:
+            b = int(arg.split(" ")[1]) + 1
+        except ValueError:
+            return phenny.reply("Could not parse argument 2")
+        phenny.say(random.randrange(a, b))
+    else:
+        try:
+            a = int(arg.split(" ")[0]) + 1
+        except ValueError:
+            return phenny.reply("Could not parse argument 1")
+        phenny.say(random.randrange(a))
+
+rand.commands = ['rand', 'random']
+rand.priority = 'low'
 
 if __name__ == '__main__': 
    print __doc__.strip()
