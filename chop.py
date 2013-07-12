@@ -9,7 +9,7 @@ chop = {}
 chop["badword_limit"] = 4
 chop["badword_enabled"] = True
 chop["victims"] = {} # for future use
-badword_list = web.get("http://sfan5.minetest.net/badwords.txt")
+badword_list = ""#web.get("http://sfan5.minetest.net/badwords.txt")
 
 def num_badwords(sentence):
     badwords = 0
