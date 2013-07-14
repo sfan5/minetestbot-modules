@@ -3,16 +3,11 @@
 rssnotify.py - Phenny RssNotify Module
 Copyright 2013, Sfan5
 """
-import feedparser, time, urllib, re # sudo easy_install feedparser
+import time, urllib, re
+import feedparser # sudo pip install feedparser
 rssnotify = {}
 
-def get_arrayindex(array,val):
-    for i in range(0,len(array)):
-        if array[i] == val:
-            return i
-    return -1
-
-def to_unix_time(st): # not really accurate
+def to_unix_time(st): # not really accurate, but works
     reg = re.compile("([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})")
     g = reg.match(st).groups(1)
     t = 0
@@ -38,18 +33,20 @@ def rsscheck(phenny, input):
     if rssnotify["last_update"] > t-rssnotify["update_cooldown"]:
         return
     rssnotify["last_update"] = t
-    print("[LOG]: Checking RSS Feeds...")
+    print("[RssNotify]: Checking RSS Feeds...")
     start = time.time()
     feeds = [
-        'https://github.com/minetest/minetest/commits/master.atom', 
-        'https://github.com/minetest/minetest_game/commits/master.atom',
-        'https://github.com/minetest/common/commits/master.atom',
-        'https://github.com/minetest/build/commits/master.atom',
-        'https://github.com/minetest/survival/commits/master.atom',
-        'https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom', 
-        'https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom'
+        ('https://github.com/minetest/minetest/commits/master.atom', '*'),
+        ('https://github.com/minetest/minetest_game/commits/master.atom', '*'),
+        ('https://github.com/minetest/common/commits/master.atom', '*'),
+        ('https://github.com/minetest/build/commits/master.atom', '*'),
+        ('https://github.com/minetest/survival/commits/master.atom', '*'),
+        ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  '*'),
+        ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom' '*'),
     ]
-    for url in feeds:
+    for v in xrange(0, len(feeds)):
+        url = feeds[v][0]
+        feednum = v
         options = {
             'agent': 'Mozilla/5.0 (MinetestBot)',
             'referrer': 'http://minetest.net'
@@ -57,7 +54,6 @@ def rsscheck(phenny, input):
         feed = feedparser.parse(url, **options)
         updcnt = 0
         for feed_entry in feed.entries:
-            feednum = get_arrayindex(feeds, url)
             if not feednum in rssnotify["last_updated_feeds"].keys():
                 rssnotify["last_updated_feeds"][feednum] = -1
             if rssnotify["last_updated_feeds"][feednum] < to_unix_time(feed_entry.updated):
@@ -87,7 +83,14 @@ def rsscheck(phenny, input):
                 else:               
                     commit_link = ""
                 
-                for ch in phenny.bot.channels:
+                chans = []
+                if feeds[v][1] == '*':
+                    chans = phenny.bot.channels
+                elif type(feeds[v][1]) == type([]):
+                    chans = feeds[v][1]
+                else:
+                    print("[RssNotify]: Something went wrong!")
+                for ch in chans:
                     if commiter.lower() != commiter_realname.lower():
                         #phenny.say("GIT: %s (%s) commited to %s: %s %s %s" % (commiter,commiter_realname,reponame,feed_entry.title,commit_hash,commit_time))
                         phenny.write(['PRIVMSG', ch],"GIT: %s (%s) commited to %s: %s %s %s %s" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_time, commit_link))
@@ -101,11 +104,11 @@ def rsscheck(phenny, input):
                     m = to_unix_time(feed.entries[i].updated)
             rssnotify["last_updated_feeds"][feednum] = m
         if updcnt > 0:
-            print("[LOG]: Found %i RSS Update(s) for URL '%s'" % (updcnt, url))
+            print("[RssNotify]: Found %i RSS Update(s) for URL '%s'" % (updcnt, url))
     end = time.time()
     if rssnotify["dont_print_first_message"]:
         rssnotify["dont_print_first_message"] = False
-    print("[LOG]: Checked " + str(len(feeds)) + " RSS Feeds in %0.3f seconds" % (end-start))
+    print("[RssNotify]: Checked " + str(len(feeds)) + " RSS Feeds in %0.3f seconds" % (end-start))
 
 rsscheck.priority = 'high'
 rsscheck.rule = r'.*'
