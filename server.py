@@ -235,6 +235,8 @@ def server(phenny, input):
     name = choice["name"]
     address = choice["address"]
     if choice["port"] != "30000":
+        if ':' in address: # IPv6
+            address = "[" + address + "]"
         address += ":" + choice["port"]
     clients = choice["clients"]
     try:
