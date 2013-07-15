@@ -251,13 +251,13 @@ def rand(phenny, input):
             b = int(arg.split(" ")[1]) + 1
         except ValueError:
             return phenny.reply("Could not parse argument 2")
-        phenny.say(random.randrange(a, b))
+        phenny.say(str(random.randrange(a, b)))
     else:
         try:
             a = int(arg.split(" ")[0]) + 1
         except ValueError:
             return phenny.reply("Could not parse argument 1")
-        phenny.say(random.randrange(a))
+        phenny.say(str(random.randrange(a)))
 
 rand.commands = ['rand', 'random']
 rand.priority = 'low'
