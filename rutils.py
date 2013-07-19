@@ -38,7 +38,7 @@ def b64e(phenny, input):
     try:
         return phenny.say(rs(base64.b64encode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b64e.commands = ['b64e','base64encode']
 b64e.priority = 'low'
@@ -55,7 +55,7 @@ def b64d(phenny, input):
     try:
         return phenny.say(rs(base64.b64decode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b64d.commands = ['b64d','base64decode']
 b64d.priority = 'low'
@@ -72,7 +72,7 @@ def b32e(phenny, input):
     try:
         return phenny.say(rs(base64.b32encode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b32e.commands = ['b32e','base32encode']
 b32e.priority = 'low'
@@ -89,7 +89,7 @@ def b32d(phenny, input):
     try:
         return phenny.say(rs(base64.b32decode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b32d.commands = ['b32d','base32decode']
 b32d.priority = 'low'
@@ -106,7 +106,7 @@ def b16e(phenny, input):
     try:
         return phenny.say(rs(base64.b16encode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b16e.commands = ['b16e','base16encode']
 b16e.priority = 'low'
@@ -119,7 +119,7 @@ def b16d(phenny, input):
     try:
         return phenny.say(rs(base64.b16decode(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 b16d.commands = ['b16d','base16decode']
 b16d.priority = 'low'
@@ -151,7 +151,7 @@ def hex_(phenny, input):
     try:
         return phenny.say(rs(binascii.hexlify(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 hex_.commands = ['hex']
 hex_.priority = 'low'
@@ -168,7 +168,7 @@ def unhex(phenny, input):
     try:
         return phenny.say(rs(binascii.unhexlify(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 unhex.commands = ['unhex']
 unhex.priority = 'low'
@@ -185,7 +185,7 @@ def uuencode(phenny, input):
     try:
         return phenny.say(rs(binascii.b2a_uu(q)))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 uuencode.commands = ['ue','uuencode']
 uuencode.priority = 'low'
@@ -202,7 +202,7 @@ def uudecode(phenny, input):
     try:
         return phenny.say(rs(binascii.a2b_uu(q + '\n')))
     except BaseException as e:
-        return phenny.reply(e.message)
+        return phenny.reply("Failed to handle data")
    
 uudecode.commands = ['ud','uudecode']
 uudecode.priority = 'low'
