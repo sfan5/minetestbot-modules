@@ -88,9 +88,11 @@ def kick(phenny, input):
     arg = input.group(2)
     if not arg: return
     arg = arg.split(" ")
-    if len(arg) < 2: return
+    if len(arg) < 1: return
+    if len(arg) == 1:
+        arg.append("")
     if arg[0].startswith('#'):
-        if len(arg) < 3: return
+        if len(arg) < 2: return
         phenny.write(['KICK', arg[0], arg[1]], ' '.join(arg[2:]))
     else:
         phenny.write(['KICK', input.sender, arg[0]], ' '.join(arg[1:]))
