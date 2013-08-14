@@ -49,6 +49,8 @@ def formartirc_user(name,rank,posts,regdate,userid,with_userid=False):
         return name + " "+chr(3)+"9"+ rank +chr(3)+" " + posts + " posts, registered on " + regdate + ap
     elif rank.lower() == "banned":
         return name + " "+chr(3)+"4"+ rank +chr(3)+" " + posts + " posts, registered on " + regdate + ap
+    elif rank.lower() == "developer":
+        return name + " "+chr(3)+"10"+ rank +chr(3)+" " + posts + " posts, registered on " + regdate + ap
     elif rank.lower() == "new member":
         return name + " "+chr(3)+"8"+ rank.replace("New","New"+chr(3)) +" " + posts + " posts, registered on " + regdate + ap
     else:
