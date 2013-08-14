@@ -262,6 +262,11 @@ def rand(phenny, input):
             b = int(arg.split(" ")[1]) + 1
         except ValueError:
             return phenny.reply("Could not parse argument 2")
+        if b < a:
+            tmp = a
+            a = b
+            b = tmp
+            del tmp
         phenny.say(str(random.randrange(a, b)))
     else:
         try:
