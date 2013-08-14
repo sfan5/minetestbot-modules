@@ -3,7 +3,7 @@
 rutils.py - Phenny Utility Module
 Copyright 2012, Sfan5
 """
-import base64, binascii, re, random
+import base64, binascii, re, random, time, multiprocessing
 
 def rs(s):
     return repr(s)[1:-1]
@@ -214,7 +214,7 @@ def regex(phenny, input):
            if x[0](phenny, input):
                return # Abort function
     if not input.group(2):
-        return
+        return phenny.reply("Give me a regex and a message seperated by `")
     q = input.group(2).encode('utf-8')
     rgx = q[:q.find("`")]
     txt = q[q.find("`")+1:]
@@ -224,7 +224,17 @@ def regex(phenny, input):
         r = re.compile(rgx)
     except BaseException as e:
         return phenny.reply("Failed to compile regex: " + e.message)
-    m = list(e.groups()[0] for e in list(re.finditer(rgx, txt)))
+    q = multiprocessing.Queue()
+    def compute(q, re, rgx, txt):
+        q.put(list(e.groups()[0] for e in list(re.finditer(rgx, txt))))
+    t = multiprocessing.Process(target=compute, args=(q,re,rgx,txt))
+    t.start()
+    t.join(3.0)
+    if t.is_alive():
+        phenny.reply("Regex took to long to compute")
+        t.terminate()
+        return
+    m = q.get()
     if m == []:
         return phenny.say("false")
     else:
@@ -232,6 +242,7 @@ def regex(phenny, input):
 
 regex.commands = ['re','regex']
 regex.priority = 'low'
+regex.thread = True
 
 def rand(phenny, input): 
     """Returns a random number"""
