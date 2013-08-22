@@ -78,7 +78,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td></td>                                   <td>Supports multiple Ports e.g. 123-456,999</td>        <td></td>              </tr>
     <tr> <td><b>shorten.py</b></td>                  <td></td>                                                <td></td>              </tr>
     <tr> <td>!sh {service} {url}</td>                <td>Shortens URL</td>                                    <td>Anyone</td>        </tr>
-    <tr> <td></td>                                   <td>Currently supports: id.gd, v.gd</td>                 <td></td>              </tr>
+    <tr> <td></td>                                   <td>Currently supports: is.gd, v.gd</td>                 <td></td>              </tr>
     <tr> <td><b>title.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!title [link]</td>                      <td>Query Page Title</td>                                <td>Anyone</td>        </tr>
     <tr> <td><b>twitter.py</b></td>                  <td></td>                                                <td></td>              </tr>
