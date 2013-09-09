@@ -17,7 +17,7 @@ def rtfm(phenny, input):
             return
    phenny.say("Somebody thinks you should read the manual. The wiki for dev related questions is at http://dev.minetest.net , the regular wiki is at http://wiki.minetest.net. ")
 
-help.commands = ['rtfm']
+rtfm.commands = ['rtfm']
 
 def questions(phenny, input):
    """Ask smart questions"""
@@ -27,7 +27,7 @@ def questions(phenny, input):
             return
    phenny.say("Someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
 
-help.commands = ['questions']
+questions.commands = ['questions']
 
 def next(phenny, input):
    """Next one please"""
@@ -37,4 +37,4 @@ def next(phenny, input):
             return
    phenny.say("Another satisfied customer. Next!")
 
-help.commands = ['next']
+next.commands = ['next']
