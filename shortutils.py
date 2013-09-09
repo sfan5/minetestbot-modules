@@ -19,7 +19,7 @@ def rtfm(phenny, input):
 
 help.commands = ['rtfm']
 
-def question(phenny, input):
+def questions(phenny, input):
    """Ask smart questions"""
    for x in phenny.bot.commands["high"].values():
       if x[0].__name__ == "aa_hook":
@@ -27,7 +27,7 @@ def question(phenny, input):
             return
    phenny.say("Someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
 
-help.commands = ['question']
+help.commands = ['questions']
 
 def next(phenny, input):
    """Next one please"""
