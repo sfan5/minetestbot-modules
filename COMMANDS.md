@@ -87,8 +87,8 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!wik {term}</td>                        <td>Query wiki.minetest.com for term</td>                <td>Anyone</td>        </tr>
     <tr> <td><b>devwiki.py</b></td>                  <td></td>                                                <td></td>              </tr>
     <tr> <td>!dev {term}</td>                        <td>Query dev.minetest.net for term</td>                 <td>Anyone</td>        </tr>
-	<tr> <td><b>shortutils.py</b></td>               <td></td>                                                <td></td>              </tr>
+    <tr> <td><b>shortutils.py</b></td>               <td></td>                                                <td></td>              </tr>
     <tr> <td>!rtfm</td>                              <td>Give links to wiki and dev wiki</td>                 <td>Anyone</td>        </tr>
-	<tr> <td>!questions</td>                         <td>Link to ESR's "How to ask smart questions"</td>      <td>Anyone</td>        </tr>
-	<tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
+    <tr> <td>!questions</td>                         <td>Link to ESR's "How to ask smart questions"</td>      <td>Anyone</td>        </tr>
+    <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
 </table>
