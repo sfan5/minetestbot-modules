@@ -11,7 +11,7 @@ http://inamidst.com/phenny/
 import re, urllib, gzip, StringIO
 import web
 
-wikiuri = 'http://wiki.minetest.net/wiki/%s'
+wikiuri = 'http://wiki.minetest.net/%s'
 
 r_tr = re.compile(r'(?ims)<tr[^>]*>.*?</tr>')
 r_paragraph = re.compile(r'(?ims)<p[^>]*>.*?</p>|<li(?!n)[^>]*>.*?</li>')
