@@ -10,14 +10,42 @@ http://inamidst.com/phenny/
 
 import time
 from tools import deprecated
+from thread import start_new_thread, allocate_lock
 import sqlite3
+
+updates = list()
+update_l = allocate_lock()
 
 def opendb():
     db = sqlite3.connect("seen.sqlite")
-    c = db.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS seen (nick text, channel text, time int)''')
-    c.close()
     return db
+
+def updatethread():
+    global updates, update_l
+    db = opendb()
+    c = db.cursor()
+    while True:
+        if len(updates) > 0:
+            update_l.acquire()
+            up = updates
+            updates = list()
+            update_l.release()
+            for u in up:
+                c.execute("SELECT * FROM seen WHERE nick = ?", (u[2],))
+                if c.fetchone() != None:
+                    d = (u[0], u[1], u[2])
+                    c.execute('UPDATE seen SET channel = ?, time = ? WHERE nick = ?', d)
+                else:
+                    d = (u[2], u[0], u[1])
+                    c.execute('INSERT INTO seen VALUES (?,?,?)', d)
+            db.commit()
+        else:
+            time.sleep(5)
+
+def pushupdate(sender, time, nick):
+    update_l.acquire()
+    updates.append((sender, time, nick))
+    update_l.release()
 
 def seen(phenny, input): 
     """.seen <nick> - Reports when <nick> was last seen."""
@@ -50,22 +78,19 @@ def seen(phenny, input):
 seen.rule = (['seen'], r'(\S+)')
 
 def note(phenny, input):
-    db = opendb()
     if input.sender.startswith('#'):
-        c = db.cursor()
-        c.execute("SELECT * FROM seen WHERE nick = ?", (input.nick.lower(),))
-        if c.fetchone() != None:
-            d = (input.sender, int(time.time()), input.nick.lower())
-            c.execute('UPDATE seen SET channel = ?, time = ? WHERE nick = ?', d)
-        else:
-            d = (input.nick.lower(), input.sender, int(time.time()))
-            c.execute('INSERT INTO seen VALUES (?,?,?)', d)
-        db.commit()
-        c.close()
-    db.close()
+        pushupdate(input.sender, int(time.time()), input.nick.lower())
 
 note.rule = r'.*'
 note.priority = 'low'
+
+db = sqlite3.connect("seen.sqlite")
+c = db.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS seen (nick text, channel text, time int)''')
+c.close()
+db.close()
+
+start_new_thread(updatethread, ())
 
 if __name__ == '__main__': 
    print __doc__.strip()
