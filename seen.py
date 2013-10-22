@@ -84,6 +84,22 @@ def note(phenny, input):
 note.rule = r'.*'
 note.priority = 'low'
 
+def note_join(phenny, input):
+    if input.sender.startswith('#'):
+        pushupdate(input.sender, int(time.time()), input.nick.lower())
+
+note_join.rule = r'.*'
+note_join.event = 'JOIN'
+note_join.priority = 'low'
+
+def note_part(phenny, input):
+    if input.sender.startswith('#'):
+        pushupdate(input.sender, int(time.time()), input.nick.lower())
+
+note_part.rule = r'.*'
+note_part.event = 'PART'
+note_part.priority = 'low'
+
 db = sqlite3.connect("seen.sqlite")
 c = db.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS seen (nick text, channel text, time int)''')
