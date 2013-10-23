@@ -60,3 +60,17 @@ def pil(phenny, input):
    phenny.say(u + "Someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
 
 pil.commands = ['pil']
+
+def git(phenny, input):
+   """Git Manual link"""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return
+   if input.group(2).strip():
+      u = input.group(2).strip() + ", "
+   else:
+      u = ""
+   phenny.say(u + "Someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
+
+git.commands = ['git']
