@@ -74,3 +74,31 @@ def git(phenny, input):
    phenny.say(u + "someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
 
 git.commands = ['git']
+
+def stfu(phenny, input):
+   """usage: !stfu [nick]"""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return
+   if input.group(2):
+      u = input.group(2).strip() + ", "
+   else:
+      u = ""
+   phenny.say(u + "someone thinks you need to shut the fuck up before you get muted.")
+
+stfu.commands = ['stfu']
+
+def proc(phenny, input):
+   """usage: !proc [nick]"""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return
+   if input.group(2):
+      u = input.group(2).strip() + ", "
+   else:
+      u = ""
+   phenny.say(u + "someone thinks you need to stop procrastinating.")
+
+proc.commands = ['proc']
