@@ -57,7 +57,7 @@ def pil(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
+   phenny.say(u + "someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
 
 pil.commands = ['pil']
 
@@ -71,6 +71,6 @@ def git(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
+   phenny.say(u + "someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
 
 git.commands = ['git']
