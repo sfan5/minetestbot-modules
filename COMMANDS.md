@@ -91,5 +91,5 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!rtfm</td>                              <td>Give links to wiki and dev wiki</td>                 <td>Anyone</td>        </tr>
     <tr> <td>!questions</td>                         <td>Link to ESR's "How to ask smart questions"</td>      <td>Anyone</td>        </tr>
     <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
-    <tr> <td>!pil</td>                              <td>Say: "Someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/"</td>        <td>Anyone</td>        </tr>
+    <tr> <td>!pil</td>                               <td>Say: "Link to: http://lua.org/pil/"</td>             <td>Anyone</td>        </tr>
 </table>
