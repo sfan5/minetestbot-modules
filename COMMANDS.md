@@ -92,4 +92,5 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!questions [nick]</td>                  <td>Link to ESR's "How to ask smart questions"</td>      <td>Anyone</td>        </tr>
     <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
     <tr> <td>!pil [nick]</td>                        <td>Link to Lua PIL</td>                                 <td>Anyone</td>        </tr>
+    <tr> <td>!git [nick]</td>                        <td>Link to Git manual</td>                              <td>Anyone</td>        </tr>
 </table>

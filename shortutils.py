@@ -19,7 +19,7 @@ def rtfm(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Somebody thinks you should read the manual. The wiki for dev related questions is at http://dev.minetest.net , the regular wiki is at http://wiki.minetest.net. ")
+   phenny.say(u + "someone thinks you should read the manual. The wiki for dev related questions is at http://dev.minetest.net , the regular wiki is at http://wiki.minetest.net. ")
 
 rtfm.commands = ['rtfm']
 
@@ -33,7 +33,7 @@ def questions(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
+   phenny.say(u + "someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
 
 questions.commands = ['questions']
 
@@ -57,6 +57,20 @@ def pil(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
+   phenny.say(u + "someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
 
 pil.commands = ['pil']
+
+def git(phenny, input):
+   """Git Manual link"""
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return
+   if input.group(2).strip():
+      u = input.group(2).strip() + ", "
+   else:
+      u = ""
+   phenny.say(u + "someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
+
+git.commands = ['git']
