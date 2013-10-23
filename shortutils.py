@@ -15,7 +15,7 @@ def rtfm(phenny, input):
       if x[0].__name__ == "aa_hook":
          if x[0](phenny, input):
             return
-   if input.group(2).strip():
+   if input.group(2):
       u = input.group(2).strip() + ", "
    else:
       u = ""
@@ -29,7 +29,7 @@ def questions(phenny, input):
       if x[0].__name__ == "aa_hook":
          if x[0](phenny, input):
             return
-   if input.group(2).strip():
+   if input.group(2):
       u = input.group(2).strip() + ", "
    else:
       u = ""
@@ -53,7 +53,7 @@ def pil(phenny, input):
       if x[0].__name__ == "aa_hook":
          if x[0](phenny, input):
             return
-   if input.group(2).strip():
+   if input.group(2):
       u = input.group(2).strip() + ", "
    else:
       u = ""
@@ -67,7 +67,7 @@ def git(phenny, input):
       if x[0].__name__ == "aa_hook":
          if x[0](phenny, input):
             return
-   if input.group(2).strip():
+   if input.group(2):
       u = input.group(2).strip() + ", "
    else:
       u = ""
