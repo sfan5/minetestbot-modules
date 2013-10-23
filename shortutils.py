@@ -19,7 +19,7 @@ def rtfm(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Somebody thinks you should read the manual. The wiki for dev related questions is at http://dev.minetest.net , the regular wiki is at http://wiki.minetest.net. ")
+   phenny.say(u + "someone thinks you should read the manual. The wiki for dev related questions is at http://dev.minetest.net , the regular wiki is at http://wiki.minetest.net. ")
 
 rtfm.commands = ['rtfm']
 
@@ -33,7 +33,7 @@ def questions(phenny, input):
       u = input.group(2).strip() + ", "
    else:
       u = ""
-   phenny.say(u + "Someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
+   phenny.say(u + "someone thinks that your question is inaccurate or doesn't follow the guidelines. Read here how to make it right: http://catb.org/~esr/faqs/smart-questions.html")
 
 questions.commands = ['questions']
 
