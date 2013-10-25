@@ -11,7 +11,7 @@ http://inamidst.com/phenny/
 import re, urllib, gzip, StringIO
 import web
 
-wikiuri = 'http://dev.minetest.net/%s'
+devwikiuri = 'http://dev.minetest.net/%s'
 
 r_tr = re.compile(r'(?ims)<tr[^>]*>.*?</tr>')
 r_paragraph = re.compile(r'(?ims)<p[^>]*>.*?</p>|<li(?!n)[^>]*>.*?</li>')
@@ -41,16 +41,16 @@ def text(html):
    html = r_whitespace.sub(' ', html)
    return unescape(html).strip()
 
-def wikipedia(term, language='en', last=False): 
-   global wikiuri
+def devwikipedia(term, language='en', last=False): 
+   global devwikiuri
    if not '%' in term: 
       if isinstance(term, unicode): 
          t = term.encode('utf-8')
       else: t = term
       q = urllib.quote(t)
-      u = wikiuri % (q)
+      u = devwikiuri % (q)
       bytes = web.get(u)
-   else: bytes = web.get(wikiuri % (term))
+   else: bytes = web.get(devwikiuri % (term))
 
    if bytes.startswith('\x1f\x8b\x08\x00\x00\x00\x00\x00'): 
       f = StringIO.StringIO(bytes)
@@ -66,14 +66,14 @@ def wikipedia(term, language='en', last=False):
       r = r_redirect.search(bytes[:4096])
       if r: 
          term = urllib.unquote(r.group(1))
-         return wikipedia(term, language=language, last=True)
+         return devwikipedia(term, language=language, last=True)
 
    paragraphs = r_paragraph.findall(bytes)
 
    if not paragraphs: 
       if not last: 
          term = search(term)
-         return wikipedia(term, language=language, last=True)
+         return devwikipedia(term, language=language, last=True)
       return None
 
    # Pre-process
@@ -106,7 +106,7 @@ def wikipedia(term, language='en', last=False):
    if not m: 
       if not last: 
          term = search(term)
-         return wikipedia(term, language=language, last=True)
+         return devwikipedia(term, language=language, last=True)
       return None
    sentence = m.group(0)
 
@@ -122,16 +122,16 @@ def wikipedia(term, language='en', last=False):
     or ('in existing articles' in sentence)): 
       if not last: 
          term = search(term)
-         return wikipedia(term, language=language, last=True)
+         return devwikipedia(term, language=language, last=True)
       return None
 
    sentence = '"' + sentence.replace('"', "'") + '"'
    sentence = sentence.decode('utf-8').encode('utf-8')
-   wikiuri = wikiuri.decode('utf-8').encode('utf-8')
+   devwikiuri = devwikiuri.decode('utf-8').encode('utf-8')
    term = term.decode('utf-8').encode('utf-8')
-   return sentence + ' - ' + (wikiuri % (term))
+   return sentence + ' - ' + (devwikiuri % (term))
 
-def wik(phenny, input): 
+def devwik(phenny, input): 
    for x in phenny.bot.commands["high"].values():
      if x[0].__name__ == "aa_hook":
         if x[0](phenny, input):
@@ -151,9 +151,9 @@ def wik(phenny, input):
          language, term = a, b
    term = term.replace(' ', '_')
 
-   try: result = wikipedia(term, language)
+   try: result = devwikipedia(term, language)
    except IOError: 
-      args = (language, wikiuri % (term))
+      args = (language, devwikiuri % (term))
       error = "Can't connect to dev.minetest.net (%s)" % args
       return phenny.say(error)
 
@@ -161,8 +161,8 @@ def wik(phenny, input):
       phenny.say(result)
    else: phenny.say('Can\'t find anything in Dev Wiki for "%s".' % origterm)
 
-wik.commands = ['dev', 'devwik', 'devwiki']
-wik.priority = 'high'
+devwik.commands = ['dev', 'devwik', 'devwiki']
+devwik.priority = 'high'
 
 if __name__ == '__main__': 
    print __doc__.strip()
