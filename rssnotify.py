@@ -19,9 +19,16 @@ def to_unix_time(st): # not really accurate, but works
     t += int(g[0]) * 60 * 60 * 24 * 30 * 12
     return t
 
+def excepta(arr, e):
+    o = []
+    for el in arr:
+        if el != e:
+            o.append(el)
+    return o
+
 rssnotify["last_updated_feeds"] = {}
 
-rssnotify["dont_print_first_message"] = True
+rssnotify["dont_print_first_message"] = True # prevents spam when restarting the bot/reloading the module
 rssnotify["update_cooldown"] = 60 # in seconds
 rssnotify["show_commit_link"] = True
 rssnotify["use_git.io"] = True
@@ -35,16 +42,17 @@ def rsscheck(phenny, input):
     rssnotify["last_update"] = t
     print("[RssNotify]: Checking RSS Feeds...")
     start = time.time()
+    allchans = excepta(phenny.bot.channels, '##minebest')
     feeds = [
-        ('https://github.com/minetest/minetest/commits/master.atom', '*'),
-        ('https://github.com/minetest/minetest_game/commits/master.atom', '*'),
-        ('https://github.com/minetest/common/commits/master.atom', '*'),
-        ('https://github.com/minetest/build/commits/master.atom', '*'),
-        ('https://github.com/minetest/survival/commits/master.atom', '*'),
-        ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  '*'),
-        ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', '*'),
-        ('https://github.com/VanessaE/pipeworks/commits/master.atom', ["##minebest"]),
-        ('https://github.com/VanessaE/homedecor/commits/master.atom', ["##minebest"]),
+        ('https://github.com/minetest/minetest/commits/master.atom', allchans),
+        ('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
+        ('https://github.com/minetest/common/commits/master.atom', allchans),
+        ('https://github.com/minetest/build/commits/master.atom', allchans),
+        ('https://github.com/minetest/survival/commits/master.atom', allchans),
+        ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
+        ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
+        #('https://github.com/VanessaE/pipeworks/commits/master.atom', ["##minebest"]),
+        #('https://github.com/VanessaE/homedecor/commits/master.atom', ["##minebest"]),
     ]
     for v in xrange(0, len(feeds)):
         url = feeds[v][0]
@@ -68,16 +76,17 @@ def rsscheck(phenny, input):
                 try:
                     commiter = feed_entry.authors[0].href.replace('https://github.com/',"")
                 except AttributeError:
-                    commiter = commiter_realname # This will only print the Realname if the nickname couldn't be obtained
+                    commiter = commiter_realname # This will only use the realname if the nickname couldn't be obtained
                 reponame = url.replace("https://github.com/","").replace("/commits/master.atom","")
                 commit_hash = feed_entry.links[0].href.replace("https://github.com/" + reponame + "/commit/","")[:10]
                 commit_time = feed_entry.updated
                 updcnt += 1
                 if rssnotify["dont_print_first_message"]:
-                    continue # Don't print first Messages
+                    continue
                 if rssnotify["show_commit_link"]:
                     if rssnotify["use_git.io"]:
-                        params = urllib.urlencode({'url' : feed_entry.link}) # git.io only works with *.github.com links
+                        params = urllib.urlencode({'url' : feed_entry.link}) 
+                        # Side note: git.io only works with *.github.com links
                         u = urllib.urlopen("http://git.io/create", params)
                         commit_link = "http://git.io/" + u.read()
                     else:
