@@ -10,7 +10,7 @@ def colorize(text):
 	for c in text:
 		if c in [(str(i) for i in range(10))]:
 			c = (u"\u200b".encode("utf8")) + c # 'ZERO WIDTH SPACE' cuz IRC clients are stupid
-		out += "\x03" + random.randint(2, 15) + c
+		out += "\x03" + str(random.randint(2, 15)) + c
 	return out
 
 def rainbow(phenny, input):
