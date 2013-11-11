@@ -21,6 +21,11 @@ def rainbow(phenny, input):
 	arg = input.group(2)
 	if not arg:
 		return phenny.say(colorize("Rainbow") + "\x03 What?")
-	phenny.say(colorize(arg))
+	if arg.startswith("#") and ' ' in arg and input.admin:
+		ch = arg.split(" ")[0]
+		arg = " ".join(arg.split(" ")[1:])
+		phenny.write(['PRIVMSG', ch], colorize(arg))
+	else:
+		phenny.say(colorize(arg))
 
 rainbow.commands = ['rainbow']
