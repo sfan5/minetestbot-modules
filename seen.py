@@ -15,6 +15,7 @@ import sqlite3
 
 updates = list()
 update_l = allocate_lock()
+dblock = allocate_lock()
 
 def opendb():
     db = sqlite3.connect("seen.sqlite")
@@ -30,6 +31,7 @@ def updatethread():
             up = updates
             updates = list()
             update_l.release()
+            dblock.acquire()
             for u in up:
                 c.execute("SELECT * FROM seen WHERE nick = ?", (u[2],))
                 if c.fetchone() != None:
@@ -39,6 +41,7 @@ def updatethread():
                     d = (u[2], u[0], u[1])
                     c.execute('INSERT INTO seen VALUES (?,?,?)', d)
             db.commit()
+            dblock.release()
         else:
             time.sleep(5)
 
@@ -60,14 +63,14 @@ def seen(phenny, input):
 
     print("[LOG]: %s queried Seen Result for %s" % (input.nick,nick))
 
-    update_l.acquire()
+    dblock.acquire()
     db = opendb()
     c = db.cursor()
     c.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick,))
     r = c.fetchone()
     c.close()
     db.close()
-    update_l.release()
+    dblock.release()
 
     if r:
         channel, t = r[0], r[1]
