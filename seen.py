@@ -60,12 +60,15 @@ def seen(phenny, input):
 
     print("[LOG]: %s queried Seen Result for %s" % (input.nick,nick))
 
+    update_l.acquire()
     db = opendb()
     c = db.cursor()
     c.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick,))
     r = c.fetchone()
     c.close()
     db.close()
+    update_l.release()
+
     if r:
         channel, t = r[0], r[1]
         t = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(t))
@@ -76,6 +79,7 @@ def seen(phenny, input):
         phenny.reply("Sorry, I haven't seen %s around." % nick)
 
 seen.rule = (['seen'], r'(\S+)')
+seen.thread = True
 
 def note(phenny, input):
     if input.sender.startswith('#'):
