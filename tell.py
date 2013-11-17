@@ -32,6 +32,7 @@ def tell(phenny, input):
 	c = db.cursor()
 	c.execute("INSERT INTO tell VALUES (?,?,?)", d)
 	c.close()
+	db.commit()
 	db.close()
 
 	response = "I'll pass that on when %s is around" % target
@@ -52,6 +53,7 @@ def checktell(phenny, input):
 			c = db.cursor()
 			c.execute("DELETE FROM tell WHERE nick = ? AND channel = ? AND msg = ?", e)
 			c.close()
+			db.commit()
 			db.close()
 			return
 
@@ -80,6 +82,7 @@ while True:
 		break
 	tell_list.append(e)
 c.close()
+db.commit()
 db.close()
 
 if __name__ == '__main__': 
