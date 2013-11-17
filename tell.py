@@ -30,7 +30,7 @@ def tell(phenny, input):
 
 	db = sqlite3.connect("tell.sqlite")
 	c = db.cursor()
-	c.execute("INSERT INTO tell VALUES (?,?,?)", (d,))
+	c.execute("INSERT INTO tell VALUES (?,?,?)", d)
 	c.close()
 	db.close()
 
@@ -44,14 +44,13 @@ def tell(phenny, input):
 tell.commands = ["tell"]
 
 def checktell(phenny, input):
-	for i in range(len(tell_list)):
-		e = tell_list[i]
+	for e in tell_list:
 		if e[1].lower() == input.nick.lower():
 			phenny.say("%s: <%s> %s" % (input.nick, e[0], e[2]))
-			tell_list.remove(i)
+			tell_list.remove(e)
 			db = sqlite3.connect("tell.sqlite")
 			c = db.cursor()
-			c.execute("DELETE FROM tell WHERE nick = ? AND channel = ? AND msg = ?", (e,))
+			c.execute("DELETE FROM tell WHERE nick = ? AND channel = ? AND msg = ?", e)
 			c.close()
 			db.close()
 			return
