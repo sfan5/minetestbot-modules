@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+"""
+seen.py - Phenny Seen Module
+Copyright 2013, sfan5
+"""
+
+import random
+from tools import deprecated
+from thread import start_new_thread, allocate_lock
+import sqlite3
+
+tell_list = []
+
+def tell(phenny, input): 
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return # Abort function
+	arg = input.group(2)
+	if not arg:
+		return phenny.reply("Need a nickname...")
+	if not ' ' in arg:
+		return phenny.reply("...and text")
+	teller = input.nick
+	target = arg.split(" ")[0]
+	text = " ".join(arg.split(" ")[1:])
+	d = (teller, target, text)
+
+	tell_list.append(d)
+
+	db = sqlite3.connect("tell.sqlite")
+	c = db.cursor()
+	c.execute("INSERT INTO tell VALUES (?,?,?)", (d,))
+	c.close()
+	db.close()
+
+	response = "I'll pass that on when %s is around" % target
+	rand = random.random()
+	if rand > 0.9999: response = "yeah, yeah"
+	elif rand > 0.999: response = "yeah, sure, whatever"
+
+	phenny.reply(response)
+
+tell.commands = ["tell"]
+
+def checktell(phenny, input):
+	for i in range(len(tell_list)):
+		e = tell_list[i]
+		if e[1].lower() == input.nick.lower():
+			phenny.say("%s: <%s> %s" % (input.nick, e[0], e[2]))
+			tell_list.remove(i)
+			db = sqlite3.connect("tell.sqlite")
+			c = db.cursor()
+			c.execute("DELETE FROM tell WHERE nick = ? AND channel = ? AND msg = ?", (e,))
+			c.close()
+			db.close()
+			return
+
+def note(phenny, input):
+	if input.sender.startswith('#'):
+		checktell(phenny, input)
+
+note.rule = r'.*'
+note.priority = 'low'
+
+def note_join(phenny, input):
+	if input.sender.startswith('#'):
+		checktell(phenny, input)
+
+note_join.rule = r'.*'
+note_join.event = 'JOIN'
+note_join.priority = 'low'
+
+db = sqlite3.connect("tell.sqlite")
+c = db.cursor()
+c.execute("CREATE TABLE IF NOT EXISTS tell (nick text, channel text, msg text)")
+c.execute("SELECT nick, channel, msg FROM tell")
+while True:
+	e = c.fetchone()
+	if not e:
+		break
+	tell_list.append(e)
+c.close()
+db.close()
+
+if __name__ == '__main__': 
+   print __doc__.strip()
