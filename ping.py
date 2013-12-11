@@ -25,7 +25,15 @@ def interjection(phenny, input):
    phenny.say(input.nick + '!')
 interjection.rule = r'$nickname!'
 interjection.priority = 'high'
-interjection.thread = False
+
+def l3(phenny, input): 
+   for x in phenny.bot.commands["high"].values():
+      if x[0].__name__ == "aa_hook":
+         if x[0](phenny, input):
+            return # Abort function
+   phenny.say('<3 ' + input.nick)
+l3.rule = r'<3 $nickname'
+l3.priority = 'low'
 
 if __name__ == '__main__': 
    print __doc__.strip()
