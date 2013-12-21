@@ -21,14 +21,14 @@ def tell(phenny, input):
 		return phenny.reply("Need a nickname...")
 	if not ' ' in arg:
 		return phenny.reply("...and text")
-	if target.lower() == teller.lower():
-		return phenny.say("You can tell that to yourself")
-	if target.lower() == phenny.nick.lower():
-		return phenny.say("I'm not dumb, you know?")
 	teller = input.nick
 	target = arg.split(" ")[0]
 	text = " ".join(arg.split(" ")[1:])
 	d = (teller, target, text)
+	if target.lower() == teller.lower():
+		return phenny.say("You can tell that to yourself")
+	if target.lower() == phenny.nick.lower():
+		return phenny.say("I'm not dumb, you know?")
 
 	tell_list.append(d)
 
