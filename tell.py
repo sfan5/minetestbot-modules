@@ -21,6 +21,10 @@ def tell(phenny, input):
 		return phenny.reply("Need a nickname...")
 	if not ' ' in arg:
 		return phenny.reply("...and text")
+	if target.lower() == teller.lower():
+		return phenny.say("You can tell that to yourself")
+	if target.lower() == phenny.nick.lower():
+		return phenny.say("I'm not dumb, you know?")
 	teller = input.nick
 	target = arg.split(" ")[0]
 	text = " ".join(arg.split(" ")[1:])
@@ -37,8 +41,8 @@ def tell(phenny, input):
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()
-	if rand > 0.9999: response = "yeah, yeah"
-	elif rand > 0.999: response = "yeah, sure, whatever"
+	if rand > 0.999: response = "yeah, yeah"
+	elif rand > 0.99: response = "yeah, sure, whatever"
 
 	phenny.reply(response)
 
