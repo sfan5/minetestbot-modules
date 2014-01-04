@@ -11,11 +11,15 @@ rainbowcolors = ["4", "7", "8", "3", "12", "6", "13"]
 def colorize(text):
 	out = ""
 	i = 0
+	j = 0
 	for c in text:
 		if c in list(str(i) for i in range(10)):
 			c = u"\u200b" + c # 'ZERO WIDTH SPACE' cuz IRC clients are stupid
 		out += "\x03" + str(rainbowcolors[i]) + c
-		i += 1
+		j += 1
+		if j >= 3:
+			i += 1
+			j = 0
 		if i >= len(rainbowcolors):
 			i = 0
 	return out
