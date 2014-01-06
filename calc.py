@@ -37,7 +37,7 @@ def eval_(node):
 	elif isinstance(node, ast.BinOp): # <left> <operator> <right>
 		return eval_(node.op)(eval_(node.left), eval_(node.right))
 	elif isinstance(node, ast.Call): # <func> ( <args> )
-		return getfunc(node.func.id)(*(eval_(e) for e in node.func.args))
+		return getfunc(node.func.id)(*(eval_(e) for e in node.args))
 	else:
 		raise TypeError("AST node type not allowed: '" + type(node).__name__ + "'")
 
@@ -51,12 +51,12 @@ def c(phenny, input):
 	q = input.group(2).encode('utf-8')
 	print("[LOG]: %s calculated '%s'" % (input.nick,q))
 	try:
-		phenny.say(eval_expr(q))
-   	except Exception as e:
-   		phenny.say("Exception: " + str(e))
+		phenny.say(str(eval_expr(q)))
+	except Exception as e:
+		phenny.say("Exception: " + str(e))
 
 c.commands = ['c']
 c.example = '.c 5 + 3'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+	print __doc__.strip()
