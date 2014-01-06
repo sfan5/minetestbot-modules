@@ -13,7 +13,7 @@ import math
 operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul, ast.Pow: op.pow,
 			 ast.Div: op.truediv, ast.BitXor: op.xor, ast.Mod: op.mod}
 
-funcs = {"bin": bin, "abs": abs, "oct": oct, "int": int}
+funcs = {"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum}
 
 for funcn in dir(math):
 	if funcn.startswith("__"):
@@ -38,9 +38,9 @@ def eval_(node):
 		return eval_(node.op)(eval_(node.left), eval_(node.right))
 	elif isinstance(node, ast.Call): # <func> ( <args> )
 		return getfunc(node.func.id)(*(eval_(e) for e in node.args))
-	elif isinstance(node. ast.Tuple): # ( <arg> , <arg2> , [...] )
+	elif isinstance(node, ast.Tuple): # ( <arg> , <arg2> , [...] )
 		return tuple(eval_(e) for e in node.elts)
-	elif isinstance(node. ast.List): # [ <arg> , <arg2> , [...] ]
+	elif isinstance(node, ast.List): # [ <arg> , <arg2> , [...] ]
 		return list(eval_(e) for e in node.elts)
 	else:
 		raise TypeError("AST node type not allowed: '" + type(node).__name__ + "'")
