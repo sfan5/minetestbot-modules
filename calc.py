@@ -13,7 +13,7 @@ import math
 operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul, ast.Pow: op.pow,
 			 ast.Div: op.truediv, ast.BitXor: op.xor, ast.Mod: op.mod}
 
-funcs = {"bin": bin, "abs": abs, "oct": oct}
+funcs = {"bin": bin, "abs": abs, "oct": oct, "int": int}
 
 for funcn in dir(math):
 	if funcn.startswith("__"):
@@ -38,6 +38,10 @@ def eval_(node):
 		return eval_(node.op)(eval_(node.left), eval_(node.right))
 	elif isinstance(node, ast.Call): # <func> ( <args> )
 		return getfunc(node.func.id)(*(eval_(e) for e in node.args))
+	elif isinstance(node. ast.Tuple): # ( <arg> , <arg2> , [...] )
+		return tuple(eval_(e) for e in node.elts)
+	elif isinstance(node. ast.List): # [ <arg> , <arg2> , [...] ]
+		return list(eval_(e) for e in node.elts)
 	else:
 		raise TypeError("AST node type not allowed: '" + type(node).__name__ + "'")
 
@@ -51,7 +55,7 @@ def c(phenny, input):
 	q = input.group(2).encode('utf-8')
 	print("[LOG]: %s calculated '%s'" % (input.nick,q))
 	try:
-		phenny.say(str(eval_expr(q)))
+		phenny.say(repr(eval_expr(q)))
 	except Exception as e:
 		phenny.say("Exception: " + str(e))
 
