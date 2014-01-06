@@ -17,7 +17,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!ignore {user}</td>                     <td>Add user to ignore list</td>                         <td><i>Admins</i></td> </tr>
     <tr> <td>!unignore {user}</td>                   <td>Remove user from ignore list</td>                    <td><i>Admins</i></td> </tr>
     <tr> <td><b>calc.py</b></td>                     <td></td>                                                <td></td>              </tr>
-    <tr> <td>!c {expression}</td>                    <td>Calculate expression using Google Calculator</td>    <td>Anyone</td>        </tr>
+    <tr> <td>!c {expression}</td>                    <td>Calculate expression</td>                            <td>Anyone</td>        </tr>
     <tr> <td><b>chop.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!op [nick] ...</td>                     <td>Op nick</td>                                         <td><i>Admins</i></td> </tr>
     <tr> <td>!deop [nick] ...</td>                   <td>DeOp nick</td>                                       <td><i>Admins</i></td> </tr>

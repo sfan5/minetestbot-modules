@@ -2,58 +2,59 @@
 # coding=utf-8
 """
 calc.py - Phenny Calculator Module
-Copyright 2008, Sean B. Palmer, inamidst.com
-Modified by Sfan5 2012
-Licensed under the Eiffel Forum License 2.
-
-http://inamidst.com/phenny/
+Copyright 2014, sfan5
 """
 
-import re
-import web
+import ast
+import operator as op
+import math
 
-r_result = re.compile(r'(?i)<A NAME=results>(.*?)</A>')
-r_tag = re.compile(r'<\S+.*?>')
+# http://stackoverflow.com/questions/2371436/evaluating-a-mathematical-expression-in-a-string/9558001#9558001
+operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul, ast.Pow: op.pow,
+			 ast.Div: op.truediv, ast.BitXor: op.xor, ast.Mod: op.mod}
 
-subs = [
-   (' in ', ' -> '), 
-   (' over ', ' / '), 
-   (u'£', 'GBP '), 
-   (u'€', 'EUR '), 
-   ('\$', 'USD '), 
-   (r'\bKB\b', 'kilobytes'), 
-   (r'\bMB\b', 'megabytes'), 
-   (r'\bGB\b', 'kilobytes'), 
-   ('kbps', '(kilobits / second)'), 
-   ('mbps', '(megabits / second)')
-]
+funcs = {"bin": bin, "abs": abs, "oct": oct}
 
-def c(phenny, input): 
-   """Google calculator."""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return # Abort function
-   if not input.group(2):
-      return phenny.reply("Nothing to calculate.")
-   q = input.group(2).encode('utf-8')
-   q = q.replace('\xcf\x95', 'phi') # utf-8 U+03D5
-   q = q.replace('\xcf\x80', 'pi') # utf-8 U+03C0
-   print("[LOG]: %s calculated '%s'" % (input.nick,q))
-   uri = 'http://www.google.com/ig/calculator?q='
-   bytes = web.get(uri + web.urllib.quote(q))
-   parts = bytes.split('",')
-   answer = [p for p in parts if p.startswith('rhs: "')][0][6:]
-   if answer: 
-      answer = answer.decode('unicode-escape')
-      answer = ''.join(chr(ord(c)) for c in answer)
-      answer = answer.decode('utf-8')
-      answer = answer.replace(u'\xc2\xa0', ',')
-      answer = answer.replace('<sup>', '^(')
-      answer = answer.replace('</sup>', ')')
-      answer = web.decode(answer)
-      phenny.say(answer)
-   else: phenny.say('Sorry, no result.')
+for funcn in dir(math):
+	if funcn.startswith("__"):
+		continue
+	funcs[funcn] = getattr(math, funcn)
+
+def getfunc(fn):
+	if fn in funcs:
+		return funcs[fn]
+	else:
+		raise ValueError("Function not allowed: '" + str(fn) + "'")
+
+def eval_expr(expr):
+	return eval_(ast.parse(expr).body[0].value) # Module(body=[Expr(value=...)])
+
+def eval_(node):
+	if isinstance(node, ast.Num): # <number>
+		return node.n
+	elif isinstance(node, ast.operator): # <operator>
+		return operators[type(node)]
+	elif isinstance(node, ast.BinOp): # <left> <operator> <right>
+		return eval_(node.op)(eval_(node.left), eval_(node.right))
+	elif isinstance(node, ast.Call): # <func> ( <args> )
+		return getfunc(node.func.id)(*(eval_(e) for e in node.func.args))
+	else:
+		raise TypeError("AST node type not allowed: '" + type(node).__name__ + "'")
+
+def c(phenny, input):
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return # Abort function
+	if not input.group(2):
+		return phenny.reply("Nothing to calculate.")
+	q = input.group(2).encode('utf-8')
+	print("[LOG]: %s calculated '%s'" % (input.nick,q))
+	try:
+		phenny.say(eval_expr(q))
+   	except Exception as e:
+   		phenny.say("Exception: " + str(e))
+
 c.commands = ['c']
 c.example = '.c 5 + 3'
 
