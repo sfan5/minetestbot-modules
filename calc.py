@@ -10,10 +10,17 @@ import operator as op
 import math
 
 # http://stackoverflow.com/questions/2371436/evaluating-a-mathematical-expression-in-a-string/9558001#9558001
-operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul, ast.Pow: op.pow,
-			 ast.Div: op.truediv, ast.BitXor: op.xor, ast.Mod: op.mod}
+operators = {
+	ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul, ast.Pow: op.pow,
+	ast.Div: op.truediv, ast.BitXor: op.xor, ast.Mod: op.mod
+}
 
-funcs = {"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum}
+funcs = {
+	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
+	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
+	"len": len, "list": list, "long": long, "max": max,
+	"range": range, "round": round, "min": min
+}
 
 for funcn in dir(math):
 	if funcn.startswith("__"):
@@ -24,24 +31,32 @@ def getfunc(fn):
 	if fn in funcs:
 		return funcs[fn]
 	else:
-		raise ValueError("Function not allowed: '" + str(fn) + "'")
+		raise ValueError("Function not known: '" + str(fn) + "'")
 
-def eval_expr(expr):
-	return eval_(ast.parse(expr).body[0].value) # Module(body=[Expr(value=...)])
+def get_kwargs(kwrds):
+	kwargs = {}
+	for kw in kwrds:
+		kwargs[kw.arg] = eval_astnode(kw.value)
+	return kwargs
 
-def eval_(node):
+def eval_strexpr(expr):
+	return eval_astnode(ast.parse(expr).body[0].value) # Module(body=[Expr(value=...)])
+
+def eval_astnode(node):
 	if isinstance(node, ast.Num): # <number>
 		return node.n
 	elif isinstance(node, ast.operator): # <operator>
 		return operators[type(node)]
 	elif isinstance(node, ast.BinOp): # <left> <operator> <right>
-		return eval_(node.op)(eval_(node.left), eval_(node.right))
+		return eval_astnode(node.op)(eval_astnode(node.left), eval_astnode(node.right))
 	elif isinstance(node, ast.Call): # <func> ( <args> )
-		return getfunc(node.func.id)(*(eval_(e) for e in node.args))
-	elif isinstance(node, ast.Tuple): # ( <arg> , <arg2> , [...] )
-		return tuple(eval_(e) for e in node.elts)
-	elif isinstance(node, ast.List): # [ <arg> , <arg2> , [...] ]
-		return list(eval_(e) for e in node.elts)
+		return getfunc(node.func.id)(*(eval_astnode(e) for e in node.args), **get_kwargs(node.keywords))
+	elif isinstance(node, ast.Tuple): # ( <elem> , <elem2> , [...] )
+		return tuple(eval_astnode(e) for e in node.elts)
+	elif isinstance(node, ast.List): # [ <elem> , <elem2> , [...] ]
+		return list(eval_astnode(e) for e in node.elts)
+	elif isinstance(node, ast.Str): # ('|") <text> ('|")
+		return node.s
 	else:
 		raise TypeError("AST node type not allowed: '" + type(node).__name__ + "'")
 
@@ -53,9 +68,9 @@ def c(phenny, input):
 	if not input.group(2):
 		return phenny.reply("Nothing to calculate.")
 	q = input.group(2).encode('utf-8')
-	print("[LOG]: %s calculated '%s'" % (input.nick,q))
+	print("[LOG]: %s calculated '%s'" % (input.nick, q))
 	try:
-		phenny.say(repr(eval_expr(q)))
+		phenny.say(repr(eval_strexpr(q)))
 	except Exception as e:
 		phenny.say("Exception: " + str(e))
 
