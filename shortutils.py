@@ -102,3 +102,23 @@ def proc(phenny, input):
    phenny.say(u + "someone thinks you need to stop procrastinating.")
 
 proc.commands = ['proc']
+
+def doge(phenny, input):
+	"""much wow, very function, such programming"""
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return
+	phenny.say("http://is.gd/zgopNT") # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
+
+doge.commands = ['doge']
+
+def catbug(phenny, input):
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return
+	phenny.say("http://is.gd/uZNzyW") # http://fc05.deviantart.net/fs70/f/2013/089/b/9/just_one_peanut_butter_square_by_oemilythepenguino-d5zvsem.png
+
+catbug.commands = ['catbug']
+
