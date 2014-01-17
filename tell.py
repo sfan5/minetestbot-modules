@@ -41,8 +41,8 @@ def tell(phenny, input):
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()
-	if rand > 0.999: response = "yeah, yeah"
-	elif rand > 0.99: response = "yeah, sure, whatever"
+	if rand > 0.99: response = "yeah, yeah"
+	elif rand > 0.9: response = "yeah, sure, whatever"
 
 	phenny.reply(response)
 
