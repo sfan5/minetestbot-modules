@@ -10,6 +10,7 @@ from thread import start_new_thread, allocate_lock
 import sqlite3
 
 tell_list = []
+telldb_lock = allocate_lock()
 
 def tell(phenny, input): 
 	for x in phenny.bot.commands["high"].values():
@@ -30,14 +31,15 @@ def tell(phenny, input):
 	if target.lower() == phenny.nick.lower():
 		return phenny.say("I'm not dumb, you know?")
 
+	telldb_lock.acquire()
 	tell_list.append(d)
-
 	db = sqlite3.connect("tell.sqlite")
 	c = db.cursor()
 	c.execute("INSERT INTO tell VALUES (?,?,?)", d)
 	c.close()
 	db.commit()
 	db.close()
+	telldb_lock.release()
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()
@@ -52,6 +54,7 @@ def checktell(phenny, input):
 	for e in tell_list:
 		if e[1].lower() == input.nick.lower():
 			phenny.say("%s: <%s> %s" % (input.nick, e[0], e[2]))
+			telldb_lock.acquire()
 			tell_list.remove(e)
 			db = sqlite3.connect("tell.sqlite")
 			c = db.cursor()
@@ -59,6 +62,7 @@ def checktell(phenny, input):
 			c.close()
 			db.commit()
 			db.close()
+			telldb_lock.release()
 			return
 
 def note(phenny, input):
@@ -76,6 +80,7 @@ note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
 
+telldb_lock.acquire() # Just to be safe
 db = sqlite3.connect("tell.sqlite")
 c = db.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS tell (nick text, channel text, msg text)")
@@ -86,8 +91,8 @@ while True:
 		break
 	tell_list.append(e)
 c.close()
-db.commit()
 db.close()
+telldb_lock.acquire()
 
 if __name__ == '__main__': 
    print __doc__.strip()
