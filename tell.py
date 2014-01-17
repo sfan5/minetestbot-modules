@@ -80,7 +80,7 @@ note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
 
-telldb_lock.acquire() # Just to be safe
+#telldb_lock.acquire() # Just to be safe
 db = sqlite3.connect("tell.sqlite")
 c = db.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS tell (nick text, channel text, msg text)")
@@ -92,7 +92,7 @@ while True:
 	tell_list.append(e)
 c.close()
 db.close()
-telldb_lock.acquire()
+#telldb_lock.acquire()
 
 if __name__ == '__main__': 
    print __doc__.strip()
