@@ -20,7 +20,7 @@ funcs = {
 	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
 	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
 	"len": len, "list": list, "long": long, "max": max,
-	"range": range, "round": round, "min": min,
+	"range": range, "round": round, "min": min, "map": map,
 
 	# random functions
 	"betavariate": random.betavariate, "choice": random.choice,
