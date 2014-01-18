@@ -8,6 +8,7 @@ Copyright 2014, sfan5
 import ast
 import operator as op
 import math
+import random
 
 # http://stackoverflow.com/questions/2371436/evaluating-a-mathematical-expression-in-a-string/9558001#9558001
 operators = {
@@ -19,11 +20,22 @@ funcs = {
 	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
 	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
 	"len": len, "list": list, "long": long, "max": max,
-	"range": range, "round": round, "min": min
+	"range": range, "round": round, "min": min,
+
+	# random functions
+	"betavariate": random.betavariate, "choice": random.choice,
+	"expovariate": random.expovariate, "gammavariate": random.gammavariate,
+	"gauss": random.gauss, "getrandbits": random.getrandbits, 
+	"lognormvariate": random.lognormvariate, "normalvariate": random.normalvariate,
+	"paretovariate": random.paretovariate, "randint": random.randint,
+	"random": random.random, "randrange": random.randrange,
+	"sample": random.sample, "shuffle": random.shuffle,
+	"triangular": random.triangular, "uniform": random.uniform,
+	"vonmisesvariate": random.vonmisesvariate, "weibullvariate": random.weibullvariate
 }
 
 for funcn in dir(math):
-	if funcn.startswith("__"):
+	if funcn.startswith("_"):
 		continue
 	funcs[funcn] = getattr(math, funcn)
 
