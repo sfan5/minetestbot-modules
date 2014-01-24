@@ -10,6 +10,9 @@ import operator as op
 import math
 import random
 
+class SomeObject(object):
+	pass
+
 env = {
 	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
 	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
@@ -22,11 +25,11 @@ libs = [
 ]
 
 for lib in libs:
-	env[lib] = {}
+	env[lib] = SomeObject()
 	for funcn in dir(globals()[lib]):
 		if funcn.startswith("_"):
 			continue
-		env[lib][funcn] = getattr(globals()[lib], funcn)
+		setattr(env[lib], funcn, getattr(globals()[lib], funcn))
 
 def c(phenny, input):
 	for x in phenny.bot.commands["high"].values():
