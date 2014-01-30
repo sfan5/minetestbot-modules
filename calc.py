@@ -17,7 +17,10 @@ env = {
 	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
 	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
 	"len": len, "list": list, "long": long, "max": max,
-	"range": range, "round": round, "min": min, "map": map
+	"range": range, "round": round, "min": min, "map": map,
+	"zip": zip, "xrange": xrange, "unicode": unicode,
+	"unichr": unichr, "type": type, "slice": slice, "ord": ord,
+	"chr": chr
 }
 
 libs = [
