@@ -27,7 +27,13 @@ def part(phenny, input):
    # Can only be done in privmsg by an admin
    if input.sender.startswith('#'): return
    if input.admin: 
-      phenny.write(['PART'], input.group(2))
+      if ' ' in input.group(2):
+         arg = input.group(2).split(" ")
+         arg2 = ' '.join(arg[1:])
+         arg = arg[0]
+         phenny.write(['PART', arg], arg2)
+      else:
+         phenny.write(['PART'], input.group(2))
 part.commands = ['part']
 part.priority = 'low'
 part.example = '.part #example'
