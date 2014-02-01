@@ -35,6 +35,7 @@ def tell(phenny, input):
 		return phenny.say("I'm not dumb, you know?")
 
 	d = (teller, target, text, int(time.time()))
+	tell_list.append(d)
 	tell_pending.append(("INSERT INTO tell (nick, tellee, msg, time) VALUES (?,?,?,?)", d))
 
 	response = "I'll pass that on when %s is around" % target
