@@ -47,6 +47,7 @@ def tell(phenny, input):
 tell.commands = ["tell"]
 
 def checktell(phenny, input):
+	global tell_diskwriteinterval, tell_lastdiskwrite, tell_lastlisthash, tell_pending
 	for e in tell_list:
 		if e[2].lower() == input.nick.lower():
 			phenny.say("%s: %s <%s> %s" % (input.nick, time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(e[4])), e[1], e[3]))
