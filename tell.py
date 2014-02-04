@@ -50,15 +50,15 @@ tell.commands = ["tell"]
 def checktell(phenny, input):
 	global tell_diskwriteinterval, tell_lastdiskwrite, tell_lastlisthash, tell_pending
 	for e in tell_list:
-		if e[2].lower() == input.nick.lower():
-			phenny.say("%s: %s <%s> %s" % (input.nick, time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(e[4])), e[1], e[3]))
+		if e[1].lower() == input.nick.lower():
+			phenny.say("%s: %s <%s> %s" % (input.nick, time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(e[3])), e[0], e[2]))
 			tell_list.remove(e)
-			tell_pending.append(("DELETE FROM tell WHERE id = ?", (e[0],)))
+			tell_pending.append(("DELETE FROM tell WHERE nick = ? AND tellee = ? AND msg = ? AND time = ?", e))
 			break
 
 	if time.time() - tell_diskwriteinterval > tell_lastdiskwrite:
 		tell_lastdiskwrite = time.time()
-		current_hash = hashlib.sha1(','.join(str(e[0]) for e in tell_list)).hexdigest()
+		current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
 		if current_hash == tell_lastlisthash:
 			return
 		tell_lastlisthash = current_hash
