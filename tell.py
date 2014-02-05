@@ -51,7 +51,7 @@ def checktell(phenny, input):
 	global tell_diskwriteinterval, tell_lastdiskwrite, tell_lastlisthash, tell_pending
 	for e in tell_list:
 		if e[1].lower() == input.nick.lower():
-			phenny.say("%s: %s <%s> %s" % (input.nick, time.strftime('%m-%d %H:%M UTC', time.gmtime(e[3])), e[0], e[2]))
+			phenny.say("%s: %s <%s> %s" % (input.nick, time.strftime('%Y-%m-%d %H:%M UTC', time.gmtime(e[3])), e[0], e[2]))
 			tell_list.remove(e)
 			tell_pending.append(("DELETE FROM tell WHERE nick = ? AND tellee = ? AND msg = ? AND time = ?", e))
 			break
@@ -85,14 +85,6 @@ def note_join(phenny, input):
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
-
-def telldebug(phenny, input):
-	current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
-	lastwrite = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(tell_lastdiskwrite))
-	nextwrite = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(tell_lastdiskwrite + tell_diskwriteinterval))
-	phenny.say("Current hash '" + current_hash + "' last hash '" + tell_lastlisthash + "' last write " + lastwrite + " next write " + nextwrite)
-
-telldebug.commands = ['telldbg']
 
 db = sqlite3.connect("tell.sqlite")
 c = db.cursor()
