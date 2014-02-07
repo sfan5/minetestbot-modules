@@ -43,7 +43,7 @@ def c(phenny, input):
 		return phenny.reply("Nothing to calculate.")
 	q = input.group(2).encode('ascii', 'ignore')
 	if '__' in q:
-		phenny.reply("Sorry, but no double underscores.")
+		return phenny.reply("Sorry, but no double underscores.")
 	print("[LOG]: %s calculated '%s'" % (input.nick, q))
 	try:
 		phenny.say(repr(eval(q, {'__builtins__': env}, {})))
