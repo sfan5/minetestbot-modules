@@ -3,7 +3,7 @@
 rutils.py - Phenny Utility Module
 Copyright 2012, Sfan5
 """
-import base64, binascii, re, random, time, multiprocessing
+import base64, binascii, re, random, time, multiprocessing, hashlib
 
 def rs(s):
     return repr(s)[1:-1]
@@ -139,73 +139,31 @@ def crc32(phenny, input):
 crc32.commands = ['crc32']
 crc32.priority = 'low'
 
-def hex_(phenny, input): 
-    """hexlify http://docs.python.org/2/library/binascii.html#binascii.hexlify"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
-    if not input.group(2):
-        return phenny.reply("Nothing to hexlify.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(binascii.hexlify(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-   
-hex_.commands = ['hex']
-hex_.priority = 'low'
+def hash_(phenny, input):
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return # Abort function
+	if not input.group(2):
+		return phenny.reply("Usage: hash <hash function> <text> | Get available hash funcs with ?")
+	hashfuncs = {
+		'md5':		hashlib.md5,
+		'sha1':		hashlib.sha1,
+		'sha224':	hashlib.sha224,
+		'sha256':	hashlib.sha256,
+		'sha384':	hashlib.sha384,
+		'sha512':	hashlib.sha512,
+	}
+	if input.group(2).strip() == '?':
+		return phenny.reply('Supported hash functions: ' + ', '.join(hashfuncs.keys()))
+	hashf = input.group(2).split(' ')[0]
+	if not hashf in hashfuncs:
+		return phenny.reply('Unknown hash functions, supported: ' + ', '.join(hashfuncs.keys()))
+	data = ' '.join(input.group(2).split(' ')[1:]).encode('utf-8')
+	phenny.say(hashfuncs[hashf](data).hexdigest())
 
-def unhex(phenny, input): 
-    """unhexlify http://docs.python.org/2/library/binascii.html#binascii.unhexlify"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
-    if not input.group(2):
-        return phenny.reply("Nothing to unhexlify.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(binascii.unhexlify(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-   
-unhex.commands = ['unhex']
-unhex.priority = 'low'
-
-def uuencode(phenny, input): 
-    """uuencode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
-    if not input.group(2):
-        return phenny.reply("Nothing to encode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(binascii.b2a_uu(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-   
-uuencode.commands = ['ue','uuencode']
-uuencode.priority = 'low'
-
-def uudecode(phenny, input): 
-    """uudecode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
-    if not input.group(2):
-        return phenny.reply("Nothing to decode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(binascii.a2b_uu(q + '\n')))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-   
-uudecode.commands = ['ud','uudecode']
-uudecode.priority = 'low'
+hash_.commands = ['hash']
+hash_.priority = 'low'
 
 def regex(phenny, input): 
     """regex"""

@@ -25,8 +25,8 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!devoice {nick} [nick] ...</td>         <td>DeVoice nick</td>                                    <td><i>Admins</i></td> </tr>
     <tr> <td>!ban {nick/mask} [nick/mask] ...</td>   <td>Ban nick/mask</td>                                   <td><i>Admins</i></td> </tr>
     <tr> <td>!unban {nick/mask} [nick/mask] ...</td> <td>UnBan nick/mask</td>                                 <td><i>Admins</i></td> </tr>
-    <tr> <td>!mute {nick/mask} [nick/mask] ...</td>  <td>Mute nick/mask</td>                                   <td><i>Admins</i></td> </tr>
-    <tr> <td>!unmute {nick/mask} [nick/mask]...</td> <td>UnMute nick/mask</td>                                 <td><i>Admins</i></td> </tr>
+    <tr> <td>!mute {nick/mask} [nick/mask] ...</td>  <td>Mute nick/mask</td>                                  <td><i>Admins</i></td> </tr>
+    <tr> <td>!unmute {nick/mask} [nick/mask]...</td> <td>UnMute nick/mask</td>                                <td><i>Admins</i></td> </tr>
     <tr> <td>!kick {nick} {message}</td>             <td>Kick nick with message</td>                          <td><i>Admins</i></td> </tr>
     <tr> <td>!badword {on/off/reload}</td>           <td>Enable/Disable badword functionality</td>            <td><i>Admins</i></td> </tr>
     <tr> <td><b>forumutils.py</b></td>               <td></td>                                                <td></td>              </tr>
@@ -45,10 +45,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!b16e {string}</td>                     <td>Base16-encode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!b16d {string}</td>                     <td>Base16-decode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!crc32 {string}</td>                    <td>Hash a string using crc32</td>                       <td>Anyone</td>        </tr>
-    <tr> <td>!hex {string}</td>                      <td>"Hexlify" a string</td>                              <td>Anyone</td>        </tr>
-    <tr> <td>!unhex {string}</td>                    <td>Un-"Hexlify" a string</td>                           <td>Anyone</td>        </tr>
-    <tr> <td>!uuencode {string}</td>                 <td>uuencode a string</td>                               <td>Anyone</td>        </tr>
-    <tr> <td>!uudecode {string}</td>                 <td>uudecode a string</td>                               <td>Anyone</td>        </tr>
+    <tr> <td>!hash {hashtype} {string}</td>          <td>Hash a string using various hash functions</td>      <td>Anyone</td>        </tr>
     <tr> <td>!re {regex}<i>`</i>{string}</td>        <td>check if regex matches, if it does print groups</td> <td>Anyone</td>        </tr>
     <tr> <td>!rand [min] {max}</td>                  <td>Says a random number between(incl.) min and max</td> <td>Anyone</td>        </tr>
     <tr> <td><b>search.py</b></td>                   <td></td>                                                <td></td>              </tr>
@@ -93,6 +90,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
     <tr> <td>!pil [nick]</td>                        <td>Link to Lua PIL</td>                                 <td>Anyone</td>        </tr>
     <tr> <td>!git [nick]</td>                        <td>Link to Git manual</td>                              <td>Anyone</td>        </tr>
-    <tr> <td><b>tell.py</b></td>                      <td></td>                                                <td></td>              </tr>
+    <tr> <td><b>tell.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!tell {nick} {message}</td>             <td>Tell somebody a message</td>                         <td>Anyone</td>        </tr>
 </table>
