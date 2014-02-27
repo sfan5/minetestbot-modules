@@ -124,4 +124,24 @@ def doge(phenny, input):
 
 doge.commands = ['doge']
 
+def btc(phenny, input):
+	"""Get current Bitcoin price"""
+	for x in phenny.bot.commands["high"].values():
+		if x[0].__name__ == "aa_hook":
+			if x[0](phenny, input):
+				return
+	f = urllib2.urlopen('https://blockchain.info/ticker')
+	data = f.read()
+	f.close()
+	data = json.loads(data)
+	if input.group(2):
+		currency = input.group(2).strip().upper()
+	else:
+		currency = 'USD'
+	if not currency in data.keys():
+		return phenny.reply('Unknown currency. Supported currencies: ' + ', '.join(data.keys()))
+	phenny.say('1 BTC = %.4f %s' % (data[currency]['15m'], data[currency]['symbol']))
+
+btc.commands = ['btc']
+
 
