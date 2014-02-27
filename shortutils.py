@@ -9,6 +9,10 @@ Module for phenny:
 http://inamidst.com/phenny/
 """
 
+import random
+import urllib2
+import json
+
 def rtfm(phenny, input):
    """Manual reference command"""
    for x in phenny.bot.commands["high"].values():
@@ -109,16 +113,15 @@ def doge(phenny, input):
 		if x[0].__name__ == "aa_hook":
 			if x[0](phenny, input):
 				return
-	phenny.say("http://is.gd/zgopNT") # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
+	if random.randint(0, 1) == 0:
+		f = urllib2.urlopen('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
+		data = f.read()
+		f.close()
+		data = json.loads(data)
+		phenny.say("DOGE is at " + data['return']['markets']['DOGE']['lasttradeprice'] + " BTC")
+	else:
+		phenny.say("http://is.gd/zgopNT") # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
 
 doge.commands = ['doge']
 
-def catbug(phenny, input):
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return
-	phenny.say("http://is.gd/uZNzyW") # http://fc05.deviantart.net/fs70/f/2013/089/b/9/just_one_peanut_butter_square_by_oemilythepenguino-d5zvsem.png
-
-catbug.commands = ['catbug']
 
