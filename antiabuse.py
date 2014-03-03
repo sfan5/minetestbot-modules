@@ -3,7 +3,7 @@
 antiabuse.py - Phenny AntiAbuse Module
 Copyright 2012, Sfan5
 """
-import time
+import time, sqlite3
 
 antiabuse = {}
 antiabuse["timeout"] = {}
