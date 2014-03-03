@@ -7,7 +7,7 @@ import time
 
 antiabuse = {}
 antiabuse["timeout"] = {}
-antiabuse["ignorelist"] = ["KikaRz","LandMine","LandMineMT","markveidemanis"]
+antiabuse["ignorelist"] = []
 antiabuse["s_timeout"] = 3 # in Seconds
 
 def aa_hook(phenny, input):
@@ -32,25 +32,51 @@ aa_hook.priority = 'high'
 aa_hook.rule = r'h^'
 #Warning: Uses a very very dirty hack to achieve that other modules can access this function
 
-
 def ignore(phenny, input):
-    if not input.admin and not input.owner: return
-    arg = input.group(2).strip()
-    antiabuse["ignorelist"].append(arg)
-    phenny.reply("'%s' added to ignore list." % arg)
+	if not input.admin:
+		return
+	arg = input.group(2).strip()
+	antiabuse["ignorelist"].append(arg)
+	db = sqlite3.connect("antiabuse.sqlite")
+	c = db.cursor()
+	c.execute("INSERT INTO tell (nick) VALUES (?)", (arg,))
+	c.close()
+	db.commit()
+	db.close()
+	phenny.reply("'%s' added to ignore list." % arg)
 
 ignore.commands = ['ignore']
 ignore.priority = 'high'
 
 def unignore(phenny, input):
-    if not input.admin and not input.owner: return
-    arg = input.group(2).strip()
-    try:
-        antiabuse["ignorelist"].remove(arg)
-    except:
-        return
-    phenny.reply("'%s' removed from ignore list." % arg)
+	if not input.admin:
+		return
+	arg = input.group(2).strip()
+	if not arg in antiabuse["ignorelist"]:
+		return
+	antiabuse['ignorelist'].remove(arg)
+	db = sqlite3.connect("antiabuse.sqlite")
+	c = db.cursor()
+	c.execute("DELETE FROM ignore WHERE nick = ?", (arg,))
+	c.close()
+	db.commit()
+	db.close()
+	phenny.reply("'%s' removed from ignore list." % arg)
 
 unignore.commands = ['unignore']
 unignore.priority = 'high'
+
+db = sqlite3.connect("antiabuse.sqlite")
+c = db.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS ignore (nick text)''')
+c.execute("SELECT * FROM ignore")
+while True:
+	e = c.fetchone()
+	if not e:
+		break
+	antiabuse["ignorelist"].append(e[0])
+c.close()
+db.commit()
+db.close()
+
 
