@@ -5,10 +5,9 @@ calc.py - Phenny Calculator Module
 Copyright 2014, sfan5
 """
 
-import ast
-import operator as op
 import math
 import random
+import struct
 
 class SomeObject(object):
 	pass
@@ -20,11 +19,11 @@ env = {
 	"range": range, "round": round, "min": min, "map": map,
 	"zip": zip, "xrange": xrange, "unicode": unicode,
 	"unichr": unichr, "type": type, "slice": slice, "ord": ord,
-	"chr": chr, "str": str
+	"chr": chr, "str": str, "float": float
 }
 
 libs = [
-	'math', 'random'
+	'math', 'random', 'struct'
 ]
 
 for lib in libs:
