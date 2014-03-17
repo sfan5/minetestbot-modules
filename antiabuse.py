@@ -39,7 +39,7 @@ def ignore(phenny, input):
 	antiabuse["ignorelist"].append(arg)
 	db = sqlite3.connect("antiabuse.sqlite")
 	c = db.cursor()
-	c.execute("INSERT INTO tell (nick) VALUES (?)", (arg,))
+	c.execute("INSERT INTO ignore (nick) VALUES (?)", (arg,))
 	c.close()
 	db.commit()
 	db.close()
