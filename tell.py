@@ -51,9 +51,11 @@ def checktell(phenny, input):
 	global tell_diskwriteinterval, tell_lastdiskwrite, tell_lastlisthash, tell_pending
 	for e in tell_list:
 		if e[1].lower() == input.nick.lower():
+			print("tell hit! %r" % (e,))
 			phenny.say("%s: %s <%s> %s" % (
 				input.nick, 
-				time.strftime('%m-%d %H:%M UTC', time.gmtime(e[3])), 
+				time.strftime('%m-%d %H:%M UTC', 
+					time.gmtime(e[3])), 
 				e[0], 
 				e[2]))
 			tell_list.remove(e)
@@ -63,6 +65,7 @@ def checktell(phenny, input):
 	if time.time() - tell_diskwriteinterval > tell_lastdiskwrite:
 		tell_lastdiskwrite = time.time()
 		current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
+		print("testing write to disk (old, new) = (%s, %s)" % (tell_lastlisthash, current_hash))
 		if current_hash == tell_lastlisthash:
 			return
 		tell_lastlisthash = current_hash
