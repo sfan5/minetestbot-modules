@@ -12,9 +12,26 @@ import hashlib
 
 tell_list = []
 tell_pending = []
-tell_lastdiskwrite = 0
-tell_lastlisthash = ''
-tell_diskwriteinterval = 60 # seconds
+
+def tell_diskwr():
+	global tell_pending, tell_list
+	tell_lastdiskwrite = time.time()
+	current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
+	if current_hash == tell_lastlisthash:
+		return
+	tell_lastlisthash = current_hash
+	db = sqlite3.connect("tell.sqlite")
+	c = db.cursor()
+	for tr in tell_pending:
+		if tr == "del":
+			c.execute("DELETE FROM tell WHERE id = ?", (tr[1], ))
+		elif tr == "add":
+			c.execute("INSERT INTO tell (nick, tellee, msg, time) VALUES (?,?,?,?)", tr[1])
+			tell_list.append((c.lastrowid, ) + tr[1]) # We actually insert the entry into the list here
+	c.close()
+	db.commit()
+	db.close()
+	tell_pending = []
 
 def tell(phenny, input): 
 	for x in phenny.bot.commands["high"].values():
@@ -31,12 +48,15 @@ def tell(phenny, input):
 	text = " ".join(arg.split(" ")[1:])
 	if target.lower() == teller.lower():
 		return phenny.say("You can tell that to yourself")
-	if target.lower() == phenny.nick.lower():
+	elif target.lower() == phenny.nick.lower():
 		return phenny.say("I'm not dumb, you know?")
+	elif target[-1] == ":":
+		return phenny.reply("Do not put an : at the end of nickname")
 
 	d = (teller, target, text, int(time.time()))
-	tell_list.append(d)
-	tell_pending.append(("INSERT INTO tell (nick, tellee, msg, time) VALUES (?,?,?,?)", d))
+	tell_pending.append(("add", d))
+	# We do not insert the entry into tell_list yet because we don't know the id it will have
+	tell_diskwr() # Write the change to disk
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()
@@ -48,35 +68,18 @@ def tell(phenny, input):
 tell.commands = ["tell"]
 
 def checktell(phenny, input):
-	global tell_diskwriteinterval, tell_lastdiskwrite, tell_lastlisthash, tell_pending
 	for e in tell_list:
-		if e[1].lower() == input.nick.lower():
-			print("tell hit! %r" % (e,))
+		if e[2].lower() == input.nick.lower():
 			phenny.say("%s: %s <%s> %s" % (
 				input.nick, 
 				time.strftime('%m-%d %H:%M UTC', 
-					time.gmtime(e[3])), 
-				e[0], 
-				e[2]))
+					time.gmtime(e[4])), 
+				e[1], 
+				e[3]))
 			tell_list.remove(e)
-			tell_pending.append(("DELETE FROM tell WHERE nick = ? AND tellee = ? AND msg = ? AND time = ?", e))
+			tell_pending.append(("del", e[0]))
+			tell_diskwr() # Write the change to disk
 			break
-
-	if time.time() - tell_diskwriteinterval > tell_lastdiskwrite:
-		tell_lastdiskwrite = time.time()
-		current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
-		print("testing write to disk (old, new) = (%s, %s)" % (tell_lastlisthash, current_hash))
-		if current_hash == tell_lastlisthash:
-			return
-		tell_lastlisthash = current_hash
-		db = sqlite3.connect("tell.sqlite")
-		c = db.cursor()
-		for tr in tell_pending:
-			c.execute(*tr)
-		c.close()
-		db.commit()
-		db.close()
-		tell_pending = []
 
 def note(phenny, input):
 	if input.sender.startswith('#'):
