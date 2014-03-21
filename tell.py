@@ -15,11 +15,6 @@ tell_pending = []
 
 def tell_diskwr():
 	global tell_pending, tell_list
-	tell_lastdiskwrite = time.time()
-	current_hash = hashlib.sha1('\n'.join(repr(e) for e in tell_list)).hexdigest()
-	if current_hash == tell_lastlisthash:
-		return
-	tell_lastlisthash = current_hash
 	db = sqlite3.connect("tell.sqlite")
 	c = db.cursor()
 	for tr in tell_pending:
