@@ -18,11 +18,13 @@ def tell_diskwr():
 	db = sqlite3.connect("tell.sqlite")
 	c = db.cursor()
 	for tr in tell_pending:
-		if tr == "del":
+		if tr[0] == "del":
 			c.execute("DELETE FROM tell WHERE id = ?", (tr[1], ))
-		elif tr == "add":
+		elif tr[0] == "add":
 			c.execute("INSERT INTO tell (nick, tellee, msg, time) VALUES (?,?,?,?)", tr[1])
 			tell_list.append((c.lastrowid, ) + tr[1]) # We actually insert the entry into the list here
+		else:
+			print("[Tell] Internal error: Unknown action type '%s'" % tr[0])
 	c.close()
 	db.commit()
 	db.close()
