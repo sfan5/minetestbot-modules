@@ -11,7 +11,7 @@ http://inamidst.com/phenny/
 import re, time
 import web
 
-r_username = re.compile(r'^[a-zA-Z0-9_]{1,15}$')
+r_username = re.compile(r'^@[a-zA-Z0-9_]{1,15}$')
 r_link = re.compile(r'^https?://twitter.com/\S+$')
 r_p = re.compile(r'(?ims)(<p class="js-tweet-text.*?</p>)')
 r_tag = re.compile(r'(?ims)<[^>]+>')
@@ -75,7 +75,7 @@ def twitter(phenny, input):
            return # Abort function
    arg = input.group(2)
    if not arg:
-      return phenny.reply("Give me a link, a username, or a tweet id")
+      return phenny.reply("Give me a link, a @username, or a tweet id")
 
    arg = arg.strip()
    if isinstance(arg, unicode):
@@ -84,12 +84,12 @@ def twitter(phenny, input):
    if arg.isdigit():
       phenny.say(id_tweet(arg))
    elif r_username.match(arg):
-      phenny.say(user_tweet(arg))
+      phenny.say(user_tweet(arg[1:]))
    elif r_link.match(arg):
       username = arg.split('/')[3]
       tweet = read_tweet(arg)
       phenny.say(format(tweet, username))
-   else: phenny.reply("Give me a link, a username, or a tweet id")
+   else: phenny.reply("Give me a link, a @username, or a tweet id")
 
 twitter.commands = ['tw', 'twitter']
 twitter.thread = True
