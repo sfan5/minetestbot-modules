@@ -48,8 +48,7 @@ def rsscheck(phenny, input):
         ('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
         ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
         ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
-        #('https://github.com/VanessaE/pipeworks/commits/master.atom', ["##minebest"]),
-        #('https://github.com/VanessaE/homedecor/commits/master.atom', ["##minebest"]),
+        ('https://github.com/BlockMen/minetest_next/master.atom', ['##minetest-next']),
     ]
     for v in xrange(0, len(feeds)):
         url = feeds[v][0]
