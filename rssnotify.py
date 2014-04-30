@@ -84,7 +84,11 @@ def rsscheck(phenny, input):
                         params = urllib.urlencode({'url' : feed_entry.link}) 
                         # Side note: git.io only works with *.github.com links
                         u = urllib.urlopen("http://git.io/create", params)
-                        commit_link = "http://git.io/" + u.read()
+                        l = u.read()
+                        if len(l.strip()) == 6:
+                        	commit_link = "http://git.io/" + u.read()
+                        else:
+                        	commit_link = feed_entry.link
                     else:
                         commit_link = feed_entry.link
                 else:               
