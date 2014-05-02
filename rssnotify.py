@@ -87,7 +87,7 @@ def rsscheck(phenny, input):
                         u = urllib.urlopen("http://git.io/create", params)
                         l = u.read()
                         if len(l.strip()) == 6:
-                        	commit_link = "http://git.io/" + u.read()
+                        	commit_link = "http://git.io/" + l
                         else:
                         	commit_link = feed_entry.link
                     else:
