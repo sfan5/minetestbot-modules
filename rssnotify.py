@@ -49,7 +49,7 @@ def rsscheck(phenny, input):
         ('https://github.com/minetest/minetestmapper/commits/master.atom', allchans),
         ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
         ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
-        ('https://github.com/BlockMen/minetest_next/commits/master.atom', ['##minetest-next']),
+        ('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans),
     ]
     for v in xrange(0, len(feeds)):
         url = feeds[v][0]
@@ -82,7 +82,7 @@ def rsscheck(phenny, input):
                     continue
                 if rssnotify["show_commit_link"]:
                     if rssnotify["use_git.io"]:
-                        params = urllib.urlencode({'url' : feed_entry.link}) 
+                        params = urllib.urlencode({'url' : feed_entry.link})
                         # Side note: git.io only works with *.github.com links
                         u = urllib.urlopen("http://git.io/create", params)
                         l = u.read()
@@ -92,9 +92,9 @@ def rsscheck(phenny, input):
                         	commit_link = feed_entry.link
                     else:
                         commit_link = feed_entry.link
-                else:               
+                else:
                     commit_link = ""
-                
+
                 chans = []
                 if feeds[v][1] == '*':
                     chans = phenny.bot.channels
@@ -127,5 +127,5 @@ rsscheck.rule = r'.*'
 rsscheck.event = '*'
 rsscheck.thread = True
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     print __doc__.strip()
