@@ -42,14 +42,14 @@ def rsscheck(phenny, input):
     rssnotify["last_update"] = t
     print("[RssNotify]: Checking RSS Feeds...")
     start = time.time()
-    allchans = excepta(phenny.bot.channels, '##minebest')
+    allchans = excepta(excepta(phenny.bot.channels, '##minebest'), '##minetest-next')
     feeds = [
         ('https://github.com/minetest/minetest/commits/master.atom', allchans),
         ('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
         ('https://github.com/minetest/minetestmapper/commits/master.atom', allchans),
         ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
         ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
-        ('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans),
+        ('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans + ['##minetest-next']),
     ]
     for v in xrange(0, len(feeds)):
         url = feeds[v][0]
