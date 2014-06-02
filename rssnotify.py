@@ -75,7 +75,7 @@ def rsscheck(phenny, input):
                 except AttributeError:
                     commiter = commiter_realname # This will only use the realname if the nickname couldn't be obtained
                 reponame = url.replace("https://github.com/","").replace("/commits/master.atom","")
-                commit_hash = feed_entry.links[0].href.replace("https://github.com/" + reponame + "/commit/","")[:10]
+                commit_hash = feed_entry.links[0].href.replace("https://github.com/" + reponame + "/commit/","")[:7]
                 commit_time = feed_entry.updated
                 updcnt += 1
                 if rssnotify["dont_print_first_message"]:
