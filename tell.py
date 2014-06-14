@@ -30,7 +30,7 @@ def tell_diskwr():
 	db.close()
 	tell_pending = []
 
-def tell(phenny, input): 
+def tell(phenny, input):
 	for x in phenny.bot.commands["high"].values():
 		if x[0].__name__ == "aa_hook":
 			if x[0](phenny, input):
@@ -68,10 +68,10 @@ def checktell(phenny, input):
 	for e in tell_list:
 		if e[2].lower() == input.nick.lower():
 			phenny.say("%s: %s <%s> %s" % (
-				input.nick, 
-				time.strftime('%m-%d %H:%M UTC', 
-					time.gmtime(e[4])), 
-				e[1], 
+				input.nick,
+				time.strftime('%m-%d %H:%M UTC',
+					time.gmtime(e[4])),
+				e[1],
 				e[3]))
 			tell_list.remove(e)
 			tell_pending.append(("del", e[0]))
@@ -84,6 +84,7 @@ def note(phenny, input):
 
 note.rule = r'.*'
 note.priority = 'low'
+note.thread = True
 
 def note_join(phenny, input):
 	if input.sender.startswith('#'):
@@ -92,6 +93,7 @@ def note_join(phenny, input):
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
+note_join.thread = True
 
 db = sqlite3.connect("tell.sqlite")
 c = db.cursor()
@@ -106,5 +108,5 @@ c.close()
 db.commit()
 db.close()
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
    print __doc__.strip()
