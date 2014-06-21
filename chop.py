@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 """
 chop.py - Phenny Channel Administration Module
-Copyright 2013, Sfan5
+Copyright 2013, sfan5
 """
 import os, web, re
 
 chop = {}
 chop["badword_limit"] = 4
 chop["badword_enabled"] = True
+chop["badword_kickmsg"] = "Chop!" # "Stop using bad words!"
 chop["victims"] = {} # for future use
-badword_list = ""#web.get("http://sfan5.minetest.net/badwords.txt")
+badword_list = ""
 
 def num_badwords(sentence):
     badwords = 0
@@ -33,21 +34,20 @@ def num_badwords(sentence):
                 if not rgx.match(word) == None:
                     badwords += 1
         if args[0] == "regex": del rgx
-        
+
     return badwords
 
 def hmasktrans(va):
     a = "!" in va
     b = "@" in va
     if not a and not b:
-        return va + "*!*@*"
+        return va + "!*@*"
     elif a and not b:
         return va + "@*"
     elif not a and b:
         return "*!" + va
     else: # a and b
         return va
-
 
 def chanmodefunc(phenny, input, mode, modfunc=None):
     if modfunc == None:
@@ -70,21 +70,54 @@ def chanmodefunc(phenny, input, mode, modfunc=None):
 
 def voice(phenny, input):
     if not input.admin: return
-    # Can only be done by an admin
     chanmodefunc(phenny, input, '+v')
 
 voice.commands = ['voice']
 
 def devoice(phenny, input):
     if not input.admin: return
-    # Can only be done by an admin
     chanmodefunc(phenny, input, '-v')
 
 devoice.commands = ['devoice']
 
+def op(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '+o')
+
+op.commands = ['op']
+
+def deop(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '-o')
+
+deop.commands = ['deop']
+
+def ban(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '+b', hmasktrans)
+
+ban.commands = ['ban']
+
+def unban(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '-b', hmasktrans)
+
+unban.commands = ['unban']
+
+def mute(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '+q', hmasktrans)
+
+mute.commands = ['mute']
+
+def unmute(phenny, input):
+    if not input.admin: return
+    chanmodefunc(phenny, input, '-q', hmasktrans)
+
+unmute.commands = ['unmute']
+
 def kick(phenny, input):
     if not input.admin: return
-    # Can only be done by an admin
     arg = input.group(2)
     if not arg: return
     arg = arg.split(" ")
@@ -99,54 +132,12 @@ def kick(phenny, input):
 
 kick.commands = ['kick']
 
-def ban(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '+b', hmasktrans)
-
-ban.commands = ['ban']
-
-def unban(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '-b', hmasktrans)
-
-unban.commands = ['unban']
-
-def mute(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '+q', hmasktrans)
-
-mute.commands = ['mute']
-
-def unmute(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '-q', hmasktrans)
-
-unmute.commands = ['unmute']
-
-def op(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '+o')
-
-op.commands = ['op']
-
-def deop(phenny, input):
-    if not input.admin: return
-    # Can only be done by an admin
-    chanmodefunc(phenny, input, '-o')
-
-deop.commands = ['deop']
-
 def badword_watcher(phenny, input):
     if not input.sender.startswith('#'): return
     if not chop["badword_enabled"]: return
     bwc = num_badwords(input.group(0))
     if bwc > chop["badword_limit"]:
-        phenny.write(['KICK', input.sender, input.nick], "CHOP!") #"Stop using badwords!")
+        phenny.write(['KICK', input.sender, input.nick], chop["badword_kickmsg"])
         try:
             chop["victims"][input.nick] += 1
         except:
@@ -166,7 +157,7 @@ def badword_ctrl(phenny, input):
         chop["badword_enabled"] = False
         phenny.say("done.")
     elif arg == "reload":
-        badword_list = web.get("http://sfan5.minetest.net/badwords.txt")
+        badword_list = "" # TODO: Get badword list from somewhere
         phenny.say("done.")
 
 badword_ctrl.commands = ['badword']
