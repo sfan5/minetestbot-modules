@@ -1,41 +1,57 @@
 #!/usr/bin/env python
 """
 antiabuse.py - Phenny AntiAbuse Module
-Copyright 2012, Sfan5
+Copyright 2012, sfan5
 """
 import time, sqlite3
 
 antiabuse = {}
 antiabuse["timeout"] = {}
 antiabuse["ignorelist"] = []
-antiabuse["s_timeout"] = 3 # in Seconds
+antiabuse["cooldown"] = 3 # seconds
 
 def aa_hook(phenny, input):
     if input.admin or input.owner:
         return False
-    #Ignore-List check
-    if input.nick in antiabuse["ignorelist"]:
+
+    # Ignore list
+    for entry in antiabuse["ignorelist"]:
+      if phenny.match_hostmask(entry, input.hostmask):
         return True # abort command
-    #Timeout check
+
+    # Cooldown
     try:
-        ot = antiabuse["timeout"][input.nick]
+        ot = antiabuse["cooldown"][input.nick]
     except:
         ot = 0
-    antiabuse["timeout"][input.nick] = time.time()
-    if antiabuse["timeout"][input.nick] - antiabuse["s_timeout"] < ot:
+    antiabuse["cooldown"][input.nick] = time.time()
+    if antiabuse["cooldown"][input.nick] - antiabuse["cooldown"] < ot:
         return True # abort command
         pass
-    
+
     return False
+
 aa_hook.event = 'THISWONTHAPPEN'
 aa_hook.priority = 'high'
 aa_hook.rule = r'h^'
-#Warning: Uses a very very dirty hack to achieve that other modules can access this function
+#XXX: hacky
+
+def hmasktrans(va):
+    a = "!" in va
+    b = "@" in va
+    if not a and not b:
+        return va + "!*@*"
+    elif a and not b:
+        return va + "@*"
+    elif not a and b:
+        return "*!" + va
+    else: # a and b
+        return va
 
 def ignore(phenny, input):
 	if not input.admin:
 		return
-	arg = input.group(2).strip()
+	arg = hmasktrans(input.group(2).strip())
 	antiabuse["ignorelist"].append(arg)
 	db = sqlite3.connect("antiabuse.sqlite")
 	c = db.cursor()
@@ -51,7 +67,7 @@ ignore.priority = 'high'
 def unignore(phenny, input):
 	if not input.admin:
 		return
-	arg = input.group(2).strip()
+	arg = hmasktrans(input.group(2).strip())
 	if not arg in antiabuse["ignorelist"]:
 		return
 	antiabuse['ignorelist'].remove(arg)
@@ -78,5 +94,3 @@ while True:
 c.close()
 db.commit()
 db.close()
-
-
