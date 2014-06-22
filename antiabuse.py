@@ -10,7 +10,7 @@ antiabuse["ignorelist"] = []
 antiabuse["cooldown_l"] = {}
 antiabuse["cooldown"] = 3 # seconds
 
-def aa_hook(phenny, input):
+def aa_hook(phenny, input, func):
     if input.admin or input.owner:
         return False
 
@@ -20,9 +20,9 @@ def aa_hook(phenny, input):
         return True # abort command
 
     # Cooldown
-    try:
+    if input.nick in antiabuse["cooldown_l"]:
         ot = antiabuse["cooldown_l"][input.nick]
-    except:
+    else:
         ot = 0
     antiabuse["cooldown_l"][input.nick] = time.time()
     if antiabuse["cooldown_l"][input.nick] - antiabuse["cooldown"] < ot:
@@ -31,10 +31,7 @@ def aa_hook(phenny, input):
 
     return False
 
-aa_hook.event = 'THISWONTHAPPEN'
-aa_hook.priority = 'high'
-aa_hook.rule = r'h^'
-#XXX: hacky
+aa_hook.hook = True
 
 def hmasktrans(va):
     a = "!" in va
