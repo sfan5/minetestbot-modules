@@ -10,7 +10,7 @@ chop["badword_limit"] = 4
 chop["badword_enabled"] = True
 chop["badword_kickmsg"] = "Chop!" # "Stop using bad words!"
 chop["victims"] = {} # for future use
-badword_list = ""
+badword_list = "" # TODO: Get badword list from somewhere
 
 def num_badwords(sentence):
     badwords = 0

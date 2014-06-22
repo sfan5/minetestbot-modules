@@ -50,7 +50,7 @@ def pushupdate(sender, time, nick):
     updates.append((sender, time, nick))
     update_l.release()
 
-def seen(phenny, input): 
+def seen(phenny, input):
     """.seen <nick> - Reports when <nick> was last seen."""
     for x in phenny.bot.commands["high"].values():
         if x[0].__name__ == "aa_hook":
@@ -82,7 +82,6 @@ def seen(phenny, input):
         phenny.reply("Sorry, I haven't seen %s around." % nick)
 
 seen.rule = (['seen'], r'(\S+)')
-seen.thread = True
 
 def note(phenny, input):
     if input.sender.startswith('#'):
@@ -90,6 +89,7 @@ def note(phenny, input):
 
 note.rule = r'.*'
 note.priority = 'low'
+note.thread = False
 
 def note_join(phenny, input):
     if input.sender.startswith('#'):
@@ -98,6 +98,7 @@ def note_join(phenny, input):
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
+note_join.thread = False
 
 def note_part(phenny, input):
     if input.sender.startswith('#'):
@@ -106,6 +107,7 @@ def note_part(phenny, input):
 note_part.rule = r'.*'
 note_part.event = 'PART'
 note_part.priority = 'low'
+note_part.thread = False
 
 db = sqlite3.connect("seen.sqlite")
 c = db.cursor()
@@ -115,5 +117,5 @@ db.close()
 
 start_new_thread(updatethread, ())
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
    print __doc__.strip()
