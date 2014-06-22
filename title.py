@@ -13,26 +13,22 @@ import re, urllib2, urlparse
 r_title = re.compile(r'(?ims)<title[^>]*>(.*?)</title\s*>')
 
 def f_title(phenny, input): 
-    for x in phenny.bot.commands["high"].values():
-        if x[0].__name__ == "aa_hook":
-            if x[0](phenny, input):
-                return # Abort function
     uri = input.group(2)
     uri = (uri or '').encode('utf-8')
 
-    if not uri and hasattr(phenny.bot, 'last_seen_uri'): 
+    if not uri and hasattr(phenny.bot, 'last_seen_uri'):
         uri = phenny.bot.last_seen_uri
-    if not uri: 
+    if not uri:
         return phenny.reply('I need a URI to give the title of...')
 
-    if not ':' in uri: 
+    if not ':' in uri:
         uri = 'http://' + uri
 
-    try: 
+    try:
         redirects = 0
         while True:
             headers = {
-                'Accept': 'text/html', 
+                'Accept': 'text/html',
                 'User-Agent': 'Mozilla/5.0 (MinetestBot)'
             }
             req = urllib2.Request(uri, headers=headers)
@@ -77,9 +73,9 @@ def f_title(phenny, input):
         if len(title) > 100:
             title = title[:100] + '[...]'
 
-        if title: 
+        if title:
             try: title.decode('utf-8')
-            except: 
+            except:
                 try: title = title.decode('iso-8859-1').encode('utf-8')
                 except: title = title.decode('cp1252').encode('utf-8')
             else: pass
@@ -92,12 +88,12 @@ def f_title(phenny, input):
 
 f_title.commands = ['title']
 
-def noteuri(phenny, input): 
+def noteuri(phenny, input):
      uri = input.group(1).encode('utf-8')
      phenny.bot.last_seen_uri = uri
 
 noteuri.rule = r'.*(https?://[^<> "\x01]+).*'
 noteuri.priority = 'low'
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     print __doc__.strip()

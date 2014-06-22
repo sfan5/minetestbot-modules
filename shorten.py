@@ -6,10 +6,6 @@ Copyright 2013, sfan5
 import urllib
 
 def shorten(phenny, input):
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     arg = input.group(2)
     if not arg:
         arg = "" # Function continues and prints Help Message
@@ -33,7 +29,7 @@ def shorten(phenny, input):
             except:
                 return phenny.reply("Problems accessing v.gd, please try a different Service")
         return phenny.reply("Unknown Service")
-            
+
 
 shorten.commands = ['shorten','sh']
 shorten.thread = True

@@ -15,10 +15,6 @@ import json
 
 def rtfm(phenny, input):
    """Manual reference command"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    if input.group(2):
       u = input.group(2).strip() + ", "
    else:
@@ -29,10 +25,6 @@ rtfm.commands = ['rtfm']
 
 def questions(phenny, input):
    """Ask smart questions"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    if input.group(2):
       u = input.group(2).strip() + ", "
    else:
@@ -43,10 +35,6 @@ questions.commands = ['questions']
 
 def next(phenny, input):
    """Next one please"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    phenny.say("Another satisfied customer. Next!")
 
 next.commands = ['next']
@@ -67,10 +55,6 @@ pil.commands = ['pil']
 
 def git(phenny, input):
    """Git Manual link"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    if input.group(2):
       u = input.group(2).strip() + ", "
    else:
@@ -81,10 +65,6 @@ git.commands = ['git']
 
 def stfu(phenny, input):
    """usage: !stfu [nick]"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    if input.group(2):
       u = input.group(2).strip() + ", "
    else:
@@ -95,10 +75,6 @@ stfu.commands = ['stfu']
 
 def proc(phenny, input):
    """usage: !proc [nick]"""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return
    if input.group(2):
       u = input.group(2).strip() + ", "
    else:
@@ -109,10 +85,6 @@ proc.commands = ['proc']
 
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return
 	if random.randint(0, 1) == 0:
 		f = urllib2.urlopen('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
 		data = f.read()
@@ -143,5 +115,3 @@ def btc(phenny, input):
 	phenny.say('1 BTC = %.4f %s' % (data[currency]['15m'], data[currency]['symbol']))
 
 btc.commands = ['btc']
-
-

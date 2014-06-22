@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 """
 rutils.py - Phenny Utility Module
-Copyright 2012, Sfan5
+Copyright 2012, sfan5
 """
 import base64, binascii, re, random, time, multiprocessing, hashlib
 
 def rs(s):
     return repr(s)[1:-1]
 
-def rev(phenny, input): 
+def rev(phenny, input):
     """reverse string"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to reverse.")
     q = input.group(2).encode('utf-8')
@@ -26,12 +22,8 @@ def rev(phenny, input):
 rev.commands = ['rev','reverse']
 rev.priority = 'low'
 
-def b64e(phenny, input): 
+def b64e(phenny, input):
     """base64 encode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -39,16 +31,12 @@ def b64e(phenny, input):
         return phenny.say(rs(base64.b64encode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b64e.commands = ['b64e','base64encode']
 b64e.priority = 'low'
 
-def b64d(phenny, input): 
+def b64d(phenny, input):
     """base64 decode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
@@ -56,16 +44,12 @@ def b64d(phenny, input):
         return phenny.say(rs(base64.b64decode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b64d.commands = ['b64d','base64decode']
 b64d.priority = 'low'
 
-def b32e(phenny, input): 
+def b32e(phenny, input):
     """base32 encode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -73,16 +57,12 @@ def b32e(phenny, input):
         return phenny.say(rs(base64.b32encode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b32e.commands = ['b32e','base32encode']
 b32e.priority = 'low'
 
-def b32d(phenny, input): 
+def b32d(phenny, input):
     """base32 decode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
     q = input.group(2).encode('utf-8')
@@ -90,16 +70,12 @@ def b32d(phenny, input):
         return phenny.say(rs(base64.b32decode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b32d.commands = ['b32d','base32decode']
 b32d.priority = 'low'
 
-def b16e(phenny, input): 
+def b16e(phenny, input):
     """base16 encode"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to encode.")
     q = input.group(2).encode('utf-8')
@@ -107,11 +83,11 @@ def b16e(phenny, input):
         return phenny.say(rs(base64.b16encode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b16e.commands = ['b16e','base16encode']
 b16e.priority = 'low'
 
-def b16d(phenny, input): 
+def b16d(phenny, input):
     """base16 decode"""
     if not input.group(2):
         return phenny.reply("Nothing to decode.")
@@ -120,30 +96,22 @@ def b16d(phenny, input):
         return phenny.say(rs(base64.b16decode(q)))
     except BaseException as e:
         return phenny.reply("Failed to handle data")
-   
+
 b16d.commands = ['b16d','base16decode']
 b16d.priority = 'low'
 
-def crc32(phenny, input): 
+def crc32(phenny, input):
     """crc32 hash"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Nothing to hash.")
     q = input.group(2).encode('utf-8')
     h = binascii.crc32(q)
     return phenny.say(rs(str(h) + "(" + hex(h) + ")"))
-   
+
 crc32.commands = ['crc32']
 crc32.priority = 'low'
 
 def hash_(phenny, input):
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return # Abort function
 	if not input.group(2):
 		return phenny.reply("Usage: hash <hash function> <text> | Get available hash funcs with ?")
 	hashfuncs = {
@@ -165,12 +133,8 @@ def hash_(phenny, input):
 hash_.commands = ['hash']
 hash_.priority = 'low'
 
-def regex(phenny, input): 
+def regex(phenny, input):
     """regex"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return phenny.reply("Give me a regex and a message seperated by `")
     q = input.group(2).encode('utf-8')
@@ -202,12 +166,8 @@ regex.commands = ['re','regex']
 regex.priority = 'low'
 regex.thread = True
 
-def rand(phenny, input): 
+def rand(phenny, input):
     """Returns a random number"""
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     if not input.group(2):
         return
     arg = input.group(2)
@@ -236,5 +196,5 @@ def rand(phenny, input):
 rand.commands = ['rand', 'random']
 rand.priority = 'low'
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
    print __doc__.strip()

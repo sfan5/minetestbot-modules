@@ -51,11 +51,7 @@ def pushupdate(sender, time, nick):
     update_l.release()
 
 def seen(phenny, input):
-    """.seen <nick> - Reports when <nick> was last seen."""
-    for x in phenny.bot.commands["high"].values():
-        if x[0].__name__ == "aa_hook":
-            if x[0](phenny, input):
-                return # Abort function
+    """seen <nick> - Reports when <nick> was last seen."""
     nick = input.group(2)
     if not nick:
         return phenny.reply("Need a nickname to search for...")

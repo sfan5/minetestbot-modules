@@ -55,7 +55,7 @@ def formartirc_user(name,rank,posts,regdate,userid,with_userid=False):
         return name + " "+chr(3)+"8"+ rank.replace("New","New"+chr(3)) +" " + posts + " posts, registered on " + regdate + ap
     else:
 	    return name + " " + rank + " " + posts + " posts, registered on " + regdate + ap
-      
+
 def formatirc_user_a(arr):
     if len(arr) <= 4:
         return formartirc_user(arr[0],arr[1],arr[2],arr[3])
@@ -63,10 +63,6 @@ def formatirc_user_a(arr):
         return formartirc_user(arr[0],arr[1],arr[2],arr[3],arr[4],with_userid=True)
 
 def search_forumuser(phenny, input):
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
     arg = input.group(2)
     if not arg:
         return phenny.reply("Give me a username")

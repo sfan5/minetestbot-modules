@@ -34,10 +34,6 @@ for lib in libs:
 		setattr(env[lib], funcn, getattr(globals()[lib], funcn))
 
 def c(phenny, input):
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return # Abort function
 	if not input.group(2):
 		return phenny.reply("Nothing to calculate.")
 	q = input.group(2).encode('ascii', 'ignore')
@@ -52,5 +48,5 @@ def c(phenny, input):
 c.commands = ['c']
 c.example = '.c 5 + 3'
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 	print __doc__.strip()

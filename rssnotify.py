@@ -122,10 +122,9 @@ def rsscheck(phenny, input):
         rssnotify["dont_print_first_message"] = False
     print("[RssNotify]: Checked " + str(len(feeds)) + " RSS Feeds in %0.3f seconds" % (end-start))
 
-rsscheck.priority = 'high'
+rsscheck.priority = 'medium'
 rsscheck.rule = r'.*'
 rsscheck.event = '*'
-rsscheck.thread = True
 
 if __name__ == '__main__':
     print __doc__.strip()

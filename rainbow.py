@@ -6,7 +6,7 @@ Copyright 2013, sfan5
 import random
 
 rainbowcolors = ["4", "7", "8", "3", "12", "6", "13"]
-#TODO: make this rainbow better (can't really make it that better because IRC colors suck)
+#maybe TODO: make this rainbow better (can't really make it that better because IRC colors suck)
 
 def colorize(text):
 	out = ""
@@ -25,10 +25,6 @@ def colorize(text):
 	return out
 
 def rainbow(phenny, input):
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return # Abort function
 	arg = input.group(2)
 	if not arg:
 		return phenny.say(colorize("Rainbow") + "\x03 What?")

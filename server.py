@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 server.py - Phenny Minetest Server Module
-Copyright 2013, Sfan5
+Copyright 2013, sfan5
 """
 
 import web, json, random
@@ -174,11 +174,6 @@ def by_port(tbl, arg):
     return results
 
 def server(phenny, input):
-    for x in phenny.bot.commands["high"].values():
-       if x[0].__name__ == "aa_hook":
-           if x[0](phenny, input):
-               return # Abort function
-
     arg = input.group(2)
     if not arg:
         cfuncs = [by_random]

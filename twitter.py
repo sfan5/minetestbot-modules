@@ -2,7 +2,7 @@
 """
 twitter.py - Phenny Twitter Module
 Copyright 2012, Sean B. Palmer, inamidst.com
-Modified by Sfan5 2012
+Modified by sfan5 2012
 Licensed under the Eiffel Forum License 2.
 
 http://inamidst.com/phenny/
@@ -23,7 +23,7 @@ r_breaks = re.compile(r'(?ims)[\r\n]+')
 def entity(*args, **kargs):
    return web.entity(*args, **kargs).encode('utf-8')
 
-def decode(html): 
+def decode(html):
    return web.r_entity.sub(entity, html)
 
 def expand(tweet):
@@ -69,10 +69,6 @@ def id_tweet(tid):
    return "Sorry, couldn't get a tweet from %s" % link
 
 def twitter(phenny, input):
-   for x in phenny.bot.commands["high"].values():
-     if x[0].__name__ == "aa_hook":
-        if x[0](phenny, input):
-           return # Abort function
    arg = input.group(2)
    if not arg:
       return phenny.reply("Give me a link, a @username, or a tweet id")

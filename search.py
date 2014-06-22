@@ -2,7 +2,7 @@
 """
 search.py - Phenny Web Search Module
 Copyright 2008-9, Sean B. Palmer, inamidst.com
-Modified by Sfan5 2012
+Modified by sfan5 2012
 Licensed under the Eiffel Forum License 2.
 
 http://inamidst.com/phenny/
@@ -10,7 +10,7 @@ http://inamidst.com/phenny/
 
 import web, re
 
-search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","hot","weed","smoking","drug","penis","vagina"] #Thank KikaRz, LandMine and RagnarLaud for this
+search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","weed","smoking","drug","penis","vagina"] # Thank KikaRz, LandMine and RagnarLaud for this
 
 class Grab(web.urllib.URLopener):
    def __init__(self, *args):
@@ -20,9 +20,9 @@ class Grab(web.urllib.URLopener):
    def http_error_default(self, url, fp, errcode, errmsg, headers):
       return web.urllib.addinfourl(fp, [headers, errcode], "http:" + url)
 
-def google_ajax(query): 
+def google_ajax(query):
    """Search using AjaxSearch, and return its JSON."""
-   if isinstance(query, unicode): 
+   if isinstance(query, unicode):
       query = query.encode('utf-8')
    uri = 'http://ajax.googleapis.com/ajax/services/search/web'
    args = '?v=1.0&safe=off&q=' + web.urllib.quote(query)
@@ -32,23 +32,23 @@ def google_ajax(query):
    web.urllib._urlopener = handler
    return web.json(bytes)
 
-def google_search(query): 
+def google_search(query):
    results = google_ajax(query)
    try: return results['responseData']['results'][0]['unescapedUrl']
    except IndexError: return None
-   except TypeError: 
+   except TypeError:
       print results
       return False
 
-def google_count(query): 
+def google_count(query):
    results = google_ajax(query)
    if not results.has_key('responseData'): return '0'
    if not results['responseData'].has_key('cursor'): return '0'
-   if not results['responseData']['cursor'].has_key('estimatedResultCount'): 
+   if not results['responseData']['cursor'].has_key('estimatedResultCount'):
       return '0'
    return results['responseData']['cursor']['estimatedResultCount']
 
-def formatnumber(n): 
+def formatnumber(n):
    """Format a number with beautiful commas."""
    parts = list(str(n))
    for i in range((len(parts) - 3), 0, -3):
@@ -56,14 +56,10 @@ def formatnumber(n):
    return ''.join(parts)
 
 
-def g(phenny, input): 
+def g(phenny, input):
    """Queries Google for the specified input."""
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return # Abort function
    query = input.group(2)
-   if not query: 
+   if not query:
       return phenny.reply('.g what?')
    for bw in search_badwords:
 	if bw in query:
@@ -72,7 +68,7 @@ def g(phenny, input):
    query = query.encode('utf-8')
    print("[LOG]: %s queried Google Result for '%s'" % (input.nick,query))
    uri = google_search(query)
-   if uri: 
+   if uri:
       phenny.reply(uri)
       phenny.bot.last_seen_uri = uri
    elif uri is False: phenny.reply("Problem getting data from Google.")
@@ -82,10 +78,6 @@ g.priority = 'high'
 g.example = '.g minetest'
 
 def gc(phenny, input):
-   for x in phenny.bot.commands["high"].values():
-      if x[0].__name__ == "aa_hook":
-         if x[0](phenny, input):
-            return # Abort function
    if not input.group(2):
       return phenny.reply("No query term.")
    query = input.group(2).encode('utf-8')
@@ -98,7 +90,7 @@ def gc(phenny, input):
    if result:
       phenny.say(query + ": " + result)
    else: phenny.reply("Sorry, couldn't get a result.")
-   
+
 def new_gc(query):
    uri = 'https://www.google.com/search?hl=en&q='
    uri = uri + web.urllib.quote(query).replace('+', '%2B')
@@ -114,5 +106,5 @@ gc.commands = ['gc']
 gc.priority = 'high'
 gc.example = '.gc minetest'
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
    print __doc__.strip()
