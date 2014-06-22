@@ -6,8 +6,8 @@ Copyright 2012, sfan5
 import time, sqlite3
 
 antiabuse = {}
-antiabuse["timeout"] = {}
 antiabuse["ignorelist"] = []
+antiabuse["cooldown_l"] = {}
 antiabuse["cooldown"] = 3 # seconds
 
 def aa_hook(phenny, input):
@@ -21,11 +21,11 @@ def aa_hook(phenny, input):
 
     # Cooldown
     try:
-        ot = antiabuse["cooldown"][input.nick]
+        ot = antiabuse["cooldown_l"][input.nick]
     except:
         ot = 0
-    antiabuse["cooldown"][input.nick] = time.time()
-    if antiabuse["cooldown"][input.nick] - antiabuse["cooldown"] < ot:
+    antiabuse["cooldown_l"][input.nick] = time.time()
+    if antiabuse["cooldown_l"][input.nick] - antiabuse["cooldown"] < ot:
         return True # abort command
         pass
 
@@ -81,6 +81,14 @@ def unignore(phenny, input):
 
 unignore.commands = ['unignore']
 unignore.priority = 'high'
+
+def listignore(phenny, input):
+	if not input.admin:
+		return
+	phenny.reply(', '.join(antiabuse['ignorelist']))
+
+listignore.commands = ['listignore']
+listignore.priority = 'high'
 
 db = sqlite3.connect("antiabuse.sqlite")
 c = db.cursor()

@@ -1,6 +1,6 @@
 Commands
 ========
-Required arguments are enclosed in { and }, optional arguments are enclosed in \[ and \]
+Required arguments are enclosed in { and }, optional arguments are enclosed in [ and ]
 
 <i>$botname</i> refers to the name of the IRC bot, e.g. MinetestBot
 
@@ -16,6 +16,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in \
     <tr> <td><b>antiabuse.py</b></td>                <td></td>                                                <td></td>              </tr>
     <tr> <td>!ignore {user}</td>                     <td>Add user to ignore list</td>                         <td><i>Admins</i></td> </tr>
     <tr> <td>!unignore {user}</td>                   <td>Remove user from ignore list</td>                    <td><i>Admins</i></td> </tr>
+    <tr> <td>!listignore</td>                        <td>List all ignored users</td>                          <td><i>Admins</i></td> </tr>
     <tr> <td><b>calc.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!c {expression}</td>                    <td>Calculate expression</td>                            <td>Anyone</td>        </tr>
     <tr> <td><b>chop.py</b></td>                     <td></td>                                                <td></td>              </tr>
