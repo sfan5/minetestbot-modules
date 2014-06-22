@@ -7,7 +7,7 @@ import os, web, re
 
 chop = {}
 chop["badword_limit"] = 4
-chop["badword_enabled"] = True
+chop["badword_enabled"] = False
 chop["badword_kickmsg"] = "Chop!" # "Stop using bad words!"
 chop["victims"] = {} # for future use
 badword_list = "" # TODO: Get badword list from somewhere
@@ -145,6 +145,7 @@ def badword_watcher(phenny, input):
 
 badword_watcher.priority = 'high'
 badword_watcher.rule = r'.*'
+badword_watcher.nohook = True
 
 def badword_ctrl(phenny, input):
     if not input.admin: return

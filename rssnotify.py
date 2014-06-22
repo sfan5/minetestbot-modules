@@ -125,6 +125,7 @@ def rsscheck(phenny, input):
 rsscheck.priority = 'medium'
 rsscheck.rule = r'.*'
 rsscheck.event = '*'
+rsscheck.nohook = True
 
 if __name__ == '__main__':
     print __doc__.strip()

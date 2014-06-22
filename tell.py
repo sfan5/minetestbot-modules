@@ -80,6 +80,7 @@ def note(phenny, input):
 
 note.rule = r'.*'
 note.priority = 'low'
+note.nohook = True
 
 def note_join(phenny, input):
 	if input.sender.startswith('#'):
@@ -88,6 +89,7 @@ def note_join(phenny, input):
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
 note_join.priority = 'low'
+note_join.nohook = True
 
 db = sqlite3.connect("tell.sqlite")
 c = db.cursor()
