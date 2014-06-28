@@ -46,7 +46,7 @@ def tell(phenny, input):
 	elif target[-1] == ":":
 		return phenny.reply("Do not put an : at the end of nickname")
 
-	d = (teller, target, text, int(time.time()))
+	d = (teller, target, text, int(time.gmtime()))
 	tell_pending.append(("add", d))
 	# We do not insert the entry into tell_list yet because we don't know the id it will have
 	tell_diskwr() # Write the change to disk
