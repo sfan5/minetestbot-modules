@@ -22,83 +22,24 @@ def rev(phenny, input):
 rev.commands = ['rev','reverse']
 rev.priority = 'low'
 
-def b64e(phenny, input):
-    """base64 encode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to encode.")
+def make_thing(cmds, func):
+  def m(phenny, input):
+    if not input.group(2): return
     q = input.group(2).encode('utf-8')
     try:
-        return phenny.say(rs(base64.b64encode(q)))
+        phenny.say(rs(func(q)))
     except BaseException as e:
-        return phenny.reply("Failed to handle data")
+        phenny.reply("Failed to handle data")
+  m.commands = cmds
+  m.priority = "low"
+  return m
 
-b64e.commands = ['b64e','base64encode']
-b64e.priority = 'low'
-
-def b64d(phenny, input):
-    """base64 decode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to decode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(base64.b64decode(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-
-b64d.commands = ['b64d','base64decode']
-b64d.priority = 'low'
-
-def b32e(phenny, input):
-    """base32 encode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to encode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(base64.b32encode(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-
-b32e.commands = ['b32e','base32encode']
-b32e.priority = 'low'
-
-def b32d(phenny, input):
-    """base32 decode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to decode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(base64.b32decode(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-
-b32d.commands = ['b32d','base32decode']
-b32d.priority = 'low'
-
-def b16e(phenny, input):
-    """base16 encode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to encode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(base64.b16encode(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-
-b16e.commands = ['b16e','base16encode']
-b16e.priority = 'low'
-
-def b16d(phenny, input):
-    """base16 decode"""
-    if not input.group(2):
-        return phenny.reply("Nothing to decode.")
-    q = input.group(2).encode('utf-8')
-    try:
-        return phenny.say(rs(base64.b16decode(q)))
-    except BaseException as e:
-        return phenny.reply("Failed to handle data")
-
-b16d.commands = ['b16d','base16decode']
-b16d.priority = 'low'
+b64e = make_thing(['b64e','base64encode'], base64.b64encode)
+b64d = make_thing(['b64d','base64decode'], base64.b64decode)
+b32e = make_thing(['b32e','base32encode'], base64.b32encode)
+b32d = make_thing(['b32d','base32decode'], base64.b32decode)
+b16e = make_thing(['b16e','base16encode'], base64.b16encode)
+b16d = make_thing(['b16d','base16decode'], base64.b16decode)
 
 def crc32(phenny, input):
     """crc32 hash"""
@@ -153,8 +94,8 @@ def regex(phenny, input):
     t.start()
     t.join(3.0)
     if t.is_alive():
-        phenny.reply("Regex took to long to compute")
         t.terminate()
+        phenny.reply("Regex took to long to compute")
         return
     m = q.get()
     if m == []:
