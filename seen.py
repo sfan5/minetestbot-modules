@@ -46,10 +46,10 @@ def updatethread():
             time.sleep(5)
 
 def pushupdate(sender, nick):
-    time = int(time.gmtime())
+    ts = int(time.gmtime())
     nick = nick.lower()
     update_l.acquire()
-    updates.append((sender, time, nick))
+    updates.append((sender, ts, nick))
     update_l.release()
 
 def seen(phenny, input):
