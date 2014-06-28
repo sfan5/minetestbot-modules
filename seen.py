@@ -81,7 +81,7 @@ seen.rule = (['seen'], r'(\S+)')
 
 def note(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.time()), input.nick.lower())
+        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
 
 note.rule = r'.*'
 note.priority = 'low'
@@ -90,7 +90,7 @@ note.nohook = True
 
 def note_join(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.time()), input.nick.lower())
+        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
 
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
@@ -100,7 +100,7 @@ note_join.nohook = True
 
 def note_part(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.time()), input.nick.lower())
+        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
 
 note_part.rule = r'.*'
 note_part.event = 'PART'
