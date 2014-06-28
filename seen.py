@@ -45,7 +45,9 @@ def updatethread():
         else:
             time.sleep(5)
 
-def pushupdate(sender, time, nick):
+def pushupdate(sender, nick):
+    time = int(time.gmtime())
+    nick = nick.lower()
     update_l.acquire()
     updates.append((sender, time, nick))
     update_l.release()
@@ -81,7 +83,7 @@ seen.rule = (['seen'], r'(\S+)')
 
 def note(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
+        pushupdate(input.sender, input.nick)
 
 note.rule = r'.*'
 note.priority = 'low'
@@ -90,7 +92,7 @@ note.nohook = True
 
 def note_join(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
+        pushupdate(input.sender, input.nick)
 
 note_join.rule = r'.*'
 note_join.event = 'JOIN'
@@ -100,7 +102,7 @@ note_join.nohook = True
 
 def note_part(phenny, input):
     if input.sender.startswith('#'):
-        pushupdate(input.sender, int(time.gmtime()), input.nick.lower())
+        pushupdate(input.sender, input.nick)
 
 note_part.rule = r'.*'
 note_part.event = 'PART'
