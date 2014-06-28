@@ -46,7 +46,7 @@ def updatethread():
             time.sleep(5)
 
 def pushupdate(sender, nick):
-    ts = int(time.gmtime())
+    ts = int(time.mktime(time.gmtime()))
     nick = nick.lower()
     update_l.acquire()
     updates.append((sender, ts, nick))
