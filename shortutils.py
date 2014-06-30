@@ -22,7 +22,7 @@ def make_cmd(cmd, txt):
     else:
       u = ""
     phenny.say(u + t)
-  m.commands = cmd
+  m.commands = [cmd]
   return m
 
 rtfm = make_cmd("rtfm", "someone thinks you should read the manual. The development wiki is at http://dev.minetest.net, the regular wiki is at http://wiki.minetest.net.")
