@@ -9,121 +9,69 @@ import web, json, random
 def by_random(tbl, arg):
     return [random.randrange(0, len(tbl))]
 
-def by_address(tbl, arg):
-    results = []
-    for i in range(0, len(tbl)):
-        e = tbl[i]
-        if arg.lower().strip() in e["address"].lower().strip():
-            results.append(i)
-    return results
+def create_stringcompare(name, substring=True):
+  def m(tbl, arg):
+      results = []
+      for i in range(0, len(tbl)):
+          e = tbl[i]
+          if substring and arg.lower() in e[name].lower():
+              results.append(i)
+          elif not substring and arg.lower().strip() == e[name].lower().strip():
+              results.append(i)
+      return results
+  return m
 
-def by_name(tbl, arg):
-    results = []
-    for i in range(0, len(tbl)):
-        e = tbl[i]
-        if arg.lower().strip() in e["name"].lower().strip():
-            results.append(i)
-    return results
-
-def by_players(tbl, arg):
-    results = []
-    if arg.startswith("<"): # less comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) < nu:
-                results.append(i)
-    elif arg.startswith(">"): # more comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) > nu:
-                results.append(i)
-    elif arg == "most": # most
-        ranking = (-1, None)
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) > ranking[0]:
-                ranking = (int(tbl[i]["clients"]), i)
-        results.append(ranking[1])
-    elif arg == "least": # least
-        ranking = (9999, None)
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) < ranking[0]:
-                ranking = (int(tbl[i]["clients"]), i)
-        results.append(ranking[1])
-    elif arg.startswith("!"): # not comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) != nu:
-                results.append(i)
-    else:
-        if arg.startswith("="): # support "3" and "=3"
-            arg = arg[1:]
-        try:
-            nu = int(arg)
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["clients"]) == nu:
-                results.append(i)
-    return results
-
-def by_ping(tbl, arg):
-    results = []
-    if arg.startswith("<"): # less comparing
-        try:
-            nu = float(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["ping"]) < nu:
-                results.append(i)
-    elif arg.startswith(">"): # more comparing
-        try:
-            nu = float(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["ping"]) > nu:
-                results.append(i)
-    elif arg == "most": # most
-        ranking = (-1, None)
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["ping"]) > ranking[0]:
-                ranking = (float(tbl[i]["ping"]), i)
-        results.append(ranking[1])
-    elif arg == "least": # least
-        ranking = (9999, None)
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["ping"]) < ranking[0]:
-                ranking = (float(tbl[i]["ping"]), i)
-        results.append(ranking[1])
-    elif arg.startswith("!"): # not comparing
-        try:
-            nu = float(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["ping"]) != nu:
-                results.append(i)
-    else:
-        if arg.startswith("="): # support "0.6" and "=0.6"
-            arg = arg[1:]
-        try:
-            nu = float(arg)
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if float(tbl[i]["clients"]) == nu:
-                results.append(i)
-    return results
+def create_intcompare(name, most_least=True):
+  def m(tbl, arg):
+      results = []
+      if arg.startswith("<"): # less comparing
+          try:
+              nu = int(arg[1:])
+          except:
+              return []
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) < nu:
+                  results.append(i)
+      elif arg.startswith(">"): # more comparing
+          try:
+              nu = int(arg[1:])
+          except:
+              return []
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) > nu:
+                  results.append(i)
+      elif arg == "most" and most_least: # most
+          ranking = (-1, None)
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) > ranking[0]:
+                  ranking = (int(tbl[i][name]), i)
+          results.append(ranking[1])
+      elif arg == "least" and most_least: # least
+          ranking = (0xFFFF, None)
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) < ranking[0]:
+                  ranking = (int(tbl[i][name]), i)
+          results.append(ranking[1])
+      elif arg.startswith("!"): # not comparing
+          try:
+              nu = int(arg[1:])
+          except:
+              return []
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) != nu:
+                  results.append(i)
+      else:
+          if arg.startswith("="): # support "3" and "=3"
+              arg = arg[1:]
+          try:
+              nu = int(arg)
+          except:
+              return []
+          for i in range(0, len(tbl)):
+              if int(tbl[i][name]) == nu:
+                  results.append(i)
+      return results
+  return m
 
 def by_index(tbl, arg):
     if arg == "last":
@@ -135,117 +83,68 @@ def by_index(tbl, arg):
         except:
             return []
 
-def by_port(tbl, arg):
-    results = []
-    if arg.startswith("<"): # less comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["port"]) < nu:
-                results.append(i)
-    elif arg.startswith(">"): # more comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["port"]) > nu:
-                results.append(i)
-    elif arg.startswith("!"): # not comparing
-        try:
-            nu = int(arg[1:])
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["port"]) != nu:
-                results.append(i)
-    else:
-        if arg.startswith("="): # support "3" and "=3"
-            arg = arg[1:]
-        try:
-            nu = int(arg)
-        except:
-            return []
-        for i in range(0, len(tbl)):
-            if int(tbl[i]["port"]) == nu:
-                results.append(i)
-    return results
+compare_methods = {
+  "addr": create_stringcompare("address"),
+  "name": create_stringcompare("name"),
+  "players": create_intcompare("clients"),
+  "ping": create_intcompare("ping"),
+  "port": create_intcompare("port", most_least=False),
+  "i": by_index,
+}
+
+default_method = "name"
 
 def server(phenny, input):
     arg = input.group(2)
     if not arg:
-        cfuncs = [by_random]
-        cargs = [None]
+        cmds = [(by_random, )]
     else:
         arg = arg.strip().split(" ")
-        cfuncs = []
-        cargs = []
+        cmds = []
         for a in arg:
-            if a == "": continue
-            if a.startswith("addr:"):
-                choicefunc = by_address
-                carg = a[len("addr:"):]
-            elif a.startswith("name:"):
-                choicefunc = by_name
-                carg = a[len("name:"):]
-            elif a.startswith("players:"):
-                choicefunc = by_players
-                carg = a[len("players:"):]
-            elif a.startswith("ping:"):
-                choicefunc = by_ping
-                carg = a[len("ping:"):]
-            elif a.startswith("i:"):
-                choicefunc = by_index
-                carg = a[len("i:"):]
-            elif a.startswith("port:"):
-                choicefunc = by_port
-                carg = a[len("port:"):]
-            elif a == "random":
+            for mname in compare_methods:
+              if a.lower().startswith(mname + ":"):
+                choicefunc = compare_methods[mname]
+                carg = a[len(mname + ":"):]
+                break
+            if a.lower() == "random":
                 choicefunc = by_random
                 carg = ""
             else:
-                choicefunc = by_name
+                choicefunc = compare_methods[default_method]
                 carg = a
-            cfuncs.append(choicefunc)
-            cargs.append(carg)
+            cmds.append((choicefunc, carg))
 
     text = web.get("http://servers.minetest.net/list")
     server_list = json.loads(text)["list"]
     prep_table = server_list
-    for i in range(0, len(cfuncs)):
-        choicefunc = cfuncs[i]
-        carg = cargs[i]
-
+    for i in range(0, len(cmds)):
+        choicefunc, carg = cmds[i]
         choices = choicefunc(prep_table, carg)
         if len(choices) == 0:
             return phenny.reply("No results")
-        prep_table_ = []
-        for c in choices:
-            prep_table_.append(prep_table[c])
-        prep_table = prep_table_
+        prep_table = list(prep_table[c] for c in choices)
 
     choice = prep_table[0]
     name = choice["name"]
     address = choice["address"]
-    if choice["port"] != "30000":
+    if choice["port"] != 30000:
         if ':' in address: # IPv6
             address = "[" + address + "]"
-        address += ":" + choice["port"]
+        address += ":" + str(choice["port"])
     clients = choice["clients"]
-    try:
-        version = choice["version"] + " " + server_list[choice]["gameid"]
-    except:
+    if "gameid" in choice:
+        version = choice["version"] + " / " + choice["gameid"]
+    else:
         version = choice["version"]
-    ping = choice["ping"]
+    ping = int(choice["ping"] * 100)
     clients_max = choice["clients_max"]
+    clients_avg = int(choice["pop_v"] / choice["clients_top"])
     clients_top = choice["clients_top"]
 
-    phenny.reply("%s | %s | Clients: %s/%s, %s | Version: %s | ping: %s" % (name, address, clients, clients_max, clients_top, version, ping))
+    phenny.reply("%s | %s | Clients: %d/%d, %d/%d | Version: %s | Ping: %d" % (name, address, clients, clients_max, clients_avg, clients_top, version, ping))
 
 server.commands = ['sv', 'server']
-server.thread = True
 
 if __name__ == '__main__':
    print __doc__
