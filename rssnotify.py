@@ -19,10 +19,10 @@ def to_unix_time(st): # not really accurate, but works
     t += int(g[0]) * 60 * 60 * 24 * 30 * 12
     return t
 
-def excepta(arr, e):
+def excepta(arr, exclude):
     o = []
     for el in arr:
-        if el != e:
+        if not el in exclude:
             o.append(el)
     return o
 
@@ -42,11 +42,12 @@ def rsscheck(phenny, input):
     rssnotify["last_update"] = t
     print("[RssNotify]: Checking RSS Feeds...")
     start = time.time()
-    allchans = excepta(excepta(phenny.bot.channels, '##minebest'), '##minetest-next')
+    allchans = excepta(phenny.bot.channels, ['##minebest', '##minetest-next'])
     feeds = [
         ('https://github.com/minetest/minetest/commits/master.atom', allchans),
         ('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
         ('https://github.com/minetest/minetestmapper/commits/master.atom', allchans),
+        ('https://github.com/minetest/master-server/commits/master.atom', allchans),
         ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
         ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
         ('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans + ['##minetest-next']),
