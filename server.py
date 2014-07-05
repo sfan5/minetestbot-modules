@@ -103,6 +103,7 @@ def server(phenny, input):
         cmds = []
         for a in arg:
             for mname in compare_methods:
+              print("startswith? '%s' '%s'" % (a.lower(), mname + ":"))
               if a.lower().startswith(mname + ":"):
                 choicefunc = compare_methods[mname]
                 carg = a[len(mname + ":"):]
@@ -142,7 +143,7 @@ def server(phenny, input):
     clients_avg = int(choice["pop_v"] / choice["clients_top"])
     clients_top = choice["clients_top"]
 
-    phenny.reply("%s | %s | Clients: %d/%d, %d/%d | Version: %s | Ping: %d" % (name, address, clients, clients_max, clients_avg, clients_top, version, ping))
+    phenny.reply("%s | %s | Clients: %d/%d, %d/%d | Version: %s | Ping: %dms" % (name, address, clients, clients_max, clients_avg, clients_top, version, ping))
 
 server.commands = ['sv', 'server']
 
