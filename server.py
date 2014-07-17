@@ -140,7 +140,7 @@ def server(phenny, input):
         version = choice["version"]
     ping = int(choice["ping"] * 100)
     clients_max = choice["clients_max"]
-    clients_avg = int(choice["pop_v"] / choice["clients_top"])
+    clients_avg = choice["pop_v"]
     clients_top = choice["clients_top"]
 
     phenny.reply("%s | %s | Clients: %d/%d, %d/%d | Version: %s | Ping: %dms" % (name, address, clients, clients_max, clients_avg, clients_top, version, ping))
