@@ -12,7 +12,7 @@ import re, urllib2, urlparse
 
 r_title = re.compile(r'(?ims)<title[^>]*>(.*?)</title\s*>')
 
-def f_title(phenny, input): 
+def f_title(phenny, input):
     uri = input.group(2)
     uri = (uri or '').encode('utf-8')
 
@@ -94,6 +94,7 @@ def noteuri(phenny, input):
 
 noteuri.rule = r'.*(https?://[^<> "\x01]+).*'
 noteuri.priority = 'low'
+noteuri.nohook = True
 
 if __name__ == '__main__':
     print __doc__.strip()
