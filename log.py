@@ -18,7 +18,7 @@ actionhighlight = "sfan5"
 
 def log(level, text, phenny):
   level = level.upper()
-  f = open("bot.log", "a")
+  f = open("bot.log", "ab")
   f.write(time.strftime("%F %H:%M:%S %z") + "\t" + loglevels[level] + "\t" + text.encode('utf-8') + "\n")
   f.close()
   if level == 'ACTION':
