@@ -76,7 +76,7 @@ def twitter(phenny, input):
    arg = arg.strip()
    if isinstance(arg, unicode):
       arg = arg.encode('utf-8')
-   print("[LOG]: %s queried Twitter for '%s'" % (input.nick,arg))
+   log.log("%s queried Twitter for '%s'" % (log.fmt_user(input), arg))
    if arg.isdigit():
       phenny.say(id_tweet(arg))
    elif r_username.match(arg):

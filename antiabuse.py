@@ -10,14 +10,49 @@ antiabuse["ignorelist"] = []
 antiabuse["cooldown_l"] = {}
 antiabuse["cooldown"] = 3 # seconds
 
+def api_ignore(mask):
+  antiabuse["ignorelist"].append(mask)
+  db = sqlite3.connect("antiabuse.sqlite")
+  c = db.cursor()
+  c.execute("INSERT INTO ignore (nick) VALUES (?)", (mask,))
+  c.close()
+  db.commit()
+  db.close()
+
+def api_unignore(mask):
+  if not mask in antiabuse["ignorelist"]:
+    return
+  antiabuse['ignorelist'].remove(mask)
+  db = sqlite3.connect("antiabuse.sqlite")
+  c = db.cursor()
+  c.execute("DELETE FROM ignore WHERE nick = ?", (mask,))
+  c.close()
+  db.commit()
+  db.close()
+
+def api_get_ignorelist():
+  return antiabuse["ignorelist"]
+
+class SomeObject(object):
+  pass
+
+antiabuse_api = SomeObject()
+antiabuse_api.ignore = api_ignore
+antiabuse_api.unignore = api_unignore
+antiabuse_api.get_ignorelsit = api_get_ignorelist
+
+_export = {
+  'antiabuse': antiabuse_api,
+}
+
 def aa_hook(phenny, input, func):
     if input.admin or input.owner:
-        return False
+        return True
 
     # Ignore list
     for entry in antiabuse["ignorelist"]:
       if phenny.match_hostmask(entry, input.hostmask):
-        return True # abort command
+        return False # abort command
 
     # Cooldown
     if input.nick in antiabuse["cooldown_l"]:
@@ -26,10 +61,10 @@ def aa_hook(phenny, input, func):
         ot = 0
     antiabuse["cooldown_l"][input.nick] = time.time()
     if antiabuse["cooldown_l"][input.nick] - antiabuse["cooldown"] < ot:
-        return True # abort command
+        return False # abort command
         pass
 
-    return False
+    return True
 
 aa_hook.hook = True
 
@@ -49,13 +84,7 @@ def ignore(phenny, input):
 	if not input.admin:
 		return
 	arg = hmasktrans(input.group(2).strip())
-	antiabuse["ignorelist"].append(arg)
-	db = sqlite3.connect("antiabuse.sqlite")
-	c = db.cursor()
-	c.execute("INSERT INTO ignore (nick) VALUES (?)", (arg,))
-	c.close()
-	db.commit()
-	db.close()
+	api_ignore(arg)
 	phenny.reply("'%s' added to ignore list." % arg)
 
 ignore.commands = ['ignore']
@@ -65,15 +94,7 @@ def unignore(phenny, input):
 	if not input.admin:
 		return
 	arg = hmasktrans(input.group(2).strip())
-	if not arg in antiabuse["ignorelist"]:
-		return
-	antiabuse['ignorelist'].remove(arg)
-	db = sqlite3.connect("antiabuse.sqlite")
-	c = db.cursor()
-	c.execute("DELETE FROM ignore WHERE nick = ?", (arg,))
-	c.close()
-	db.commit()
-	db.close()
+	api_unignore(arg)
 	phenny.reply("'%s' removed from ignore list." % arg)
 
 unignore.commands = ['unignore']
@@ -82,7 +103,10 @@ unignore.priority = 'high'
 def listignore(phenny, input):
 	if not input.admin:
 		return
-	phenny.reply(', '.join(antiabuse['ignorelist']))
+	s = ', '.join(antiabuse['ignorelist'])
+	if s == "":
+		s = "Ignore list empty."
+	phenny.reply(s)
 
 listignore.commands = ['listignore']
 listignore.priority = 'high'

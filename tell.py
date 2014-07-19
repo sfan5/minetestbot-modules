@@ -30,6 +30,22 @@ def tell_diskwr():
 	db.close()
 	tell_pending = []
 
+def api_tell(teller, tellee, text):
+	d = (teller, tellee, text, int(time.mktime(time.gmtime())))
+	tell_pending.append(("add", d))
+	# We do not insert the entry into tell_list yet because we don't know the id it will have
+	tell_diskwr() # Write the change to disk
+
+class SomeObject(object):
+	pass
+
+tell_api = SomeObject()
+tell_api.tell = api_tell
+
+_export = {
+	'tell': tell_api,
+}
+
 def tell(phenny, input):
 	arg = input.group(2)
 	if not arg:
@@ -46,10 +62,7 @@ def tell(phenny, input):
 	elif target[-1] == ":":
 		return phenny.reply("Do not put an : at the end of nickname")
 
-	d = (teller, target, text, int(time.mktime(time.gmtime())))
-	tell_pending.append(("add", d))
-	# We do not insert the entry into tell_list yet because we don't know the id it will have
-	tell_diskwr() # Write the change to disk
+	api_tell(teller, target, text)
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()

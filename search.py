@@ -10,8 +10,6 @@ http://inamidst.com/phenny/
 
 import web, re
 
-search_badwords = ["porn","p0rn","pr0n","pron","redtube","sex","pussy","weed","smoking","drug","penis","vagina"] # Thank KikaRz, LandMine and RagnarLaud for this
-
 class Grab(web.urllib.URLopener):
    def __init__(self, *args):
       self.version = 'Mozilla/5.0 (MinetestBot)'
@@ -61,12 +59,8 @@ def g(phenny, input):
    query = input.group(2)
    if not query:
       return phenny.reply('.g what?')
-   for bw in search_badwords:
-	if bw in query:
-		print("[LOG]: %s queried Google Result for '%s' | DENIED: Badword" % (input.nick,query))
-		return phenny.reply("Gross!")
    query = query.encode('utf-8')
-   print("[LOG]: %s queried Google Result for '%s'" % (input.nick,query))
+   log.log("%s searched Google for '%s'" % (log.fmt_user(input), query))
    uri = google_search(query)
    if uri:
       phenny.reply(uri)
@@ -81,12 +75,8 @@ def gc(phenny, input):
    if not input.group(2):
       return phenny.reply("No query term.")
    query = input.group(2).encode('utf-8')
+   log.log("%s searched Google for '%s'" % (log.fmt_user(input), query))
    result = new_gc(query)
-   for bw in search_badwords:
-	if bw in query:
-		print("[LOG]: %s queried Google Result Number for '%s' | DENIED: Badword" % (input.nick,query))
-		return phenny.reply("Gross!")
-   print("[LOG]: %s queried Google Result Number for '%s'" % (input.nick,query))
    if result:
       phenny.say(query + ": " + result)
    else: phenny.reply("Sorry, couldn't get a result.")

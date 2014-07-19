@@ -52,6 +52,27 @@ def pushupdate(sender, nick):
     updates.append((sender, ts, nick))
     update_l.release()
 
+def api_seen(nick):
+  dblock.acquire()
+  db = opendb()
+  c = db.cursor()
+  c.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick,))
+  r = c.fetchone()
+  c.close()
+  db.close()
+  dblock.release()
+  return r
+
+class SomeObject(object):
+  pass
+
+seen_api = SomeObject()
+seen_api.seen = api_seen
+
+_export = {
+  'seen': seen_api,
+}
+
 def seen(phenny, input):
     """seen <nick> - Reports when <nick> was last seen."""
     nick = input.group(2)
@@ -59,16 +80,9 @@ def seen(phenny, input):
         return phenny.reply("Need a nickname to search for...")
     nick = nick.lower()
 
-    print("[LOG]: %s queried Seen Result for %s" % (input.nick,nick))
+    log.log("event", "%s queried Seen database for '%s'" % (log.fmt_user(input), nick), phenny)
 
-    dblock.acquire()
-    db = opendb()
-    c = db.cursor()
-    c.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick,))
-    r = c.fetchone()
-    c.close()
-    db.close()
-    dblock.release()
+    r = api_seen(nick)
 
     if r:
         channel, t = r[0], r[1]

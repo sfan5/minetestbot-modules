@@ -136,7 +136,8 @@ def wik(phenny, input):
    if not origterm:
       return phenny.say('Perhaps you meant "!wik Zen"?')
    origterm = origterm.encode('utf-8')
-   print("[LOG]: %s queried Minetest Wiki for '%s'" % (input.nick,origterm))
+
+   log.log("event", "%s queried Wiki for '%s'" % (log.fmt_user(input), origterm), phenny)
 
    term = urllib.unquote(origterm)
    language = 'en'

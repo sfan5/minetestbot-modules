@@ -131,12 +131,12 @@ def devwikipedia(term, language='en', last=False):
    term = term.decode('utf-8').encode('utf-8')
    return sentence + ' - ' + (devwikiuri % (term))
 
-def devwik(phenny, input): 
+def devwik(phenny, input):
    origterm = input.groups()[1]
    if not origterm:
       return phenny.say('Perhaps you meant "!devwik Zen"?')
    origterm = origterm.encode('utf-8')
-   print("[LOG]: %s queried Minetest Dev Wiki for '%s'" % (input.nick,origterm))
+   log.log("event", "%s queried Devwiki for '%s'" % (log.fmt_user(input), origterm), phenny)
 
    term = urllib.unquote(origterm)
    language = 'en'

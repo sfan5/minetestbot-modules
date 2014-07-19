@@ -8,6 +8,7 @@ Copyright 2014, sfan5
 import math
 import random
 import struct
+import multiprocessing
 
 class SomeObject(object):
 	pass
@@ -39,11 +40,28 @@ def c(phenny, input):
 	q = input.group(2).encode('ascii', 'ignore')
 	if '__' in q:
 		return phenny.reply("Sorry, but no double underscores.")
-	print("[LOG]: %s calculated '%s'" % (input.nick, q))
-	try:
-		phenny.say(repr(eval(q, {'__builtins__': env}, {})))
-	except Exception as e:
-		phenny.say(type(e).__name__ + ": " + str(e))
+	log.log("event", "%s calculated '%s'" % (log.fmt_user(input), q), phenny)
+	o = multiprocessing.Queue()
+	def get_result(o, q):
+		try:
+			o.put(repr(eval(q, {'__builtins__': env}, {})))
+		except Exception as e:
+			o.put(type(e).__name__ + ": " + str(e))
+	proc = multiprocessing.Process(target=get_result, args=(o,q))
+	proc.start()
+	proc.join(2.0)
+	if proc.is_alive():
+			proc.terminate()
+			if 'math.pow' in q or '**' in q:
+				phenny.reply("Kindly go fuck yourself!")
+				antiabuse.ignore("*!*" + input.hostmask[input.hostmask.find("@"):])
+				log.log("action", "Auto-ignored %s for !c crash attempt" % log.fmt_user(input), phenny)
+			else:
+				phenny.reply("Took to long to calculate")
+			return
+	else:
+		phenny.say(o.get())
+
 
 c.commands = ['c']
 c.example = '.c 5 + 3'
