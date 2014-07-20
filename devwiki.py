@@ -15,11 +15,11 @@ r_content = re.compile(r'(?i)<div[^>]+class=.mw-content-ltr.>')
 r_paragraph = re.compile(r'(?ims)<p>(.+?)</p>')
 r_sentenceend = re.compile(r'\.[ A-Z]')
 transforms = [
-	(re.compile(r'(?i)<a [^>]+>(.+?)</a>'), "\g<1>"),
+	(re.compile(r'(?i)<a [^>]+>(.+?)</a>'), "\x0312\g<1>\x0f"),
 	(re.compile(r'(?i)<b>(.+?)</b>'), "\x02\g<1>\x02"),
 	(re.compile(r'(?i)<i>(.+?)</i>'), "\x1d\g<1>\x1d"),
 	(re.compile(r'(?i)<u>(.+?)</u>'), "\x1f\g<1>\x1f"),
-	(re.compile(r'(?i)<code>(.+?)</code>'), "\x0315\g<1>\x03 "),
+	(re.compile(r'(?i)<code>(.+?)</code>'), "\x0315\g<1>\x0f"),
 	(re.compile(r'(?i)<br\s*/?>'), ""),
 ]
 nottext = [
