@@ -15,7 +15,7 @@ def strip_number(nstr):
 def forum_search_user(st, ignore_0posts=False, post_filter=-1):
     st = st.replace(" ", "%20")
     try:
-        bytes = web.get("https://forum.minetest.net/userlist.php?username=" + st)
+        bytes, sc = web.get("https://forum.minetest.net/userlist.php?username=" + st)
         shim = '<tbody>'
         shim2 = '</tbody>'
         if shim in bytes and shim2 in bytes:

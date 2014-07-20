@@ -40,7 +40,7 @@ next.commands = ['next']
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
 	if random.randint(0, 1) == 0:
-		data = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
+		data, sc = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
 		data = web.json(data)
 		phenny.say("DOGE is at " + data['return']['markets']['DOGE']['lasttradeprice'] + " BTC")
 	else:

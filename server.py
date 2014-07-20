@@ -4,7 +4,7 @@ server.py - Phenny Minetest Server Module
 Copyright 2013, sfan5
 """
 
-import web, json, random
+import web, random
 
 def by_random(tbl, arg):
     return [random.randrange(0, len(tbl))]
@@ -116,8 +116,9 @@ def server(phenny, input):
                 carg = a
             cmds.append((choicefunc, carg))
 
-    text = web.get("http://servers.minetest.net/list")
-    server_list = json.loads(text)["list"]
+    text, sc = web.get("http://servers.minetest.net/list")
+    text = str(text, 'utf-8')
+    server_list = web.json(text)["list"]
     prep_table = server_list
     for i in range(0, len(cmds)):
         choicefunc, carg = cmds[i]
