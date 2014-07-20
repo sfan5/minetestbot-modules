@@ -5,7 +5,6 @@ Copyright 2014, sfan5
 """
 
 import time
-import sys
 
 loglevels = {
 	'TEXT':    'TXT', # TEXT:    purely informal message that appears in masses e.g. a command being executed
@@ -24,7 +23,6 @@ def log(level, text, phenny):
 	f.close()
 	if level == 'ACTION':
 		phenny.write(['PRIVMSG', actionchannel], actionhighlight + ": " + text)
-	sys.stdout.write(bytes(level + " " + text, 'utf-8', 'ignore'))
 
 def fmt_user(input):
 	return "%s(%s)" % (input.nick, input.hostmask)
