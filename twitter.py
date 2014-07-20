@@ -21,7 +21,7 @@ r_whiteline = re.compile(r'(?ims)[ \t]+[\r\n]+')
 r_breaks = re.compile(r'(?ims)[\r\n]+')
 
 def entity(*args, **kargs):
-   return web.entity(*args, **kargs).encode('utf-8')
+   return web.entity(*args, **kargs)
 
 def decode(html):
    return web.r_entity.sub(entity, html)
@@ -35,7 +35,8 @@ def expand(tweet):
    return r_anchor.sub(replacement, tweet)
 
 def read_tweet(url):
-   bytes = web.get(url)
+   bytes, sc = web.get(url)
+   bytes = str(bytes, 'utf-8')
    shim = '<div class="content clearfix">'
    if shim in bytes:
       bytes = bytes.split(shim, 1).pop()
@@ -58,11 +59,11 @@ def user_tweet(username):
 
 def id_tweet(tid):
    link = 'https://twitter.com/twitter/status/' + tid
-   data = web.head(link)
-   message, status = tuple(data)
+   headers, status = web.head(link)
    if status == 301:
-      url = message.get("Location")
-      if not url: return "Sorry, couldn't get a tweet from %s" % link
+      if not "Location" in headers:
+         return "Sorry, couldn't get a tweet from %s" % link
+      url = headers["Location"]
       username = url.split('/')[3]
       tweet = read_tweet(url)
       return format(tweet, username)
@@ -74,9 +75,7 @@ def twitter(phenny, input):
       return phenny.reply("Give me a link, a @username, or a tweet id")
 
    arg = arg.strip()
-   if isinstance(arg, unicode):
-      arg = arg.encode('utf-8')
-   log.log("%s queried Twitter for '%s'" % (log.fmt_user(input), arg))
+   log.log("event", "%s queried Twitter for '%s'" % (log.fmt_user(input), arg), phenny)
    if arg.isdigit():
       phenny.say(id_tweet(arg))
    elif r_username.match(arg):
@@ -91,4 +90,4 @@ twitter.commands = ['tw', 'twitter']
 twitter.thread = True
 
 if __name__ == '__main__':
-   print __doc__
+   print(__doc__)

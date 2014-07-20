@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 rssnotify.py - Phenny RssNotify Module
-Copyright 2013, Sfan5
+Copyright 2013, sfan5
 """
 import time, urllib, re
 import feedparser # sudo pip install feedparser
@@ -51,7 +51,7 @@ def rsscheck(phenny, input):
         ('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
         ('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
     ]
-    for v in xrange(0, len(feeds)):
+    for v in range(0, len(feeds)):
         url = feeds[v][0]
         feednum = v
         options = {
@@ -111,7 +111,7 @@ def rsscheck(phenny, input):
                         phenny.write(['PRIVMSG', ch],"GIT: %s commited to %s: %s %s %s %s" % (commiter, reponame, feed_entry.title, commit_hash, commit_time, commit_link))
         if len(feed.entries) > 0:
             m = -1
-            for i in xrange(0, len(feed.entries)):
+            for i in range(0, len(feed.entries)):
                 if to_unix_time(feed.entries[i].updated) > m:
                     m = to_unix_time(feed.entries[i].updated)
             rssnotify["last_updated_feeds"][feednum] = m
@@ -128,4 +128,4 @@ rsscheck.event = '*'
 rsscheck.nohook = True
 
 if __name__ == '__main__':
-    print __doc__.strip()
+    print(__doc__.strip())

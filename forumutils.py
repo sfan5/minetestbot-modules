@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 forumutils.py - Phenny Minetest Forum Module
-Copyright 2012, Sfan5
+Copyright 2012, sfan5
 """
 
 import web
@@ -137,4 +137,4 @@ search_forumuser_limit.commands = ['searchforumuserlimit', 'sfulimit']
 search_forumuser_limit.priority = 'low'
 
 if __name__ == '__main__':
-   print __doc__
+   print(__doc__)

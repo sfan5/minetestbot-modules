@@ -24,7 +24,7 @@ def f_reload(phenny, input):
       phenny.setup()
       return phenny.reply('done')
 
-   if not sys.modules.has_key(name):
+   if not name in sys.modules:
       return phenny.reply('%s: no such module!' % name)
 
    # Thanks to moot for prodding me on this
@@ -53,4 +53,4 @@ f_reload.priority = 'low'
 f_reload.thread = False
 
 if __name__ == '__main__':
-   print __doc__.strip()
+   print(__doc__.strip())

@@ -45,9 +45,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!b32d {string}</td>                     <td>Base32-decode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!b16e {string}</td>                     <td>Base16-encode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!b16d {string}</td>                     <td>Base16-decode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!crc32 {string}</td>                    <td>Hash a string using crc32</td>                       <td>Anyone</td>        </tr>
-    <tr> <td>!hash {hashtype} {string}</td>          <td>Hash a string using various hash functions</td>      <td>Anyone</td>        </tr>
-    <tr> <td>!re {regex}<i>`</i>{string}</td>        <td>check if regex matches, if it does print groups</td> <td>Anyone</td>        </tr>
+    <tr> <td>!hash {hashtype} {string}</td>          <td>Hash a string, supports various hash functions</td>  <td>Anyone</td>        </tr>
     <tr> <td>!rand [min] {max}</td>                  <td>Says a random number between(incl.) min and max</td> <td>Anyone</td>        </tr>
     <tr> <td><b>search.py</b></td>                   <td></td>                                                <td></td>              </tr>
     <tr> <td>!g {string}</td>                        <td>Output first Google result for string</td>           <td>Anyone</td>        </tr>
@@ -74,9 +72,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td><b>serverup.py</b></td>                 <td></td>                                                <td></td>              </tr>
     <tr> <td>!up {IP/hostname} [port]</td>           <td>Check if server at IP/hostname is up</td>            <td>Anyone</td>        </tr>
     <tr> <td></td>                                   <td>Supports multiple Ports e.g. 123-456,999</td>        <td></td>              </tr>
-    <tr> <td><b>shorten.py</b></td>                  <td></td>                                                <td></td>              </tr>
-    <tr> <td>!sh {service} {url}</td>                <td>Shortens URL</td>                                    <td>Anyone</td>        </tr>
-    <tr> <td></td>                                   <td>Currently supports: is.gd, v.gd</td>                 <td></td>              </tr>
     <tr> <td><b>title.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!title [link]</td>                      <td>Query Page Title</td>                                <td>Anyone</td>        </tr>
     <tr> <td><b>twitter.py</b></td>                  <td></td>                                                <td></td>              </tr>

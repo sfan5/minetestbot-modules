@@ -10,8 +10,7 @@ http://inamidst.com/phenny/
 """
 
 import random
-import urllib2
-import json
+import web
 
 def make_cmd(cmd, txt):
   def m(phenny, input):
@@ -41,10 +40,8 @@ next.commands = ['next']
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
 	if random.randint(0, 1) == 0:
-		f = urllib2.urlopen('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
-		data = f.read()
-		f.close()
-		data = json.loads(data)
+		data = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
+		data = web.json(data)
 		phenny.say("DOGE is at " + data['return']['markets']['DOGE']['lasttradeprice'] + " BTC")
 	else:
 		links = [

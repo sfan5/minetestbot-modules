@@ -14,13 +14,24 @@ class SomeObject(object):
 	pass
 
 env = {
-	"bin": bin, "abs": abs, "oct": oct, "int": int, "sum": sum,
-	"tuple": tuple, "divmod": divmod, "hash": hash, "hex": hex,
-	"len": len, "list": list, "long": long, "max": max,
-	"range": range, "round": round, "min": min, "map": map,
-	"zip": zip, "xrange": xrange, "unicode": unicode,
-	"unichr": unichr, "type": type, "slice": slice, "ord": ord,
-	"chr": chr, "str": str, "float": float
+	"abs": abs, "all": all, "any": any,
+	"ascii": ascii, "bin": bin, "bool": bool,
+	"bytearray": bytearray, "bytes": bytes,
+	"callable": callable, "chr": chr,
+	"complex": complex, "dict": dict,
+	"divmod": divmod,
+	"enumerate": enumerate, "filter": filter,
+	"float": format, "hex": hex, "int": int,
+	"iter": iter, "len": len, "list": list,
+	"map": map, "max": max, "min": min,
+	"next": next, "object": object,
+	"oct": oct, "ord": ord, "pow": pow,
+	"range": range, "repr": repr,
+	"reversed": reversed, "round": round,
+	"set": set, "slice": slice,
+	"sorted": sorted, "str": str,
+	"sum": sum, "tuple": tuple,
+	"type": type, "zip": zip,
 }
 
 libs = [
@@ -37,7 +48,7 @@ for lib in libs:
 def c(phenny, input):
 	if not input.group(2):
 		return phenny.reply("Nothing to calculate.")
-	q = input.group(2).encode('ascii', 'ignore')
+	q = input.group(2)
 	if '__' in q:
 		return phenny.reply("Sorry, but no double underscores.")
 	log.log("event", "%s calculated '%s'" % (log.fmt_user(input), q), phenny)
@@ -67,4 +78,4 @@ c.commands = ['c']
 c.example = '.c 5 + 3'
 
 if __name__ == '__main__':
-	print __doc__.strip()
+	print(__doc__.strip())

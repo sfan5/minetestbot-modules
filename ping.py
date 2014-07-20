@@ -20,8 +20,8 @@ interjection.priority = 'high'
 
 def l3(phenny, input):
    phenny.say('<3 ' + input.nick)
-l3.rule = r'<3 $nickname'
+l3.rule = r'<3 $nickname\s*'
 l3.priority = 'low'
 
 if __name__ == '__main__':
-   print __doc__.strip()
+   print(__doc__.strip())

@@ -5,7 +5,6 @@ Copyright 2013, sfan5
 """
 
 import random
-from thread import start_new_thread, allocate_lock
 import sqlite3
 import time
 import hashlib
@@ -118,4 +117,4 @@ db.commit()
 db.close()
 
 if __name__ == '__main__':
-   print __doc__.strip()
+   print(__doc__.strip())

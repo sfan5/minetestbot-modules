@@ -9,13 +9,12 @@ http://inamidst.com/phenny/
 """
 
 import time
-from tools import deprecated
-from thread import start_new_thread, allocate_lock
+from threading import Thread, Lock
 import sqlite3
 
 updates = list()
-update_l = allocate_lock()
-dblock = allocate_lock()
+update_l = Lock()
+dblock = Lock()
 
 def opendb():
     db = sqlite3.connect("seen.sqlite")
@@ -130,7 +129,8 @@ c.execute('''CREATE TABLE IF NOT EXISTS seen (nick text, channel text, time int)
 c.close()
 db.close()
 
-start_new_thread(updatethread, ())
+t = Thread(target=updatethread, name="seen.py database thread")
+t.start()
 
 if __name__ == '__main__':
-   print __doc__.strip()
+   print(__doc__.strip())
