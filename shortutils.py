@@ -41,6 +41,7 @@ def doge(phenny, input):
 	"""much wow, very function, such programming"""
 	if random.randint(0, 1) == 0:
 		data, sc = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
+		data = str(data, 'utf-8')
 		data = web.json(data)
 		phenny.say("DOGE is at " + data['return']['markets']['DOGE']['lasttradeprice'] + " BTC")
 	else:
@@ -84,14 +85,9 @@ doge.commands = ['doge']
 
 def btc(phenny, input):
 	"""Get current Bitcoin price"""
-	for x in phenny.bot.commands["high"].values():
-		if x[0].__name__ == "aa_hook":
-			if x[0](phenny, input):
-				return
-	f = urllib2.urlopen('https://blockchain.info/ticker')
-	data = f.read()
-	f.close()
-	data = json.loads(data)
+	data, sc = web.get('https://blockchain.info/ticker')
+	data = str(data, 'utf-8')
+	data = web.json(data)
 	if input.group(2):
 		currency = input.group(2).strip().upper()
 	else:
