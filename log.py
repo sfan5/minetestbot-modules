@@ -18,8 +18,8 @@ actionhighlight = "sfan5"
 
 def log(level, text, phenny):
 	level = level.upper()
-	f = open("bot.log", "a")
-	f.write(time.strftime("%F %H:%M:%S %z") + "\t" + loglevels[level] + "\t" + text + "\n")
+	f = open("bot.log", "ab")
+	f.write(bytes(time.strftime("%F %H:%M:%S %z") + "\t" + loglevels[level] + "\t" + text + "\n", 'utf-8', 'ignore'))
 	f.close()
 	if level == 'ACTION':
 		phenny.write(['PRIVMSG', actionchannel], actionhighlight + ": " + text)
