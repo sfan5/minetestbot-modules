@@ -8,16 +8,22 @@ import re
 import web
 import urllib.parse
 
-wikiuri_g = 'http://wiki.minetest.net/%s?printable=yes'
+wikiuri_g = 'http://wiki.minetest.net/index.php?title=%s&printable=yes'
 wikiuri_r = 'http://wiki.minetest.net/%s'
 
 r_content = re.compile(r'(?i)<div[^>]+class=.mw-content-ltr.>')
 r_paragraph = re.compile(r'(?ims)<p>(.+?)</p>')
 r_sentenceend = re.compile(r'\.[^\.]')
 transforms = [
-	re.compile(r'(?i)<a [^>]+>(.+?)</a>'),
-	re.compile(r'(?i)<b>(.+?)</b>'),
-	re.compile(r'(?i)<i>(.+?)</i>'),
+	(re.compile(r'(?i)<a [^>]+>(.+?)</a>'), "\g<1>"),
+	(re.compile(r'(?i)<b>(.+?)</b>'), "\x02\g<1>\x02"),
+	(re.compile(r'(?i)<i>(.+?)</i>'), "\x1d\g<1>\x1d"),
+	(re.compile(r'(?i)<u>(.+?)</u>'), "\x1f\g<1>\x1f"),
+	(re.compile(r'(?i)<code>(.+?)</code>'), "\x0315\g<1>\x03 "),
+	(re.compile(r'(?i)<br\s*/?>'), ""),
+]
+nottext = [
+	re.compile(r'(?i)^<br\s*/?>$')
 ]
 
 def wiki(phenny, input):
@@ -26,6 +32,7 @@ def wiki(phenny, input):
 		return
 
 	log.log("event", "%s queried Wiki for '%s'" % (log.fmt_user(input), term), phenny)
+	term = term.replace(" ", "_")
 	term = web.urlencode(term)
 
 	data, scode = web.get(wikiuri_g % term)
@@ -38,16 +45,26 @@ def wiki(phenny, input):
 		return phenny.say("Sorry, did not find anything.")
 	data = data[m.span()[1]:]
 
-	m = re.search(r_paragraph, data)
-	if not m:
+	mi = re.finditer(r_paragraph, data)
+	text = ""
+	for m in mi:
+		abort = False
+		for e in nottext:
+			if re.search(e, m.group(1)):
+				abort = True
+				break
+		if abort:
+			continue
+		text = m.group(1)
+		break
+	if not text:
 		return phenny.say("Sorry, did not find anything.")
-	data = m.group(1)
-	for transform in transforms:
-		data = re.sub(transform, '\g<1>', data)
-	m = re.search(r_sentenceend, data)
+	for tf in transforms:
+		text = re.sub(tf[0], tf[1], text)
+	m = re.search(r_sentenceend, text)
 	if m:
-		data = data[:m.span()[1]-1]
-	phenny.say('"%s" - %s ' % (web.decode(data), wikiuri_r % term))
+		text = text[:m.span()[1]-1]
+	phenny.say('"%s" - %s ' % (web.decode(text), wikiuri_r % term))
 
 wiki.commands = ['wik', 'wiki']
 wiki.priority = 'high'
