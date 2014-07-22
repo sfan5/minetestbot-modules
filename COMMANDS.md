@@ -30,9 +30,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!unmute {nick/mask} [nick/mask]...</td> <td>UnMute nick/mask</td>                                <td><i>Admins</i></td> </tr>
     <tr> <td>!kick {nick} {message}</td>             <td>Kick nick with message</td>                          <td><i>Admins</i></td> </tr>
     <tr> <td>!badword {on/off/reload}</td>           <td>Enable/Disable badword functionality</td>            <td><i>Admins</i></td> </tr>
-    <tr> <td><b>forumutils.py</b></td>               <td></td>                                                <td></td>              </tr>
-    <tr> <td>!sfu {searchstring}</td>                <td>Search Minetest Forum users using searchstring</td>  <td>Anyone</td>        </tr>
-    <tr> <td>!sfulimit {user} {'reset'/number}</td>  <td>Set search limit for user</td>                       <td><i>Admins</i></td> </tr>
     <tr> <td><b>ping.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>(hi|hello|hey) <i>$botname</i></td>     <td>Reply with (Hi|Hello|Hey)( |!)</td>                  <td>Anyone</td>        </tr>
     <tr> <td><b>reload.py</b></td>                   <td></td>                                                <td></td>              </tr>
