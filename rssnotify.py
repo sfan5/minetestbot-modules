@@ -3,7 +3,7 @@
 rssnotify.py - Phenny RssNotify Module
 Copyright 2013, sfan5
 """
-import time, urllib, re
+import time, urllib.parse, re
 import feedparser # sudo pip install feedparser
 rssnotify = {}
 
@@ -82,7 +82,7 @@ def rsscheck(phenny, input):
                     continue
                 if rssnotify["show_commit_link"]:
                     if rssnotify["use_git.io"]:
-                        params = urllib.urlencode({'url' : feed_entry.link})
+                        params = urllib.parse.urlencode({'url' : feed_entry.link})
                         # Side note: git.io only works with *.github.com links
                         u = urllib.urlopen("http://git.io/create", params)
                         l = u.read()
