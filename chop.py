@@ -3,39 +3,8 @@
 chop.py - Phenny Channel Administration Module
 Copyright 2013, sfan5
 """
-import os, web, re
 
 chop = {}
-chop["badword_limit"] = 4
-chop["badword_enabled"] = False
-chop["badword_kickmsg"] = "Chop!" # "Stop using bad words!"
-chop["victims"] = {} # for future use
-badword_list = "" # TODO: Get badword list from somewhere
-
-def num_badwords(sentence):
-    badwords = 0
-    for bwl in badword_list.split("\n"):
-        args = bwl.split(" ")
-        if len(args) < 2: continue
-        arg = ' '.join(args[1:]).rstrip("\n\r")
-        if args[0] == "regex":
-            try:
-                rgx = re.compile(arg)
-            except Exception as e:
-                print("Error while compiling regex ''%s'': %s" % (arg, str(e)))
-                continue
-        for word in sentence.split(" "):
-            word = word.rstrip(",.;:")
-            word = word.lstrip(",.;:")
-            if args[0] == "raw":
-                if word.lower() == arg.lower():
-                    badwords += 1
-            elif args[0] == "regex":
-                if not rgx.match(word) == None:
-                    badwords += 1
-        if args[0] == "regex": del rgx
-
-    return badwords
 
 def hmasktrans(va):
     a = "!" in va
@@ -49,11 +18,15 @@ def hmasktrans(va):
     else: # a and b
         return va
 
-def chanmodefunc(phenny, input, mode, modfunc=None):
+def chanmodefunc(phenny, input, mode, modfunc=None, notself=False):
     if modfunc == None:
         modfunc = lambda x: x
     arg = input.group(2)
-    if not arg: return phenny.write(['MODE', input.sender, mode, input.nick], "")
+    if not arg:
+    	if notself:
+    		return phenny.reply("Too few arguments")
+    	else:
+    		return phenny.write(['MODE', input.sender, mode, input.nick], "")
     arg = arg.split(" ")
     skip_next = False
     for i in range(0, len(arg)):
@@ -68,53 +41,22 @@ def chanmodefunc(phenny, input, mode, modfunc=None):
             continue
         phenny.write(['MODE', input.sender, mode, modfunc(va)], "")
 
-def voice(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '+v')
+def make_thing(command, mode, modfunc=None, notself=False):
+	def m(phenny, input):
+		if not input.admin: return
+		chanmodefunc(phenny, input, mode, modfunc, notself)
+	m.commands = [command]
+	return m
 
-voice.commands = ['voice']
+voice = make_thing("voice", "+v")
+devoice = make_thing("devoice", "-v")
+op = make_thing("op", "+o")
+deop = make_thing("deop", "-o")
+ban = make_thing("ban", "+b", hmasktrans, True)
+unban = make_thing("unban", "-b", hmasktrans, True)
+mute = make_thing("mute", "+q", hmasktrans, True)
+unmute = make_thing("unmute", "-q", hmasktrans, True)
 
-def devoice(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '-v')
-
-devoice.commands = ['devoice']
-
-def op(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '+o')
-
-op.commands = ['op']
-
-def deop(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '-o')
-
-deop.commands = ['deop']
-
-def ban(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '+b', hmasktrans)
-
-ban.commands = ['ban']
-
-def unban(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '-b', hmasktrans)
-
-unban.commands = ['unban']
-
-def mute(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '+q', hmasktrans)
-
-mute.commands = ['mute']
-
-def unmute(phenny, input):
-    if not input.admin: return
-    chanmodefunc(phenny, input, '-q', hmasktrans)
-
-unmute.commands = ['unmute']
 
 def kick(phenny, input):
     if not input.admin: return
@@ -132,33 +74,3 @@ def kick(phenny, input):
 
 kick.commands = ['kick']
 
-def badword_watcher(phenny, input):
-    if not input.sender.startswith('#'): return
-    if not chop["badword_enabled"]: return
-    bwc = num_badwords(input.group(0))
-    if bwc > chop["badword_limit"]:
-        phenny.write(['KICK', input.sender, input.nick], chop["badword_kickmsg"])
-        try:
-            chop["victims"][input.nick] += 1
-        except:
-            chop["victims"][input.nick] = 1
-
-badword_watcher.priority = 'high'
-badword_watcher.rule = r'.*'
-badword_watcher.nohook = True
-
-def badword_ctrl(phenny, input):
-    if not input.admin: return
-    arg = input.group(2)
-    if not arg: return
-    if arg == "enable" or arg == "on":
-        chop["badword_enabled"] = True
-        phenny.say("done.")
-    elif arg == "disable" or arg == "off":
-        chop["badword_enabled"] = False
-        phenny.say("done.")
-    elif arg == "reload":
-        badword_list = "" # TODO: Get badword list from somewhere
-        phenny.say("done.")
-
-badword_ctrl.commands = ['badword']

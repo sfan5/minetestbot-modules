@@ -22,14 +22,13 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td><b>chop.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!op [nick] ...</td>                     <td>Op nick</td>                                         <td><i>Admins</i></td> </tr>
     <tr> <td>!deop [nick] ...</td>                   <td>DeOp nick</td>                                       <td><i>Admins</i></td> </tr>
-    <tr> <td>!voice {nick} [nick] ...</td>           <td>Voice nick</td>                                      <td><i>Admins</i></td> </tr>
-    <tr> <td>!devoice {nick} [nick] ...</td>         <td>DeVoice nick</td>                                    <td><i>Admins</i></td> </tr>
+    <tr> <td>!voice [nick] ...</td>                  <td>Voice nick</td>                                      <td><i>Admins</i></td> </tr>
+    <tr> <td>!devoice [nick] ...</td>                <td>DeVoice nick</td>                                    <td><i>Admins</i></td> </tr>
     <tr> <td>!ban {nick/mask} [nick/mask] ...</td>   <td>Ban nick/mask</td>                                   <td><i>Admins</i></td> </tr>
     <tr> <td>!unban {nick/mask} [nick/mask] ...</td> <td>UnBan nick/mask</td>                                 <td><i>Admins</i></td> </tr>
     <tr> <td>!mute {nick/mask} [nick/mask] ...</td>  <td>Mute nick/mask</td>                                  <td><i>Admins</i></td> </tr>
     <tr> <td>!unmute {nick/mask} [nick/mask]...</td> <td>UnMute nick/mask</td>                                <td><i>Admins</i></td> </tr>
-    <tr> <td>!kick {nick} {message}</td>             <td>Kick nick with message</td>                          <td><i>Admins</i></td> </tr>
-    <tr> <td>!badword {on/off/reload}</td>           <td>Enable/Disable badword functionality</td>            <td><i>Admins</i></td> </tr>
+    <tr> <td>!kick {nick} [message]</td>             <td>Kick nick with message</td>                          <td><i>Admins</i></td> </tr>
     <tr> <td><b>ping.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>(hi|hello|hey) <i>$botname</i></td>     <td>Reply with (Hi|Hello|Hey)( |!)</td>                  <td>Anyone</td>        </tr>
     <tr> <td><b>reload.py</b></td>                   <td></td>                                                <td></td>              </tr>
