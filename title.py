@@ -29,8 +29,8 @@ def title(phenny, input):
 	if not m:
 		return phenny.say("No title found.")
 	title = m.group(1).strip()
-	if len(title) > 75:
-		title = title[:75] + "[...]"
+	if len(title) > 100:
+		title = title[:100] + "[...]"
 	phenny.reply(title)
 
 title.commands = ['title']
