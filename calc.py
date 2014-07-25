@@ -66,8 +66,9 @@ def c(phenny, input):
 			if 'math.pow' in q or '**' in q:
 				phenny.reply("Kindly go fuck yourself!")
 				antiabuse.ignore("*!*" + input.hostmask[input.hostmask.find("@"):])
-				log.log("action", "Auto-ignored %s for !c crash attempt" % log.fmt_user(input), phenny)
+				log.log("action", "Auto-ignored %s for !c crash attempt." % log.fmt_user(input), phenny)
 			else:
+				log.log("action", "Calculation by %s timed out." % log.fmt_user(input), phenny)
 				phenny.reply("Took to long to calculate")
 			return
 	else:
