@@ -26,35 +26,35 @@ def create_intcompare(name, most_least=True):
       results = []
       if arg.startswith("<"): # less comparing
           try:
-              nu = int(arg[1:])
+              nu = float(arg[1:])
           except:
               return []
           for i in range(0, len(tbl)):
-              if int(tbl[i][name]) < nu:
+              if tbl[i][name] < nu:
                   results.append(i)
       elif arg.startswith(">"): # more comparing
           try:
-              nu = int(arg[1:])
+              nu = float(arg[1:])
           except:
               return []
           for i in range(0, len(tbl)):
-              if int(tbl[i][name]) > nu:
+              if tbl[i][name] > nu:
                   results.append(i)
       elif arg == "most" and most_least: # most
           ranking = (-1, None)
           for i in range(0, len(tbl)):
-              if int(tbl[i][name]) > ranking[0]:
-                  ranking = (int(tbl[i][name]), i)
+              if tbl[i][name] > ranking[0]:
+                  ranking = (tbl[i][name], i)
           results.append(ranking[1])
       elif arg == "least" and most_least: # least
-          ranking = (0xFFFF, None)
+          ranking = (2**32, None)
           for i in range(0, len(tbl)):
-              if int(tbl[i][name]) < ranking[0]:
-                  ranking = (int(tbl[i][name]), i)
+              if tbl[i][name] < ranking[0]:
+                  ranking = (tbl[i][name], i)
           results.append(ranking[1])
       elif arg.startswith("!"): # not comparing
           try:
-              nu = int(arg[1:])
+              nu = float(arg[1:])
           except:
               return []
           for i in range(0, len(tbl)):
@@ -64,7 +64,7 @@ def create_intcompare(name, most_least=True):
           if arg.startswith("="): # support "3" and "=3"
               arg = arg[1:]
           try:
-              nu = int(arg)
+              nu = float(arg)
           except:
               return []
           for i in range(0, len(tbl)):
@@ -97,7 +97,7 @@ default_method = "name"
 def server(phenny, input):
     arg = input.group(2)
     if not arg:
-        cmds = [(by_random, )]
+        cmds = [(by_random, "")]
     else:
         arg = arg.strip().split(" ")
         cmds = []
