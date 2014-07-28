@@ -6,16 +6,17 @@ Copyright 2013, sfan5
 import random
 
 rainbowcolors = ["4", "7", "8", "3", "12", "6", "13"]
-#maybe TODO: make this rainbow better (can't really make it that better because IRC colors suck)
 
 def colorize(text):
 	out = ""
 	i = 0
 	j = 0
 	for c in text:
-		if c in list(str(i) for i in range(10)):
-			c = u"\u200b" + c # 'ZERO WIDTH SPACE' cuz IRC clients are stupid
-		out += "\x03" + str(rainbowcolors[i]) + c
+		if j == 0:
+			if c in list(str(i) for i in range(10)):
+				c = u"\u200b" + c # 'ZERO WIDTH SPACE' cuz IRC clients are stupid
+			out += "\x03" + str(rainbowcolors[i])
+		out += c
 		j += 1
 		if j >= 3:
 			i += 1
