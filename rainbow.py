@@ -7,7 +7,16 @@ import random
 
 rainbowcolors = ["4", "7", "8", "3", "12", "6", "13"]
 
-def colorize(text):
+def colorize(text, cyclelen=3):
+	if cyclelen == -1: # Auto-detect
+		if len(text) < 6:
+			cyclelen = 1
+		elif len(text) < 13:
+			cyclelen = 2
+		elif len(text) < 25:
+			cyclelen = 3
+		else:
+			cyclelen = 4
 	out = ""
 	i = 0
 	j = 0
@@ -18,7 +27,7 @@ def colorize(text):
 			out += "\x03" + str(rainbowcolors[i])
 		out += c
 		j += 1
-		if j >= 3:
+		if j >= cyclelen:
 			i += 1
 			j = 0
 		if i >= len(rainbowcolors):
@@ -28,12 +37,12 @@ def colorize(text):
 def rainbow(phenny, input):
 	arg = input.group(2)
 	if not arg:
-		return phenny.say(colorize("Rainbow") + "\x03 What?")
+		return phenny.say(colorize("Rainbow", cyclelen=1) + "\x03 What?")
 	if arg.startswith("#") and ' ' in arg and input.admin:
 		ch = arg.split(" ")[0]
 		arg = " ".join(arg.split(" ")[1:])
-		phenny.write(['PRIVMSG', ch], colorize(arg))
+		phenny.write(['PRIVMSG', ch], colorize(arg, cyclelen=-1))
 	else:
-		phenny.say(colorize(arg))
+		phenny.say(colorize(arg, cyclelen=-1))
 
 rainbow.commands = ['rainbow']
