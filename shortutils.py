@@ -83,6 +83,64 @@ def doge(phenny, input):
 
 doge.commands = ['doge']
 
+def cat(phenny, input):
+	cats = [
+		"meow :3",
+		"http://i.imgur.com/qmj3sTy.jpg",
+		"http://i.imgur.com/iEyDY2z.jpg",
+		"http://i.imgur.com/BY5ehYX.jpg",
+		"http://i.imgur.com/D448EQt.jpg",
+		"http://i.imgur.com/3l1REu3.jpg",
+		"http://i.imgur.com/3012uP2.jpg",
+		"http://i.imgur.com/0p9arhp.jpg",
+		"http://i.imgur.com/c6nvxLE.jpg",
+		"http://i.imgur.com/ERebecg.jpg",
+		"http://i.imgur.com/AU5LoAs.jpg",
+		"https://cdn.mediacru.sh/LGwqjSoddQ2G.jpg",
+		"http://i.imgur.com/RoCxCms.jpg",
+		"http://i.imgur.com/CkgC24b.jpg",
+		"http://i.imgur.com/iATkdQO.jpg",
+		"http://i.imgur.com/kA8l8oP.jpg",
+		"http://i.imgur.com/BIPTRoc.jpg",
+		"http://i.imgur.com/bjM2UlX.jpg",
+		"http://i.imgur.com/YMm7Tgl.jpg",
+		"http://i.imgur.com/qNBpvF3.jpg",
+		"http://i.imgur.com/CjNrx6g.jpg",
+		"http://i.imgur.com/XaU5D0a.jpg",
+		"http://i.imgur.com/F1JBD2m.jpg",
+		"http://i.imgur.com/q4RPFjJ.jpg",
+		"http://i.imgur.com/fVK8nca.jpg",
+		"http://i.imgur.com/bZiCFie.jpg",
+		"http://i.imgur.com/MSLjnAw.jpg",
+		"http://i.imgur.com/DCXEhOJ.jpg",
+		"http://i.imgur.com/gfPVdsc.jpg",
+		"http://i.imgur.com/i78Jltr.jpg",
+		"http://i.imgur.com/R18cQmP.png",
+		"http://i.imgur.com/0ekIBPl.jpg",
+		"http://i.imgur.com/foNWNCA.jpg",
+		"http://i.imgur.com/NCpnwbx.jpg",
+		"http://i.imgur.com/NKWGj9s.jpg",
+		"http://i.imgur.com/6tZDQQn.jpg",
+		"http://i.imgur.com/7jtdgLn.jpg",
+		"http://i.imgur.com/hF7WuV9.jpg",
+		"http://i.imgur.com/A6Pw3Cf.jpg",
+		"http://i.imgur.com/9tHeEYj.jpg",
+		"http://i.imgur.com/f6q50SJ.jpg",
+		"http://i.imgur.com/3nHDsb8.jpg",
+		"http://i.imgur.com/w9c7A6x.jpg",
+		"http://i.imgur.com/rBJgj7d.jpg",
+		"http://i.imgur.com/TC7fv.jpg",
+		"http://i.imgur.com/xRPBWSw.jpg",
+		"http://i.imgur.com/qjzMvkJ.jpg",
+		"http://i.imgur.com/qYdPjox.jpg",
+		"http://i.imgur.com/8UvDsPc.jpg",
+		"http://i.imgur.com/yFmko1j.jpg",
+		"http://i.imgur.com/nySOBtb.jpg",
+	]
+	phenny.say(random.choice(cats))
+
+cat.commands = ['cat']
+
 def btc(phenny, input):
 	"""Get current Bitcoin price"""
 	data, sc = web.get('https://blockchain.info/ticker')
