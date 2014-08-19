@@ -21,7 +21,7 @@ def api_ignore(mask):
 
 def api_unignore(mask):
   if not mask in antiabuse["ignorelist"]:
-    return
+    return False
   antiabuse['ignorelist'].remove(mask)
   db = sqlite3.connect("antiabuse.sqlite")
   c = db.cursor()
@@ -29,6 +29,7 @@ def api_unignore(mask):
   c.close()
   db.commit()
   db.close()
+  return True
 
 def api_get_ignorelist():
   return antiabuse["ignorelist"]
@@ -39,7 +40,7 @@ class SomeObject(object):
 antiabuse_api = SomeObject()
 antiabuse_api.ignore = api_ignore
 antiabuse_api.unignore = api_unignore
-antiabuse_api.get_ignorelsit = api_get_ignorelist
+antiabuse_api.get_ignorelist = api_get_ignorelist
 
 _export = {
   'antiabuse': antiabuse_api,
@@ -84,8 +85,11 @@ def ignore(phenny, input):
 	if not input.admin:
 		return
 	arg = hmasktrans(input.group(2).strip())
-	api_ignore(arg)
-	phenny.reply("'%s' added to ignore list." % arg)
+	r = api_ignore(arg)
+	if r:
+		phenny.reply("'%s' added to ignore list." % arg)
+	else:
+		phenny.reply("'%s' not in ignore list." % arg)
 
 ignore.commands = ['ignore']
 ignore.priority = 'high'
@@ -100,13 +104,34 @@ def unignore(phenny, input):
 unignore.commands = ['unignore']
 unignore.priority = 'high'
 
+def limjoin(ent, j, lim):
+	o = []
+	i = 0
+	while True:
+		if i == len(ent):
+			break
+		s = ""
+		while True:
+			if i == len(ent) or len(s) + len(ent[i]) > lim:
+				break
+			s += ent[i]
+			i += 1
+			s += j
+		o.append(s)
+	if len(o) > 0:
+		for i in range(len(o)):
+			o[i] = o[i][:-len(j)] # Cut off the delimiter
+	return o
+		
+
 def listignore(phenny, input):
 	if not input.admin:
 		return
-	s = ', '.join(antiabuse['ignorelist'])
-	if s == "":
-		s = "Ignore list empty."
-	phenny.reply(s)
+	if len(antiabuse['ignorelist']) == 0:
+		return phenny.reply("Ignore list empty.")
+	l = limjoin(antiabuse['ignorelist'], ', ', 400)
+	for s in l:
+		phenny.reply(s)
 
 listignore.commands = ['listignore']
 listignore.priority = 'high'
