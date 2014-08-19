@@ -85,11 +85,8 @@ def ignore(phenny, input):
 	if not input.admin:
 		return
 	arg = hmasktrans(input.group(2).strip())
-	r = api_ignore(arg)
-	if r:
-		phenny.reply("'%s' added to ignore list." % arg)
-	else:
-		phenny.reply("'%s' not in ignore list." % arg)
+	api_ignore(arg)
+	phenny.reply("'%s' added to ignore list." % arg)
 
 ignore.commands = ['ignore']
 ignore.priority = 'high'
@@ -98,8 +95,11 @@ def unignore(phenny, input):
 	if not input.admin:
 		return
 	arg = hmasktrans(input.group(2).strip())
-	api_unignore(arg)
-	phenny.reply("'%s' removed from ignore list." % arg)
+	r = api_unignore(arg)
+	if r:
+		phenny.reply("'%s' removed from ignore list." % arg)
+	else:
+		phenny.reply("'%s' not in ignore list." % arg)
 
 unignore.commands = ['unignore']
 unignore.priority = 'high'
