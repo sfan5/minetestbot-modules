@@ -108,11 +108,9 @@ def rsscheck(phenny, input):
 					print("[RssNotify]: Something went wrong!")
 				for ch in chans:
 					if commiter.lower() != commiter_realname.lower():
-						#phenny.say("GIT: %s (%s) commited to %s: %s %s %s" % (commiter,commiter_realname,reponame,feed_entry.title,commit_hash,commit_time))
-						phenny.write(['PRIVMSG', ch],"GIT: %s (%s) commited to %s: %s %s %s %s" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_time, commit_link))
+						phenny.write(['PRIVMSG', ch], "\x0302[Git]\x0f \x0304%s\x0f (\x0304%s\x0f) -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					else:
-						#phenny.say("GIT: %s commited to %s: %s %s %s" % (commiter,reponame,feed_entry.title,commit_hash,commit_time))
-						phenny.write(['PRIVMSG', ch],"GIT: %s commited to %s: %s %s %s %s" % (commiter, reponame, feed_entry.title, commit_hash, commit_time, commit_link))
+						phenny.write(['PRIVMSG', ch], "\x0302[Git]\x0f \x0304%s\x0f -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 		if len(feed.entries) > 0:
 			m = -1
 			for i in range(0, len(feed.entries)):
