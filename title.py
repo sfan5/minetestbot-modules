@@ -29,19 +29,20 @@ def title(phenny, input):
 	if not m:
 		return phenny.say("No title found.")
 	title = m.group(1).strip()
-	if len(title) > 100:
-		title = title[:100] + "[...]"
+	if len(title) > 150:
+		title = title[:150] + "[...]"
 	phenny.reply(title)
 
 title.commands = ['title']
 
 def noteuri(phenny, input):
 	uri = input.group(1)
-	phenny.bot.last_seen_uri = uri
+	setattr(phenny.bot, 'last_seen_uri', uri)
 
-noteuri.rule = r'(https?://[^<> "\x01]+)'
+noteuri.rule = r'.*(https?://[^<> "\x01]+).*'
 noteuri.priority = 'low'
 noteuri.nohook = True
+noteuri.thread = False
 
 if __name__ == '__main__':
 	print(__doc__.strip())
