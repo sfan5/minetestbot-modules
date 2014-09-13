@@ -25,8 +25,8 @@ transforms = [
 ]
 nottext = [
 	re.compile(r'(?i)^<br\s*/?>$'),
-	re.compile('(?i)^' + re.escape('<font color="#800000"><b>This article is incomplete.</b></font>') + '$'),
-	re.compile('(?i)^' + re.escape('<b>This article is missing examples, feel free to add them.</b>') + '$'),
+	re.compile('(?i)^' + re.escape('<b>This article is incomplete.</b>') + '$'),
+	re.compile('(?i)^' + re.escape('Please help expand this article to include more useful information.') + '$'),
 ]
 
 def wiki(phenny, input):
