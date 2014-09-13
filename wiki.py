@@ -13,9 +13,10 @@ wikiuri_r = 'http://wiki.minetest.net/%s'
 
 r_content = re.compile(r'(?i)<div[^>]+class=.mw-content-ltr.>')
 r_paragraph = re.compile(r'(?ims)<p>(.+?)</p>')
-r_sentenceend = re.compile(r'\.[^\.]')
+r_headline = re.compile(r'(?i)<span class="mw-headline" id="[^"]+">(.+?)</span>')
+r_sentenceend = re.compile(r'\.[ A-Z]')
 transforms = [
-	(re.compile(r'(?i)<a [^>]+>(.+?)</a>'), "\x0312\g<1>\x0f"),
+	(re.compile(r'(?i)<a [^>]+>(.+?)</a>'), "\x0302\g<1>\x0f"),
 	(re.compile(r'(?i)<b>(.+?)</b>'), "\x02\g<1>\x02"),
 	(re.compile(r'(?i)<i>(.+?)</i>'), "\x1d\g<1>\x1d"),
 	(re.compile(r'(?i)<u>(.+?)</u>'), "\x1f\g<1>\x1f"),
@@ -23,7 +24,9 @@ transforms = [
 	(re.compile(r'(?i)<br\s*/?>'), ""),
 ]
 nottext = [
-	re.compile(r'(?i)^<br\s*/?>$')
+	re.compile(r'(?i)^<br\s*/?>$'),
+	re.compile('(?i)^' + re.escape('<font color="#800000"><b>This article is incomplete.</b></font>') + '$'),
+	re.compile('(?i)^' + re.escape('<b>This article is missing examples, feel free to add them.</b>') + '$'),
 ]
 
 def wiki(phenny, input):
@@ -42,7 +45,7 @@ def wiki(phenny, input):
 
 	m = re.search(r_content, data)
 	if not m:
-		return phenny.say("Sorry, did not find anything.")
+		return phenny.say("Sorry, did not find any text to display. Here's the link: %s" % (wikiuri_r % term,))
 	data = data[m.span()[1]:]
 
 	mi = re.finditer(r_paragraph, data)
@@ -58,13 +61,17 @@ def wiki(phenny, input):
 		text = m.group(1)
 		break
 	if not text:
-		return phenny.say("Sorry, did not find anything.")
+		m = re.search(r_headline, data)
+		if m:
+			text = "<b>" + m.group(1) + "</b>"
+		else:
+			return phenny.say("Sorry, did not find any text to display. Here's the link: %s" % (wikiuri_r % term,))
 	for tf in transforms:
 		text = re.sub(tf[0], tf[1], text)
 	m = re.search(r_sentenceend, text)
 	if m:
 		text = text[:m.span()[1]-1]
-	phenny.say('"%s" - %s ' % (web.decode(text), wikiuri_r % term))
+	phenny.say('"%s" - %s' % (web.decode(text), wikiuri_r % term))
 
 wiki.commands = ['wik', 'wiki']
 wiki.priority = 'high'
