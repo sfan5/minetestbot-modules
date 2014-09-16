@@ -39,7 +39,7 @@ next.commands = ['next']
 
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
-	if random.randint(0, 1) == 0:
+	if random.randint(0, 5) == 0:
 		data, sc = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
 		data = str(data, 'utf-8')
 		data = web.json(data)
@@ -77,6 +77,7 @@ def doge(phenny, input):
 			"http://i.imgur.com/v7gjzme.jpg",
 			"http://i.imgur.com/uI51MQy.png",
 			"http://i.imgur.com/JBXo2M5.jpg",
+			"https://i.imgur.com/lpdPpxX.jpg",
 		]
 		# ^ How to be productive on a Saturday
 		phenny.say(random.choice(links))
