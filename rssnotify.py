@@ -111,15 +111,15 @@ def rsscheck(phenny, input):
 				if rssnotify["logfilepath"] != "":
 					lf = open(rssnotify["logfilepath"], "a")
 					if commiter.lower() != commiter_realname.lower():
-						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] ([color=#cc0000]%s[/color]) -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						lf.write("[color=#3465a4][git][/color] [color=#cc0000]%s[/color] ([color=#cc0000]%s[/color]) -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					else:
-						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						lf.write("[color=#3465a4][git][/color] [color=#cc0000]%s[/color] -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					lf.close()
 				for ch in chans:
 					if commiter.lower() != commiter_realname.lower():
-						phenny.write(['PRIVMSG', ch], "\x0302[Git]\x0f \x0304%s\x0f (\x0304%s\x0f) -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						phenny.write(['PRIVMSG', ch], "\x0302[git]\x0f \x0304%s\x0f (\x0304%s\x0f) -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					else:
-						phenny.write(['PRIVMSG', ch], "\x0302[Git]\x0f \x0304%s\x0f -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						phenny.write(['PRIVMSG', ch], "\x0302[git]\x0f \x0304%s\x0f -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 		if len(feed.entries) > 0:
 			m = -1
 			for i in range(0, len(feed.entries)):
