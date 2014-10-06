@@ -111,9 +111,9 @@ def rsscheck(phenny, input):
 				if rssnotify["logfilepath"] != "":
 					lf = open(rssnotify["logfilepath"], "a")
 					if commiter.lower() != commiter_realname.lower():
-						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] ([color=#cc0000]%s[/color]) -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] ([color=#cc0000]%s[/color]) -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					else:
-						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
+						lf.write("[color=#3465a4][Git][/color] [color=#cc0000]%s[/color] -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
 					lf.close()
 				for ch in chans:
 					if commiter.lower() != commiter_realname.lower():
