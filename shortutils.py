@@ -139,6 +139,7 @@ def cat(phenny, input):
 		"http://i.imgur.com/nySOBtb.jpg",
 		"https://mediacru.sh/sABjUz-OsVY_.jpe",
 		"https://i.imgur.com/kQ62yNM.jpg",
+		"https://i.imgur.com/s9tdEOi.jpg",
 	]
 	phenny.say(random.choice(cats))
 
