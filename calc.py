@@ -21,7 +21,7 @@ env = {
 	"complex": complex, "dict": dict,
 	"divmod": divmod,
 	"enumerate": enumerate, "filter": filter,
-	"float": format, "hex": hex, "int": int,
+	"float": float, "hex": hex, "int": int,
 	"iter": iter, "len": len, "list": list,
 	"map": map, "max": max, "min": min,
 	"next": next, "object": object,
