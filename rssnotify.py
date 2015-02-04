@@ -90,7 +90,7 @@ def rsscheck(phenny, input):
 						l, code = web.post("http://git.io/create", {'url': feed_entry.link})
 						if code == 200:
 							l = str(l, 'utf-8')
-							if len(l.strip()) == 6:
+							if not ' ' in l: # If there are spaces it's probably an error
 								commit_link = "http://git.io/" + l
 							else:
 								commit_link = feed_entry.link
