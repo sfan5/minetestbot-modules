@@ -2,6 +2,7 @@
 """
 wiki.py - Phenny Wiki Module
 Copyright 2014, sfan5
+Licensed under GNU General Public License v2.0
 """
 
 import re

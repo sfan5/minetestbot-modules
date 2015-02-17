@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """
-serverup.py - Minetest server ping Module
+serverup.py - Minetest server ping module
 Copyright 2014, sfan5
+Licensed under GNU General Public License v2.0
 """
 
 import socket, time

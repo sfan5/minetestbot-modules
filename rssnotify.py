@@ -2,6 +2,7 @@
 """
 rssnotify.py - Phenny RssNotify Module
 Copyright 2013, sfan5
+Licensed under GNU General Public License v2.0
 """
 import time
 import re

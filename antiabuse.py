@@ -2,6 +2,7 @@
 """
 antiabuse.py - Phenny AntiAbuse Module
 Copyright 2012, sfan5
+Licensed under GNU General Public License v2.0
 """
 import time, sqlite3
 

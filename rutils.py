@@ -2,6 +2,7 @@
 """
 rutils.py - Phenny Utility Module
 Copyright 2012, sfan5
+Licensed under GNU General Public License v2.0
 """
 import base64, binascii, re, random, time, multiprocessing, hashlib
 
