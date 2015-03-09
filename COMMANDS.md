@@ -85,4 +85,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!btc [currency]</td>                    <td>Get Bitcoin price for specified currency</td>        <td>Anyone</td>        </tr>
     <tr> <td><b>tell.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!tell {nick} {message}</td>             <td>Tell somebody a message</td>                         <td>Anyone</td>        </tr>
+    <tr> <td><b>modsearch.py</b></td>                <td></td>                                                <td></td>              </tr>
+    <tr> <td>!mod {modname}</td>                     <td>Searches for a mod</td>                              <td>Anyone</td>        </tr>
 </table>
