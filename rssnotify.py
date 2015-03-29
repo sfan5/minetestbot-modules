@@ -11,17 +11,23 @@ import os
 import feedparser # sudo pip install feedparser
 rssnotify = {}
 
-def to_unix_time(st): # not really accurate, but works
-	reg = re.compile("([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})")
-	g = reg.match(st).groups(1)
-	t = 0
-	t += int(g[5])
-	t += int(g[4]) * 60
-	t += int(g[3]) * 60 * 60
-	t += int(g[2]) * 60 * 60 * 24
-	t += int(g[1]) * 60 * 60 * 24 * 30
-	t += int(g[0]) * 60 * 60 * 24 * 30 * 12
-	return t
+def to_unix_time(tstr):
+	r = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})([-+])(\d{2}):(\d{2})")
+	g = r.match(tstr).groups(1)
+	# This function would be like 100% shorter if the time library didn't suck so hard.
+	# time.strptime completly ignores timezones because who needs timezones anyway?
+	# time.timezone is only for non-DST; nobody reading 'time.timezone' in code expects that
+	# you have time.gmtime() but you can't use it because time.mktime() fucks with it when it's DST
+	# </rant>
+	ts = time.mktime(time.strptime(g[0], "%Y-%m-%dT%H:%M:%S"))
+	ts -= (time.altzone if time.daylight else time.timezone)
+	if g[1] == "+":
+		ts -= int(g[2]) * 60 * 60
+		ts -= int(g[3]) * 60
+	else: # g[1] == "-"
+		ts += int(g[2]) * 60 * 60
+		ts += int(g[3]) * 60
+	return ts
 
 def excepta(arr, exclude):
 	o = []
