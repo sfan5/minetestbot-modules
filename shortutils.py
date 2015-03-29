@@ -162,3 +162,32 @@ def btc(phenny, input):
 	phenny.say('1 BTC = %.4f %s' % (data[currency]['15m'], data[currency]['symbol']))
 
 btc.commands = ['btc']
+
+def resolve_generators(arr):
+	out = []
+	generator = type(_ for _ in [])
+	for e in arr:
+		if type(e) == generator:
+			for ee in e:
+				out.append(ee)
+		else:
+			out.append(e)
+	return out
+
+def combine(phenny, input):
+	if not input.group(2): return
+	combiners = [
+		(chr(n) for n in range(0x0300, 0x034e + 1)),
+		(chr(n) for n in range(0x0350, 0x0362 + 1)),
+		(chr(n) for n in range(0x1dc0, 0x1dca + 1)),
+		"\u1dfe", "\u1dff", 
+		(chr(n) for n in range(0xfe20, 0xfe23 + 1)),
+	]
+	combiners = resolve_generators(combiners)
+	o = input.group(2)[0]
+	for char in input.group(2)[1:]:
+		o += random.choice(combiners) + char
+	phenny.say(o)
+	
+combine.commands = ['combine']
+
