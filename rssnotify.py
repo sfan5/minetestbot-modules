@@ -12,6 +12,8 @@ import feedparser # sudo pip install feedparser
 rssnotify = {}
 
 def to_unix_time(tstr):
+	if tstr.endswith("Z"):
+		tstr = tstr[:-1] + "+00:00"
 	r = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})([-+])(\d{2}):(\d{2})")
 	g = r.match(tstr).groups(1)
 	# This function would be like 100% shorter if the time library didn't suck so hard.
