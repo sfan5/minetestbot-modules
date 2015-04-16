@@ -11,6 +11,7 @@ http://inamidst.com/phenny/
 
 import random
 import web
+import re
 
 def make_cmd(cmd, txt):
   def m(phenny, input):
@@ -190,4 +191,62 @@ def combine(phenny, input):
 	phenny.say(o)
 	
 combine.commands = ['combine']
+
+def resadj(phenny, input):
+	# Search for n so that n * factor == int(n * factor) starting from iv, adding delta each step (max 500)
+	def dothing(iv, delta, factor):
+		v = iv
+		i = 0
+		while i < 500:
+			n = v * factor
+			if int(n) == n:
+				return v
+			v += delta
+			i += 1
+		return -1
+	args = input.group(2).split(" ")
+	if len(args) < 3:
+		return phenny.reply("Usage: resadj <original res.> <aspect ratio> <w or h>")
+	if not re.match(r'^\d+x\d+$', args[0]):
+		return phenny.reply("fix your args")
+	if not re.match(r'^\d+:\d+$', args[1]):
+		return phenny.reply("fix your args")
+	w, h = (int(args[0].split("x")[0]), int(args[0].split("x")[1]))
+	ar = (int(args[1].split(":")[0]), int(args[1].split(":")[1]))
+	res = ""
+	if args[2].lower() == "w":
+		f = ar[1] / ar[0]
+		n = dothing(w, 1, f)
+		res += "\u2191 "
+		if n == -1:
+			res += "???"
+		else:
+			res += "%dx%d (diff=%d)" % (n, n * f, n - w)
+		res += " | "
+		n = dothing(w, -1, f)
+		res += "\u2193 "
+		if n == -1:
+			res += "???"
+		else:
+			res += "%dx%d (diff=%d)" % (n, n * f, w - n)
+	elif args[2].lower() == "h":
+		f = ar[0] / ar[1]
+		n = dothing(h, 1, f)
+		res += "\u2191 "
+		if n == -1:
+			res += "???"
+		else:
+			res += "%dx%d (diff=%d)" % (n * f, n, n - h)
+		res += " | "
+		n = dothing(h, -1, f)
+		res += "\u2193 "
+		if n == -1:
+			res += "???"
+		else:
+			res += "%dx%d (diff=%d)" % (n * f, n, h - n)
+	else:
+		return phenny.reply("fix your args")
+	phenny.say(res)
+
+resadj.commands = ['resadj', 'resadjust']
 
