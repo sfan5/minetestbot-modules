@@ -17,12 +17,12 @@ loglevels = {
 actionchannel = "##minetestbot"
 actionhighlight = "sfan5"
 
-def log(level, text, phenny):
+def log(level, text, phenny=None):
 	level = level.upper()
 	f = open("bot.log", "ab")
 	f.write(bytes(time.strftime("%F %H:%M:%S %z") + "\t" + loglevels[level] + "\t" + text + "\n", 'utf-8', 'ignore'))
 	f.close()
-	if level == 'ACTION':
+	if level == 'ACTION' and phenny is not None:
 		phenny.write(['PRIVMSG', actionchannel], actionhighlight + ": " + text)
 
 def fmt_user(input):

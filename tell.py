@@ -7,6 +7,7 @@ Copyright 2013, sfan5
 import random
 import sqlite3
 import time
+import calendar
 import hashlib
 
 tell_list = []
@@ -18,21 +19,26 @@ def tell_diskwr():
 	c = db.cursor()
 	for tr in tell_pending:
 		if tr[0] == "del":
-			c.execute("DELETE FROM tell WHERE id = ?", (tr[1], ))
+			r = c.execute("DELETE FROM tell WHERE id = ?", (tr[1], )).rowcount
+			if r != 1:
+				log.log("warning", "[tell] could not remove entry id %d from db?!?" % (tr[1], ))
+			else:
+				log.log("event", "[tell] removed entry id %d from db" % (tr[1], ))
 		elif tr[0] == "add":
 			c.execute("INSERT INTO tell (nick, tellee, msg, time) VALUES (?,?,?,?)", tr[1])
 			tell_list.append((c.lastrowid, ) + tr[1]) # We actually insert the entry into the list here
+			log.log("event", "[tell] added entry %r to db, id=%d" % (tr[1], c.lastrowid))
 		else:
-			print("[Tell] Internal error: Unknown action type '%s'" % tr[0])
+			log.log("warning", "[tell] unknown action type %s" % (tr[0], ))
 	c.close()
 	db.commit()
 	db.close()
 	tell_pending = []
 
 def api_tell(teller, tellee, text):
-	d = (teller, tellee, text, int(time.mktime(time.gmtime())))
+	d = (teller, tellee, text, int(calendar.timegm(time.gmtime())))
 	tell_pending.append(("add", d))
-	# We do not insert the entry into tell_list yet because we don't know the id it will have
+	# We do not insert the entry into tell_list yet because we don't know which id it will have
 	tell_diskwr() # Write the change to disk
 
 class SomeObject(object):
@@ -56,7 +62,7 @@ def tell(phenny, input):
 	text = " ".join(arg.split(" ")[1:])
 	if target.lower() == teller.lower():
 		return phenny.say("You can tell that to yourself")
-	elif target.lower() == phenny.nick.lower():
+	if target.lower() == phenny.nick.lower():
 		return phenny.say("I'm not dumb, you know?")
 	elif target[-1] == ":":
 		return phenny.reply("Do not put an : at the end of nickname")
@@ -81,7 +87,10 @@ def checktell(phenny, input):
 					time.gmtime(e[4])),
 				e[1],
 				e[3]))
-			tell_list.remove(e)
+			try:
+				tell_list.remove(e)
+			except:
+				log("warning", "[tell] could not remove entry %r from list?!?" % (e, ), phenny)
 			tell_pending.append(("del", e[0]))
 			tell_diskwr() # Write the change to disk
 			break
