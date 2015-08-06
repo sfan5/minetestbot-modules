@@ -6,19 +6,19 @@ Copyright 2014, sfan5
 
 import re
 import web
+import html
 
 r_title = re.compile(r'(?ims)<\s*title[^>]*>(.*?)<\s*/\s*title\s*>')
 
 def title(phenny, input):
 	uri = input.group(2)
 	if uri:
-		pass
+		uri = uri.strip()
 	elif hasattr(phenny.bot, 'last_seen_uri'):
 		uri = phenny.bot.last_seen_uri
 	else:
 		return phenny.reply("Give me an URI..")
-	uri = uri.strip()
-	data, sc = web.get(uri, 4096)
+	data, sc = web.get(uri, 16384)
 	if sc != 200:
 		return phenny.say("HTTP error %d" % sc)
 	try:
@@ -28,7 +28,9 @@ def title(phenny, input):
 	m = re.search(r_title, data)
 	if not m:
 		return phenny.say("No title found.")
-	title = m.group(1).strip()
+	title = m.group(1)
+	title = html.unescape(title)
+	title = title.strip()
 	if len(title) > 150:
 		title = title[:150] + "[...]"
 	phenny.reply(title)
