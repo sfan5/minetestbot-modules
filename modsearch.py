@@ -9,7 +9,7 @@ import web
 
 def mod(phenny, input):
 	uri = "http://nimg.pf-control.de/MTstuff/modSearchAPI.php?q="
-	text, sc = web.get(uri + input.group(2))
+	text, sc = web.get(uri + web.urlencode(input.group(2)))
 	text = str(text, 'utf-8')
 	data = web.json(text)
 	answer = ""
