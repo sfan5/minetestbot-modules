@@ -51,7 +51,7 @@ def c(phenny, input):
 		return phenny.reply("Nothing to calculate.")
 	q = input.group(2)
 	if '__' in q:
-		return phenny.reply("Sorry, but no double underscores.")
+		return phenny.reply("Sorry, double underscores are not allowed.")
 	log.log("event", "%s calculated '%s'" % (log.fmt_user(input), q), phenny)
 	o = multiprocessing.Queue()
 	def get_result(o, q):
@@ -61,17 +61,11 @@ def c(phenny, input):
 			o.put(type(e).__name__ + ": " + str(e))
 	proc = multiprocessing.Process(target=get_result, args=(o,q))
 	proc.start()
-	proc.join(2.0)
+	proc.join(3.0)
 	if proc.is_alive():
-			proc.terminate()
-			if 'math.pow' in q or '**' in q:
-				phenny.reply("Kindly go fuck yourself!")
-				antiabuse.ignore("*!*" + input.hostmask[input.hostmask.find("@"):])
-				log.log("action", "Auto-ignored %s for !c crash attempt." % log.fmt_user(input), phenny)
-			else:
-				log.log("action", "Calculation by %s timed out." % log.fmt_user(input), phenny)
-				phenny.reply("Took to long to calculate")
-			return
+		proc.terminate()
+		log.log("action", "Calculation by %s timed out." % log.fmt_user(input), phenny)
+		phenny.reply("Took to long to calculate")
 	else:
 		phenny.say(o.get())
 
