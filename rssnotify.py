@@ -63,6 +63,7 @@ def rsscheck(phenny, input):
 		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
+		('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans),
 	]
 	for v in range(0, len(feeds)):
 		url = feeds[v][0]
