@@ -59,7 +59,7 @@ def rsscheck(phenny, input):
 		('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
 		('https://github.com/minetest/minetestmapper/commits/master.atom', allchans),
 		('https://github.com/minetest/master-server/commits/master.atom', allchans),
-		('https://github.com/Uberi/MineTest-WorldEdit/commits/master.atom',  allchans),
+		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom',  allchans),
 		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
@@ -78,6 +78,8 @@ def rsscheck(phenny, input):
 			if not feednum in rssnotify["last_updated_feeds"].keys():
 				rssnotify["last_updated_feeds"][feednum] = -1
 			if rssnotify["last_updated_feeds"][feednum] < to_unix_time(feed_entry.updated):
+				if rssnotify["dont_print_first_message"]:
+					continue
 				commiter_realname = feed_entry.authors[0].name
 				if commiter_realname == "":
 						try:
@@ -89,18 +91,20 @@ def rsscheck(phenny, input):
 				except AttributeError:
 					commiter = commiter_realname # This will only use the realname if the nickname couldn't be obtained
 				reponame = url.replace("https://github.com/","").replace("/commits/master.atom","")
-				commit_hash = feed_entry.links[0].href.replace("https://github.com/" + reponame + "/commit/","")[:7]
+				commit_hash = re.search(r"/([a-f0-9]{7})[a-f0-9]*$", feed_entry.links[0].href)
+				if commit_hash:
+					commit_hash = commit_hash.group(1)
+				else:
+					commit_hash = "?" * 7
 				commit_time = feed_entry.updated
 				updcnt += 1
-				if rssnotify["dont_print_first_message"]:
-					continue
 				if rssnotify["show_commit_link"]:
 					if rssnotify["use_git.io"]:
 						# Side note: git.io only works with *.github.com links
 						l, code = web.post("http://git.io/create", {'url': feed_entry.link})
 						if code == 200:
 							l = str(l, 'utf-8')
-							if not ' ' in l: # If there are spaces it's probably an error
+							if not ' ' in l: # If there are spaces it's an error
 								commit_link = "http://git.io/" + l
 							else:
 								commit_link = feed_entry.link
