@@ -101,11 +101,11 @@ def rsscheck(phenny, input):
 				if rssnotify["show_commit_link"]:
 					if rssnotify["use_git.io"]:
 						# Side note: git.io only works with *.github.com links
-						l, code = web.post("http://git.io/create", {'url': feed_entry.link})
+						l, code = web.post("https://git.io/create", {'url': feed_entry.link})
 						if code == 200:
 							l = str(l, 'utf-8')
 							if not ' ' in l: # If there are spaces it's an error
-								commit_link = "http://git.io/" + l
+								commit_link = "https://git.io/" + l
 							else:
 								commit_link = feed_entry.link
 						else:
