@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 """
 modsearch.py - Phenny Minetest Mod Search Module
-Copyright 2015, SmallJoker
+Copyright 2015-2016, SmallJoker
 Licensed under GNU General Public License v2.0
 """
 
 import web
 
 def mod(phenny, input):
-	uri = "http://nimg.pf-control.de/MTstuff/modSearchAPI.php?q="
+	uri = "http://krock-works.16mb.com/MTstuff/modSearchAPI.php?q="
 	text, sc = web.get(uri + web.urlencode(input.group(2)))
 	text = str(text, 'utf-8')
 	data = web.json(text)
