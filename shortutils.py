@@ -98,7 +98,6 @@ def cat(phenny, input):
 		"http://i.imgur.com/c6nvxLE.jpg",
 		"http://i.imgur.com/ERebecg.jpg",
 		"http://i.imgur.com/AU5LoAs.jpg",
-		"https://cdn.mediacru.sh/LGwqjSoddQ2G.jpg",
 		"http://i.imgur.com/RoCxCms.jpg",
 		"http://i.imgur.com/CkgC24b.jpg",
 		"http://i.imgur.com/iATkdQO.jpg",
@@ -138,10 +137,8 @@ def cat(phenny, input):
 		"http://i.imgur.com/8UvDsPc.jpg",
 		"http://i.imgur.com/yFmko1j.jpg",
 		"http://i.imgur.com/nySOBtb.jpg",
-		"https://mediacru.sh/sABjUz-OsVY_.jpe",
 		"https://i.imgur.com/kQ62yNM.jpg",
 		"https://i.imgur.com/s9tdEOi.jpg",
-		"https://cdn.mediacru.sh/pWo3eRzyrMnY.jpe",
 		"http://i.imgur.com/8mFITRO.jpg",
 		"http://i.imgur.com/ZT2jVRu.jpg",
 		"http://i.imgur.com/NIwzCXd.jpg"
