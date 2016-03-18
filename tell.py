@@ -51,7 +51,8 @@ _export = {
 	'tell': tell_api,
 }
 
-def tell(phenny, input):
+# Can't be named "tell" because that would interfere with the tell api
+def tell_cmd(phenny, input):
 	arg = input.group(2)
 	if not arg:
 		return phenny.reply("Need a nickname...")
@@ -76,7 +77,7 @@ def tell(phenny, input):
 
 	phenny.reply(response)
 
-tell.commands = ["tell"]
+tell_cmd.commands = ["tell"]
 
 def checktell(phenny, input):
 	write = False
