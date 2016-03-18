@@ -39,7 +39,7 @@ def api_tell(teller, tellee, text):
 	d = (teller, tellee, text, int(calendar.timegm(time.gmtime())))
 	tell_pending.append(("add", d))
 	# We do not insert the entry into tell_list yet because we don't know which id it will have
-	tell_diskwr() # Write the change to disk
+	tell_diskwr() # Write change to disk
 
 class SomeObject(object):
 	pass
@@ -79,6 +79,7 @@ def tell(phenny, input):
 tell.commands = ["tell"]
 
 def checktell(phenny, input):
+	write = False
 	for e in tell_list:
 		if e[2].lower() == input.nick.lower():
 			phenny.say("%s: %s <%s> %s" % (
@@ -92,8 +93,9 @@ def checktell(phenny, input):
 			except:
 				log("warning", "[tell] could not remove entry %r from list?!?" % (e, ), phenny)
 			tell_pending.append(("del", e[0]))
-			tell_diskwr() # Write the change to disk
-			break
+			write = True
+	if write:
+		tell_diskwr() # Write changes to disk
 
 def note(phenny, input):
 	if input.sender.startswith('#'):
