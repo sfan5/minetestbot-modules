@@ -35,20 +35,34 @@ def tell_diskwr():
 	db.close()
 	tell_pending = []
 
-def api_tell(teller, tellee, text):
-	d = (teller, tellee, text, int(calendar.timegm(time.gmtime())))
-	tell_pending.append(("add", d))
-	# We do not insert the entry into tell_list yet because we don't know which id it will have
-	tell_diskwr() # Write change to disk
-
-class SomeObject(object):
-	pass
-
-tell_api = SomeObject()
-tell_api.tell = api_tell
+class TellApi:
+	# Tell <tellee> <text> (from <teller>)
+	@staticmethod
+	def tell(teller, tellee, text):
+		d = (teller, tellee, text, int(calendar.timegm(time.gmtime())))
+		tell_pending.append(("add", d))
+		# We do not insert the entry into tell_list yet because we don't know which id it will have
+		tell_diskwr() # Write change to disk
+	# Get list of not yet fulfilled "tells"
+	# Returns [(tell_id, teller, tellee, text, unixtime), ...]
+	@staticmethod
+	def list():
+		return tell_list
+	# Remove tell_id from database
+	@staticmethod
+	def remove(tell_id, internal=False):
+		tell_pending.append(("del", tell_id))
+		try:
+			# Find list index of the tell entry with id == tell_id
+			idx = next(filter(lambda x: x != -1, (i if e[0] == tell_id else -1 for i, e in enumerate(tell_list))))
+			del tell_list[idx]
+		except StopIteration:
+			log.log("warning", "[tell] could not remove entry id %d from list?!?" % (tell_id, ), phenny)
+		if not internal:
+			tell_diskwr() # Write change to disk
 
 _export = {
-	'tell': tell_api,
+	'tell': TellApi,
 }
 
 # Can't be named "tell" because that would interfere with the tell api
@@ -68,7 +82,7 @@ def tell_cmd(phenny, input):
 	elif target[-1] == ":":
 		return phenny.reply("Do not put an : at the end of nickname")
 
-	api_tell(teller, target, text)
+	TellApi.tell(teller, target, text)
 
 	response = "I'll pass that on when %s is around" % target
 	rand = random.random()
@@ -80,22 +94,19 @@ def tell_cmd(phenny, input):
 tell_cmd.commands = ["tell"]
 
 def checktell(phenny, input):
-	write = False
+	r = []
 	for e in tell_list:
-		if e[2].lower() == input.nick.lower():
-			phenny.say("%s: %s <%s> %s" % (
-				input.nick,
-				time.strftime('%m-%d %H:%M UTC',
-					time.gmtime(e[4])),
-				e[1],
-				e[3]))
-			try:
-				tell_list.remove(e)
-			except:
-				log("warning", "[tell] could not remove entry %r from list?!?" % (e, ), phenny)
-			tell_pending.append(("del", e[0]))
-			write = True
-	if write:
+		if e[2].lower() != input.nick.lower():
+			continue
+		phenny.say("%s: %s <%s> %s" % (
+			input.nick,
+			time.strftime('%m-%d %H:%M UTC', time.gmtime(e[4])),
+			e[1],
+			e[3]))
+		r.append(e[0])
+	if len(r) > 0:
+		for tell_id in r:
+			TellApi.remove(tell_id, internal=True)
 		tell_diskwr() # Write changes to disk
 
 def note(phenny, input):
