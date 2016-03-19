@@ -57,7 +57,7 @@ class TellApi:
 			idx = next(filter(lambda x: x != -1, (i if e[0] == tell_id else -1 for i, e in enumerate(tell_list))))
 			del tell_list[idx]
 		except StopIteration:
-			log.log("warning", "[tell] could not remove entry id %d from list?!?" % (tell_id, ), phenny)
+			log.log("warning", "[tell] could not remove entry id %d from list?!?" % (tell_id, ))
 		if not internal:
 			tell_diskwr() # Write change to disk
 
