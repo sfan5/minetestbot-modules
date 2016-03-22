@@ -100,7 +100,7 @@ def checktell(phenny, input):
 			continue
 		phenny.say("%s: %s <%s> %s" % (
 			input.nick,
-			time.strftime('%m-%d %H:%M UTC', time.gmtime(e[4])),
+			time.strftime('%b-%d %H:%M UTC', time.gmtime(e[4])),
 			e[1],
 			e[3]))
 		r.append(e[0])
