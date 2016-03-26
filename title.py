@@ -14,10 +14,12 @@ def title(phenny, input):
 	uri = input.group(2)
 	if uri:
 		uri = uri.strip()
+		if not uri.startswith("http://") and not uri.startswith("https://"):
+			return phenny.say("That's not a valid URL")
 	elif hasattr(phenny.bot, 'last_seen_uri'):
 		uri = phenny.bot.last_seen_uri
 	else:
-		return phenny.reply("Give me an URI..")
+		return phenny.reply("Give me a link.")
 	data, sc = web.get(uri, 16384)
 	if sc != 200:
 		return phenny.say("HTTP error %d" % sc)
