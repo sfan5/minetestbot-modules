@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 """
-rssnotify.py - Phenny RssNotify Module
-Copyright 2013, sfan5
+rssnotify.py - Phenny RSSNotify Module
+Copyright 2016, sfan5
 Licensed under GNU General Public License v2.0
 """
 import time
 import re
 import web
 import os
+import threading
+
 import feedparser # sudo pip install feedparser
-rssnotify = {}
 
 def to_unix_time(tstr):
 	if tstr.endswith("Z"):
@@ -31,125 +32,120 @@ def to_unix_time(tstr):
 		ts += int(g[3]) * 60
 	return ts
 
-def excepta(arr, exclude):
-	o = []
-	for el in arr:
-		if not el in exclude:
-			o.append(el)
-	return o
+class RssNotify():
+	def __init__(self, config):
+		self.config = config
+		self.last_updated = {}
+		self.last_check = 0
+		self.firstrun = True
+		for i in range(len(self.config["feeds"])):
+			self.last_updated[i] = 0
+	def needs_check(self):
+		return time.time() > self.last_check + self.config["check_interval"]
+	def check(self, phenny):
+		start = self.last_check = time.time()
+		print("[RssNotify]: Checking RSS feeds...")
+		for fid, feedspec in enumerate(self.config["feeds"]):
+			feed = feedparser.parse(feedspec[0], agent="Mozilla/5.0 (compatible; MinetestBot)")
+			updated = 0
+			for entry in feed.entries:
+				if self.last_updated[fid] >= to_unix_time(entry.updated):
+					continue
+				if self.firstrun:
+					continue
+				message = self._format_msg(entry)
+				self._announce(phenny, message, feedspec[1])
+				if self.config["logfile"] is not None:
+					with open(self.config["logfile"], "a") as f:
+						message = self._format_msg(entry, log_format=True)
+						f.write(message)
+						f.write("\n")
+				updated += 1
+			self.last_updated[fid] = max((to_unix_time(e.updated) for e in feed.entries), default=0)
+			if updated > 0:
+				print("[RssNotify]: Found %d update(s) for '%s'" % (updated, feedspec[0]))
+		if self.firstrun:
+			self.firstrun = False
+		print("[RssNotify]: Checked %d RSS feeds in %0.3f seconds" % (len(self.config["feeds"]), time.time()-start))
+	def _shorten(self, link):
+		# We can utilitze git.io to shorten *.github.com links
+		l, code = web.post("https://git.io/create", {'url': link})
+		if code != 200:
+			return None
+		l = str(l, 'utf-8')
+		if ' ' in l: # spaces means there was an error :(
+			return None
+		return "https://git.io/" + l
+	def _format_msg(self, feed_entry, log_format=False):
+		if log_format:
+			f_cshort = "[color=#cc0000]%s[/color]"
+			f_clong = "[color=#cc0000]%s[/color] ([color=#cc0000]%s[/color])"
+			f_all = "[color=#3465a4][git][/color] %s -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])"
+		else:
+			f_cshort = "\x0304%s\x0f"
+			f_clong = "\x0304%s\x0f (\x0304%s\x0f)"
+			f_all = "\x0302[git]\x0f %s -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)"
+		committer_realname = feed_entry.authors[0].name
+		if committer_realname == "":
+				try:
+					committer_realname = feed_entry.authors[0].email
+				except AttributeError:
+					committer_realname = ""
+		try:
+			committer = feed_entry.authors[0].href.replace('https://github.com/',"")
+		except AttributeError:
+			committer = committer_realname # This will only use the realname if the nickname couldn't be obtained
+		m = re.search(r'/([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)/commit/([a-f0-9]{7})', feed_entry.links[0].href)
+		repo_name = m.group(1) if m else "?"
+		commit_hash = m.group(2) if m else "???????"
+		commit_time = feed_entry.updated
+		commit_text = feed_entry.title
+		if self.config["show_link"]:
+			commit_link = feed_entry.link
+			if self.config["shorten_link"]:
+				commit_link = self._shorten(commit_link) or commit_link
+		else:
+			commit_link = ""
+		if committer_realname == "" or committer_realname.lower() == committer.lower():
+			committer_final = f_cshort % committer
+		else:
+			committer_final = f_clong % (committer, committer_realname)
+		return f_all % (committer_final, repo_name, commit_text, commit_hash, commit_link, commit_time)
+	def _announce(self, phenny, message, chans):
+		if chans == "*":
+			chans = phenny.bot.channels
+		assert(type(chans) == list)
+		for ch in chans:
+			phenny.write(['PRIVMSG', ch], message)
 
-rssnotify["last_updated_feeds"] = {}
-rssnotify["logfilepath"] = os.getcwd() + "/rssnotify.log"
-rssnotify["dont_print_first_message"] = True # prevents spam when restarting the bot/reloading the module
-rssnotify["update_cooldown"] = 60 # in seconds
-rssnotify["show_commit_link"] = True
-rssnotify["use_git.io"] = True
-rssnotify["last_update"] = time.time() - rssnotify["update_cooldown"]
-
-def rsscheck(phenny, input):
-	t = time.time()
-	if rssnotify["last_update"] > t-rssnotify["update_cooldown"]:
-		return
-	rssnotify["last_update"] = t
-	print("[RssNotify]: Checking RSS Feeds...")
-	start = time.time()
-	allchans = excepta(phenny.bot.channels, ['##minebest'])
-	feeds = [
-		('https://github.com/minetest/minetest/commits/master.atom', allchans),
-		('https://github.com/minetest/minetest_game/commits/master.atom', allchans),
-		('https://github.com/minetest/minetestmapper/commits/master.atom', allchans),
-		('https://github.com/minetest/master-server/commits/master.atom', allchans),
-		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom',  allchans),
-		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', allchans),
+rssn = RssNotify({
+	"check_interval": 120,
+	"show_link": True,
+	"shorten_link": True,
+	"logfile": os.getcwd() + "/rssnotify.log",
+	"feeds": [
+		('https://github.com/minetest/minetest/commits/master.atom', "*"),
+		('https://github.com/minetest/minetest_game/commits/master.atom', "*"),
+		('https://github.com/minetest/minetestmapper/commits/master.atom', "*"),
+		('https://github.com/minetest/master-server/commits/master.atom', "*"),
+		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom',  "*"),
+		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', "*"),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
-		('https://github.com/BlockMen/minetest_next/commits/master.atom', allchans),
-	]
-	for v in range(0, len(feeds)):
-		url = feeds[v][0]
-		feednum = v
-		options = {
-			'agent': 'Mozilla/5.0 (MinetestBot)',
-			'referrer': 'http://minetest.net'
-		}
-		feed = feedparser.parse(url, **options)
-		updcnt = 0
-		for feed_entry in feed.entries:
-			if not feednum in rssnotify["last_updated_feeds"].keys():
-				rssnotify["last_updated_feeds"][feednum] = -1
-			if rssnotify["last_updated_feeds"][feednum] < to_unix_time(feed_entry.updated):
-				if rssnotify["dont_print_first_message"]:
-					continue
-				commiter_realname = feed_entry.authors[0].name
-				if commiter_realname == "":
-						try:
-							commiter_realname = feed_entry.authors[0].email
-						except AttributeError:
-							commiter_realname = "Unknown"
-				try:
-					commiter = feed_entry.authors[0].href.replace('https://github.com/',"")
-				except AttributeError:
-					commiter = commiter_realname # This will only use the realname if the nickname couldn't be obtained
-				reponame = url.replace("https://github.com/","").replace("/commits/master.atom","")
-				commit_hash = re.search(r"/([a-f0-9]{7})[a-f0-9]*$", feed_entry.links[0].href)
-				if commit_hash:
-					commit_hash = commit_hash.group(1)
-				else:
-					commit_hash = "?" * 7
-				commit_time = feed_entry.updated
-				updcnt += 1
-				if rssnotify["show_commit_link"]:
-					if rssnotify["use_git.io"]:
-						# Side note: git.io only works with *.github.com links
-						l, code = web.post("https://git.io/create", {'url': feed_entry.link})
-						if code == 200:
-							l = str(l, 'utf-8')
-							if not ' ' in l: # If there are spaces it's an error
-								commit_link = "https://git.io/" + l
-							else:
-								commit_link = feed_entry.link
-						else:
-							commit_link = feed_entry.link
-					else:
-						commit_link = feed_entry.link
-				else:
-					commit_link = ""
+		('https://github.com/BlockMen/minetest_next/commits/master.atom', "*"),
+	],
+})
 
-				chans = []
-				if feeds[v][1] == '*':
-					chans = phenny.bot.channels
-				elif type(feeds[v][1]) == type([]):
-					chans = feeds[v][1]
-				else:
-					print("[RssNotify]: Something went wrong!")
-				if rssnotify["logfilepath"] != "":
-					lf = open(rssnotify["logfilepath"], "a")
-					if commiter.lower() != commiter_realname.lower():
-						lf.write("[color=#3465a4][git][/color] [color=#cc0000]%s[/color] ([color=#cc0000]%s[/color]) -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
-					else:
-						lf.write("[color=#3465a4][git][/color] [color=#cc0000]%s[/color] -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])\n" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
-					lf.close()
-				for ch in chans:
-					if commiter.lower() != commiter_realname.lower():
-						phenny.write(['PRIVMSG', ch], "\x0302[git]\x0f \x0304%s\x0f (\x0304%s\x0f) -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, commiter_realname, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
-					else:
-						phenny.write(['PRIVMSG', ch], "\x0302[git]\x0f \x0304%s\x0f -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)" % (commiter, reponame, feed_entry.title, commit_hash, commit_link, commit_time))
-		if len(feed.entries) > 0:
-			m = -1
-			for i in range(0, len(feed.entries)):
-				if to_unix_time(feed.entries[i].updated) > m:
-					m = to_unix_time(feed.entries[i].updated)
-			rssnotify["last_updated_feeds"][feednum] = m
-		if updcnt > 0:
-			print("[RssNotify]: Found %i RSS Update(s) for URL '%s'" % (updcnt, url))
-	end = time.time()
-	if rssnotify["dont_print_first_message"]:
-		rssnotify["dont_print_first_message"] = False
-	print("[RssNotify]: Checked " + str(len(feeds)) + " RSS Feeds in %0.3f seconds" % (end-start))
+def rsscheck(phenny, input):
+	if not rssn.needs_check():
+		return
+	t = threading.Thread(target=rssn.check, args=(phenny, ))
+	t.start()
 
-rsscheck.priority = 'medium'
+rsscheck.priority = 'low'
 rsscheck.rule = r'.*'
 rsscheck.event = '*'
+rsscheck.thread = False
 rsscheck.nohook = True
 
 if __name__ == '__main__':
