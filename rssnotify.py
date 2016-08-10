@@ -49,9 +49,9 @@ class RssNotify():
 			feed = feedparser.parse(feedspec[0], agent="Mozilla/5.0 (compatible; MinetestBot)")
 			updated = 0
 			for entry in feed.entries:
-				if self.last_updated[fid] >= to_unix_time(entry.updated):
-					continue
 				if self.firstrun:
+					break
+				if self.last_updated[fid] >= to_unix_time(entry.updated):
 					continue
 				message = self._format_msg(entry)
 				self._announce(phenny, message, feedspec[1])
@@ -132,7 +132,6 @@ rssn = RssNotify({
 		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', "*"),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
-		('https://github.com/BlockMen/minetest_next/commits/master.atom', "*"),
 	],
 })
 
