@@ -61,7 +61,9 @@ class RssNotify():
 						f.write(message)
 						f.write("\n")
 				updated += 1
-			self.last_updated[fid] = max((to_unix_time(e.updated) for e in feed.entries), default=0)
+			new_time = max((to_unix_time(e.updated) for e in feed.entries), default=0)
+			if new_time > self.last_updated[fid]:
+				self.last_updated[fid] = new_time
 			if updated > 0:
 				print("[RssNotify]: Found %d update(s) for '%s'" % (updated, feedspec[0]))
 		if self.firstrun:
