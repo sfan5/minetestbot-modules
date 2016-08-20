@@ -56,7 +56,7 @@ class RssNotify():
 				message = self._format_msg(entry)
 				self._announce(phenny, message, feedspec[1])
 				if self.config["logfile"] is not None:
-					with open(self.config["logfile"], "a") as f:
+					with open(self.config["logfile"], "a", encoding="utf-8") as f:
 						message = self._format_msg(entry, log_format=True)
 						f.write(message)
 						f.write("\n")
