@@ -40,48 +40,42 @@ next.commands = ['next']
 
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
-	if random.randint(0, 5) == 0:
-		data, sc = web.get('http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=132')
-		data = str(data, 'utf-8')
-		data = web.json(data)
-		phenny.say("DOGE is at " + data['return']['markets']['DOGE']['lasttradeprice'] + " BTC")
-	else:
-		links = [
-			"http://is.gd/zgopNT", # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
-			"http://i.imgur.com/JphfPur.jpg",
-			"http://i.imgur.com/2MmvpGR.jpg",
-			"https://people.mozilla.org/~smartell/meme/such-logo.gif",
-			"http://i.imgur.com/e16WWlK.gif",
-			"http://i.imgur.com/6wx9Mf9.png",
-			"http://i.imgur.com/1GVIKve.jpg",
-			"http://i.imgur.com/606BPbS.png",
-			"http://i.imgur.com/VcwHcBO.jpg",
-			"http://i.imgur.com/3pnQciA.jpg",
-			"http://i.imgur.com/ampdE1n.jpg",
-			"http://i.imgur.com/QIqDXZw.gif",
-			"http://i.imgur.com/PoYoFXg.jpg",
-			"http://i.imgur.com/xcrvGLn.jpg",
-			"http://25.media.tumblr.com/282b439e00e13be63e932425388afa7d/tumblr_muopr4oEjG1qbhxqdo1_1280.jpg",
-			"http://i.imgur.com/EW37mvz.jpg",
-			"http://i.imgur.com/F2vYL4j.gif",
-			"http://25.media.tumblr.com/5b1de230c236cbc6310ae000e1a5cdc2/tumblr_mu7uxmD9i31rdj00zo1_500.jpg",
-			"http://i.imgur.com/Ck3qYFb.jpg",
-			"http://i.imgur.com/wp9x7GY.gif",
-			"https://pp.vk.me/c607929/v607929263/624e/K6NMxz0Cj7U.jpg",
-			"http://i.imgur.com/q7VKiiK.gif",
-			"http://i.imgur.com/RKHNg3v.jpg",
-			"http://i.imgur.com/l0YSsre.jpg",
-			"http://i.imgur.com/YRdsSHn.jpg",
-			"http://i.imgur.com/HhjNnIX.png",
-			"http://i.imgur.com/qLbktNN.jpg",
-			"http://i.imgur.com/NOIyL1K.jpg",
-			"http://i.imgur.com/v7gjzme.jpg",
-			"http://i.imgur.com/uI51MQy.png",
-			"http://i.imgur.com/JBXo2M5.jpg",
-			"https://i.imgur.com/lpdPpxX.jpg",
-		]
-		# ^ How to be productive on a Saturday
-		phenny.say(random.choice(links))
+	links = [
+		"http://is.gd/zgopNT", # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
+		"http://i.imgur.com/JphfPur.jpg",
+		"http://i.imgur.com/2MmvpGR.jpg",
+		"https://people.mozilla.org/~smartell/meme/such-logo.gif",
+		"http://i.imgur.com/e16WWlK.gif",
+		"http://i.imgur.com/6wx9Mf9.png",
+		"http://i.imgur.com/1GVIKve.jpg",
+		"http://i.imgur.com/606BPbS.png",
+		"http://i.imgur.com/VcwHcBO.jpg",
+		"http://i.imgur.com/3pnQciA.jpg",
+		"http://i.imgur.com/ampdE1n.jpg",
+		"http://i.imgur.com/QIqDXZw.gif",
+		"http://i.imgur.com/PoYoFXg.jpg",
+		"http://i.imgur.com/xcrvGLn.jpg",
+		"http://25.media.tumblr.com/282b439e00e13be63e932425388afa7d/tumblr_muopr4oEjG1qbhxqdo1_1280.jpg",
+		"http://i.imgur.com/EW37mvz.jpg",
+		"http://i.imgur.com/F2vYL4j.gif",
+		"http://25.media.tumblr.com/5b1de230c236cbc6310ae000e1a5cdc2/tumblr_mu7uxmD9i31rdj00zo1_500.jpg",
+		"http://i.imgur.com/Ck3qYFb.jpg",
+		"http://i.imgur.com/wp9x7GY.gif",
+		"https://pp.vk.me/c607929/v607929263/624e/K6NMxz0Cj7U.jpg",
+		"http://i.imgur.com/q7VKiiK.gif",
+		"http://i.imgur.com/RKHNg3v.jpg",
+		"http://i.imgur.com/l0YSsre.jpg",
+		"http://i.imgur.com/YRdsSHn.jpg",
+		"http://i.imgur.com/HhjNnIX.png",
+		"http://i.imgur.com/qLbktNN.jpg",
+		"http://i.imgur.com/NOIyL1K.jpg",
+		"http://i.imgur.com/v7gjzme.jpg",
+		"http://i.imgur.com/uI51MQy.png",
+		"http://i.imgur.com/JBXo2M5.jpg",
+		"https://i.imgur.com/lpdPpxX.jpg",
+	]
+	# ^ How to be productive on a Saturday
+	phenny.say(random.choice(links))
 
 doge.commands = ['doge']
 
@@ -136,7 +130,6 @@ def cat(phenny, input):
 		"http://i.imgur.com/qYdPjox.jpg",
 		"http://i.imgur.com/8UvDsPc.jpg",
 		"http://i.imgur.com/yFmko1j.jpg",
-		"http://i.imgur.com/nySOBtb.jpg",
 		"https://i.imgur.com/kQ62yNM.jpg",
 		"https://i.imgur.com/s9tdEOi.jpg",
 		"http://i.imgur.com/8mFITRO.jpg",
