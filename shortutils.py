@@ -18,9 +18,9 @@ def make_cmd(cmd, txt):
     t = txt
     if input.group(2):
       u = input.group(2).strip() + ", "
-      t = t[0].upper() + t[1:]
     else:
       u = ""
+      t = t[0].upper() + t[1:]
     phenny.say(u + t)
   m.commands = [cmd]
   return m
