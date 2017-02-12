@@ -5,7 +5,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
 <i>$botname</i> refers to the name of the IRC bot, e.g. MinetestBot
 
 <table>
-    <tr> <th>Command</th>                            <th>Description</th>                                     <th>Usable by</th>    </tr>
+    <tr> <th>Command</th>                            <th>Description</th>                                     <th>Usable by</th>     </tr>
     <tr> <td><b>admin.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!join {channel} [channel-key]</td>      <td>Join the specified channel</td>                      <td><i>Admins</i></td> </tr>
     <tr> <td>!part {channel}</td>                    <td>Leave the specified channel</td>                     <td><i>Admins</i></td> </tr>
@@ -43,9 +43,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!b16d {string}</td>                     <td>Base16-decode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!hash {hashtype} {string}</td>          <td>Hash a string, supports various hash functions</td>  <td>Anyone</td>        </tr>
     <tr> <td>!rand [min] {max}</td>                  <td>Says a random number between(incl.) min and max</td> <td>Anyone</td>        </tr>
-    <tr> <td><b>search.py</b></td>                   <td></td>                                                <td></td>              </tr>
-    <tr> <td>!g {string}</td>                        <td>Output first Google result for string</td>           <td>Anyone</td>        </tr>
-    <tr> <td>!gc {string}</td>                       <td>Output Google result count for string</td>           <td>Anyone</td>        </tr>
     <tr> <td><b>seen.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!seen {person}</td>                     <td>Output when person was last seen</td>                <td>Anyone</td>        </tr>
     <tr> <td><b>server.py</b></td>                   <td></td>                                                <td></td>              </tr>
@@ -70,8 +67,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td></td>                                   <td>Supports multiple Ports e.g. 123-456,999</td>        <td></td>              </tr>
     <tr> <td><b>title.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!title [link]</td>                      <td>Query Page Title</td>                                <td>Anyone</td>        </tr>
-    <tr> <td><b>twitter.py</b></td>                  <td></td>                                                <td></td>              </tr>
-    <tr> <td>!tw {link/username/tweet_id}</td>       <td>Query Tweet from Twitter</td>                        <td>Anyone</td>        </tr>
     <tr> <td><b>wiki.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!wik {term}</td>                        <td>Query wiki.minetest.com for term</td>                <td>Anyone</td>        </tr>
     <tr> <td><b>devwiki.py</b></td>                  <td></td>                                                <td></td>              </tr>
