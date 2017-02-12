@@ -37,11 +37,6 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!rev {string}</td>                      <td>Reverse String</td>                                  <td>Anyone</td>        </tr>
     <tr> <td>!b64e {string}</td>                     <td>Base64-encode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!b64d {string}</td>                     <td>Base64-decode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!b32e {string}</td>                     <td>Base32-encode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!b32d {string}</td>                     <td>Base32-decode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!b16e {string}</td>                     <td>Base16-encode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!b16d {string}</td>                     <td>Base16-decode a string</td>                          <td>Anyone</td>        </tr>
-    <tr> <td>!hash {hashtype} {string}</td>          <td>Hash a string, supports various hash functions</td>  <td>Anyone</td>        </tr>
     <tr> <td>!rand [min] {max}</td>                  <td>Says a random number between(incl.) min and max</td> <td>Anyone</td>        </tr>
     <tr> <td><b>seen.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!seen {person}</td>                     <td>Output when person was last seen</td>                <td>Anyone</td>        </tr>
