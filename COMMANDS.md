@@ -39,7 +39,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!b64d {string}</td>                     <td>Base64-decode a string</td>                          <td>Anyone</td>        </tr>
     <tr> <td>!rand [min] {max}</td>                  <td>Says a random number between(incl.) min and max</td> <td>Anyone</td>        </tr>
     <tr> <td><b>seen.py</b></td>                     <td></td>                                                <td></td>              </tr>
-    <tr> <td>!seen {person}</td>                     <td>Output when person was last seen</td>                <td>Anyone</td>        </tr>
+    <tr> <td>!seen {person}</td>                     <td>Reports when person was last seen</td>               <td>Anyone</td>        </tr>
     <tr> <td><b>server.py</b></td>                   <td></td>                                                <td></td>              </tr>
     <tr> <td>!server [query] [query] ...</td>        <td>Search servers at servers.minetest.net</td>          <td>Anyone</td>        </tr>
     <tr> <td></td>                                   <td>addr:{string} searches in Address</td>               <td></td>              </tr>

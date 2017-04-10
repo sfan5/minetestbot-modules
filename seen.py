@@ -1,136 +1,110 @@
 #!/usr/bin/env python
 """
 seen.py - Phenny Seen Module
-Copyright 2008, Sean B. Palmer, inamidst.com
-Modified by sfan5 2013
-Licensed under the Eiffel Forum License 2.
-
-http://inamidst.com/phenny/
+Copyright 2017 sfan5
+Licensed under GNU General Public License v2.0
 """
 
+import os.path
 import time
 from threading import Thread, Lock
 import sqlite3
 
+DBPATH = "seen.sqlite"
 updates = list()
-update_l = Lock()
-dblock = Lock()
-
-def opendb():
-    db = sqlite3.connect("seen.sqlite")
-    return db
+updates_l = Lock()
 
 def updatethread():
-    global updates, update_l
-    db = opendb()
-    c = db.cursor()
-    while True:
-        if len(updates) > 0:
-            update_l.acquire()
-            up = updates
-            updates = list()
-            update_l.release()
-            dblock.acquire()
-            for u in up:
-                c.execute("SELECT * FROM seen WHERE nick = ?", (u[2],))
-                if c.fetchone() != None:
-                    d = (u[0], u[1], u[2])
-                    c.execute('UPDATE seen SET channel = ?, time = ? WHERE nick = ?', d)
-                else:
-                    d = (u[2], u[0], u[1])
-                    c.execute('INSERT INTO seen VALUES (?,?,?)', d)
-            db.commit()
-            dblock.release()
-        else:
-            time.sleep(5)
+	global updates, updates_l
+	db = sqlite3.connect(DBPATH)
+	while True:
+		if len(updates) == 0:
+			time.sleep(15)
+			continue
+		updates_l.acquire()
+		up = updates
+		updates = list()
+		updates_l.release()
+
+		db.executemany("REPLACE INTO seen(channel, time, nick) VALUES (?, ?, ?)", up)
+		db.commit()
+	db.close()
 
 def pushupdate(sender, nick):
-    ts = int(time.mktime(time.gmtime()))
-    nick = nick.lower()
-    update_l.acquire()
-    updates.append((sender, ts, nick))
-    update_l.release()
+	ts = int(time.mktime(time.gmtime()))
+	nick = nick.lower()
 
-def api_seen(nick):
-  dblock.acquire()
-  db = opendb()
-  c = db.cursor()
-  c.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick,))
-  r = c.fetchone()
-  c.close()
-  db.close()
-  dblock.release()
-  return r
+	updates_l.acquire()
+	updates.append((sender, ts, nick))
+	updates_l.release()
 
-class SomeObject(object):
-  pass
 
-seen_api = SomeObject()
-seen_api.seen = api_seen
+class SeenApi(object):
+	@staticmethod
+	def seen(nick):
+		db = sqlite3.connect(DBPATH)
+		c = db.execute("SELECT channel, time FROM seen WHERE nick = ?", (nick, ))
+		r = c.fetchone()
+		db.close()
+		return r
 
 _export = {
-  'seen': seen_api,
+	'seen': SeenApi,
 }
 
+
 def seen(phenny, input):
-    """seen <nick> - Reports when <nick> was last seen."""
-    nick = input.group(2)
-    if not nick:
-        return phenny.reply("Need a nickname to search for...")
-    nick = nick.lower()
+	"""seen <nick> - Reports when <nick> was last seen."""
+	nick = input.group(2)
+	if not nick:
+		return phenny.reply("Need a nickname to search for...")
+	nick = nick.lower()
 
-    log.log("event", "%s queried Seen database for '%s'" % (log.fmt_user(input), nick), phenny)
+	log.log("event", "%s queried Seen database for '%s'" % (log.fmt_user(input), nick), phenny)
 
-    r = api_seen(nick)
+	r = SeenApi.seen(nick)
+	if r is None:
+		return phenny.reply("Sorry, I haven't seen %s around." % nick)
 
-    if r:
-        channel, t = r[0], r[1]
-        t = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(t))
-
-        msg = "%s was last seen at %s on %s" % (nick, t, channel)
-        phenny.reply(msg)
-    else:
-        phenny.reply("Sorry, I haven't seen %s around." % nick)
+	channel, t = r[0], r[1]
+	t = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(t))
+	phenny.reply("%s was last seen at %s on %s" % (nick, t, channel))
 
 seen.rule = (['seen'], r'(\S+)')
 
-def note(phenny, input):
-    if input.sender.startswith('#'):
-        pushupdate(input.sender, input.nick)
 
-note.rule = r'.*'
-note.priority = 'low'
-note.thread = False
-note.nohook = True
+def create_note(event=None):
+	def f(phenny, input):
+		if input.sender.startswith("#"):
+			pushupdate(input.sender, input.nick)
+	f.rule = r'.*'
+	f.priority = "low"
+	f.thread = False
+	f.nohook = True
+	if event is not None:
+		f.event = event
+	return f
 
-def note_join(phenny, input):
-    if input.sender.startswith('#'):
-        pushupdate(input.sender, input.nick)
+note = create_note()
+note_join = create_note("JOIN")
+note_part = create_note("PART")
 
-note_join.rule = r'.*'
-note_join.event = 'JOIN'
-note_join.priority = 'low'
-note_join.thread = False
-note_join.nohook = True
 
-def note_part(phenny, input):
-    if input.sender.startswith('#'):
-        pushupdate(input.sender, input.nick)
-
-note_part.rule = r'.*'
-note_part.event = 'PART'
-note_part.priority = 'low'
-note_part.thread = False
-note_part.nohook = True
-
-db = sqlite3.connect("seen.sqlite")
-c = db.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS seen (nick text, channel text, time int)''')
-c.close()
-db.close()
+if not os.path.exists(DBPATH):
+	db = sqlite3.connect(DBPATH)
+	db.execute('''
+	CREATE TABLE `seen` (
+		`nick` tinytext NOT NULL,
+		`channel` tinytext NOT NULL,
+		`time` int NOT NULL,
+		PRIMARY KEY (`nick`)
+	)
+	''')
+	db.close()
 
 t = Thread(target=updatethread, name="seen.py database thread")
 t.start()
 
+
 if __name__ == '__main__':
-   print(__doc__.strip())
+	print(__doc__.strip())
