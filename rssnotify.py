@@ -131,7 +131,7 @@ rssn = RssNotify({
 		('https://github.com/minetest/minetestmapper/commits/master.atom', "*"),
 		('https://github.com/minetest/master-server/commits/master.atom', "*"),
 		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom',  "*"),
-		('https://github.com/Jeija/minetest-mod-mesecons/commits/master.atom', "*"),
+		('https://github.com/minetest-mods/mesecons/commits/master.atom', "*"),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
 	],
