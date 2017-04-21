@@ -10,6 +10,7 @@ import math
 import random
 import struct
 import multiprocessing
+from functools import reduce
 
 class SomeObject(object):
 	pass
