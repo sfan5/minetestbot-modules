@@ -30,7 +30,7 @@ questions = make_cmd("questions", "someone thinks that your question is inaccura
 pil = make_cmd("pil", "someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
 git = make_cmd("git", "someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
 stfu = make_cmd("stfu", "someone thinks you need to shut the fuck up before you get muted.")
-proc = make_cmd("proc", "someone thinks you need to stop procrastinating.")
+api = make_cmd("api", "someone thinks you should read the API docs, please go to: https://github.com/minetest/minetest/blob/master/doc/lua_api.txt")
 
 def next(phenny, input):
    """Next one please"""

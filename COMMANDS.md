@@ -72,6 +72,7 @@ Required arguments are enclosed in { and }, optional arguments are enclosed in [
     <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td>Anyone</td>        </tr>
     <tr> <td>!pil [nick]</td>                        <td>Link to Lua PIL</td>                                 <td>Anyone</td>        </tr>
     <tr> <td>!git [nick]</td>                        <td>Link to Git manual</td>                              <td>Anyone</td>        </tr>
+    <tr> <td>!api [nick]</td>                        <td>Link to API docs</td>                                <td>Anyone</td>        </tr>
     <tr> <td>!btc [currency]</td>                    <td>Get Bitcoin price for specified currency</td>        <td>Anyone</td>        </tr>
     <tr> <td><b>tell.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!tell {nick} {message}</td>             <td>Tell somebody a message</td>                         <td>Anyone</td>        </tr>
