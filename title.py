@@ -23,16 +23,14 @@ def title(phenny, input):
 	data, sc = web.get(uri, 16384)
 	if sc != 200:
 		return phenny.say("HTTP error %d" % sc)
-	try:
-		data = str(data, 'utf-8')
-	except UnicodeDecodeError:
-		return phenny.say("Doesn't seem to be HTML..")
+
+	data = str(data, 'utf-8', 'ignore')
 	m = re.search(r_title, data)
 	if not m:
 		return phenny.say("No title found.")
 	title = m.group(1)
-	title = html.unescape(title)
-	title = title.strip()
+	title = html.unescape(title).strip()
+
 	if len(title) > 150:
 		title = title[:150] + "[...]"
 	phenny.reply(title)
