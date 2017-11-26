@@ -32,6 +32,20 @@ def to_unix_time(tstr):
 		ts += int(g[3]) * 60
 	return ts
 
+def resolve_channels(l):
+	ret = set()
+	for entry in l:
+		sign = 1
+		if entry[0] == "-":
+			entry = entry[1:]
+			sign = -1
+		c = phenny.bot.channels if entry == "*" else [entry]
+		if sign == 1:
+			ret |= set(c)
+		else: # sign == -1
+			ret -= set(c)
+	return ret
+
 class RssNotify():
 	def __init__(self, config):
 		self.config = config
@@ -114,24 +128,25 @@ class RssNotify():
 			committer_final = f_clong % (committer, committer_realname)
 		return f_all % (committer_final, repo_name, commit_text, commit_hash, commit_link, commit_time)
 	def _announce(self, phenny, message, chans):
-		if chans == "*":
-			chans = phenny.bot.channels
-		assert(type(chans) == list)
+		chans = resolve_channels(chans)
 		for ch in chans:
 			phenny.write(['PRIVMSG', ch], message)
 
+#################
+
+c = ['*', '-#minetest-hub']
 rssn = RssNotify({
 	"check_interval": 120,
 	"show_link": True,
 	"shorten_link": True,
 	"logfile": os.getcwd() + "/rssnotify.log",
 	"feeds": [
-		('https://github.com/minetest/minetest/commits/master.atom', "*"),
-		('https://github.com/minetest/minetest_game/commits/master.atom', "*"),
-		('https://github.com/minetest/minetestmapper/commits/master.atom', "*"),
-		('https://github.com/minetest/master-server/commits/master.atom', "*"),
-		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom',  "*"),
-		('https://github.com/minetest-mods/mesecons/commits/master.atom', "*"),
+		('https://github.com/minetest/minetest/commits/master.atom', c),
+		('https://github.com/minetest/minetest_game/commits/master.atom', c),
+		('https://github.com/minetest/minetestmapper/commits/master.atom', c),
+		('https://github.com/minetest/master-server/commits/master.atom', c),
+		('https://github.com/Uberi/Minetest-WorldEdit/commits/master.atom', c),
+		('https://github.com/minetest-mods/mesecons/commits/master.atom', c),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
 	],
