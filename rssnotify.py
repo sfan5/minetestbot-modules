@@ -32,7 +32,7 @@ def to_unix_time(tstr):
 		ts += int(g[3]) * 60
 	return ts
 
-def resolve_channels(l):
+def resolve_channels(phenny, l):
 	ret = set()
 	for entry in l:
 		sign = 1
@@ -128,7 +128,7 @@ class RssNotify():
 			committer_final = f_clong % (committer, committer_realname)
 		return f_all % (committer_final, repo_name, commit_text, commit_hash, commit_link, commit_time)
 	def _announce(self, phenny, message, chans):
-		chans = resolve_channels(chans)
+		chans = resolve_channels(phenny, chans)
 		for ch in chans:
 			phenny.write(['PRIVMSG', ch], message)
 
