@@ -13,8 +13,10 @@ def book(phenny, input):
 	text = str(text, 'utf-8')
 	data = web.json(text)
 
-	query = (input.group(2) or "").lower()
-	if not query: return
+	query = (input.group(2) or "").lower().strip()
+	if not query:
+		return phenny.reply("Minetest Modding Book - https://rubenwardy.com/minetest_modding_book/")
+
 	for ele in data:
 		title = ele["title"]
 		desc  = ele.get("description", "")
