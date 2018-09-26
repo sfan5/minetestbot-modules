@@ -75,7 +75,6 @@ def wiki(phenny, input):
 	phenny.say('"%s" - %s' % (web.decode(text), wikiuri_r % term))
 
 wiki.commands = ['wik', 'wiki']
-wiki.priority = 'high'
 
 if __name__ == '__main__':
 	print(__doc__.strip())
