@@ -8,14 +8,14 @@ Licensed under GNU General Public License v2.0
 import web
 
 def book(phenny, input):
+	query = (input.group(2) or "").lower().strip()
+	if not query:
+		return phenny.reply("Minetest Modding Book - https://rubenwardy.com/minetest_modding_book/")
+
 	uri = "https://rubenwardy.com/minetest_modding_book/sitemap.json"
 	text, status = web.get(uri)
 	text = str(text, 'utf-8')
 	data = web.json(text)
-
-	query = (input.group(2) or "").lower().strip()
-	if not query:
-		return phenny.reply("Minetest Modding Book - https://rubenwardy.com/minetest_modding_book/")
 
 	for ele in data:
 		title = ele["title"]
