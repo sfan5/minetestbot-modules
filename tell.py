@@ -10,12 +10,14 @@ import time
 import calendar
 import hashlib
 
+DBPATH = "data/tell.sqlite"
+
 tell_list = []
 tell_pending = []
 
 def tell_diskwr():
 	global tell_pending, tell_list
-	db = sqlite3.connect("tell.sqlite")
+	db = sqlite3.connect(DBPATH)
 	c = db.cursor()
 	for tr in tell_pending:
 		if tr[0] == "del":
@@ -126,7 +128,7 @@ note_join.event = 'JOIN'
 note_join.priority = 'low'
 note_join.nohook = True
 
-db = sqlite3.connect("tell.sqlite")
+db = sqlite3.connect(DBPATH)
 c = db.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS tell (id INTEGER PRIMARY KEY, nick TEXT, tellee TEXT, msg TEXT, time INTEGER)")
 c.execute("SELECT * FROM tell")

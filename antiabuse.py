@@ -6,6 +6,8 @@ Licensed under GNU General Public License v2.0
 """
 import time, sqlite3
 
+DBPATH = "data/antiabuse.sqlite"
+
 antiabuse = {}
 antiabuse["ignorelist"] = []
 antiabuse["cooldown_l"] = {}
@@ -13,7 +15,7 @@ antiabuse["cooldown"] = 3 # seconds
 
 def api_ignore(mask):
   antiabuse["ignorelist"].append(mask)
-  db = sqlite3.connect("antiabuse.sqlite")
+  db = sqlite3.connect(DBPATH)
   c = db.cursor()
   c.execute("INSERT INTO ignore (nick) VALUES (?)", (mask,))
   c.close()
@@ -24,7 +26,7 @@ def api_unignore(mask):
   if not mask in antiabuse["ignorelist"]:
     return False
   antiabuse['ignorelist'].remove(mask)
-  db = sqlite3.connect("antiabuse.sqlite")
+  db = sqlite3.connect(DBPATH)
   c = db.cursor()
   c.execute("DELETE FROM ignore WHERE nick = ?", (mask,))
   c.close()
@@ -137,7 +139,7 @@ def listignore(phenny, input):
 listignore.commands = ['listignore']
 listignore.priority = 'high'
 
-db = sqlite3.connect("antiabuse.sqlite")
+db = sqlite3.connect(DBPATH)
 c = db.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS ignore (nick text)''')
 c.execute("SELECT * FROM ignore")

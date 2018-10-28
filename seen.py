@@ -10,7 +10,7 @@ import time
 from threading import Thread, Lock
 import sqlite3
 
-DBPATH = "seen.sqlite"
+DBPATH = "data/seen.sqlite"
 updates = list()
 updates_l = Lock()
 
