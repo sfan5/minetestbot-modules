@@ -8,7 +8,7 @@ Licensed under GNU General Public License v2.0
 import web
 
 def mod(phenny, input):
-	uri = "http://krock-works.uk.to/minetest/modSearchAPI.php?q="
+	uri = "https://krock-works.uk.to/minetest/modSearchAPI.php?q="
 	text, sc = web.get(uri + web.urlencode(input.group(2)))
 	text = str(text, 'utf-8')
 	data = web.json(text)
