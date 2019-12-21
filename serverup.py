@@ -7,31 +7,43 @@ Licensed under GNU General Public License v2.0
 import socket
 import time
 
-def check(address, port):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(2.0)
+def check(host, port):
     try:
-        buf = b"\x4f\x45\x74\x03\x00\x00\x00\x01"
-        sock.sendto(buf, (address, port))
+        ai = socket.getaddrinfo(host, port, proto=socket.IPPROTO_UDP)[0]
+    except socket.gaierror:
+        return None, "host did not resolve"
+    if all(c in "0123456789." for c in host) or ":" in host:
+        ipproto = "" # is obvious to the user
+    else:
+        ipproto = "IPv6" if ai[0] == socket.AF_INET6 else "IPv4"
+
+    sock = socket.socket(*ai[:3])
+    sock.settimeout(2.0)
+    sock.connect(ai[4])
+    try:
+        # ask for a peer id
+        sock.send(b"\x4f\x45\x74\x03\x00\x00\x00\x01")
         start = time.time()
         data = sock.recv(1024)
         if not data:
-            return
+            return None, ipproto
         end = time.time()
+        # disconnect again
         peer_id = data[12:14]
-        buf = b"\x4f\x45\x74\x03" + peer_id + b"\x00\x00\x03"
-        sock.sendto(buf, (address, port))
+        sock.send(b"\x4f\x45\x74\x03" + peer_id + b"\x00\x00\x03")
+        return end - start, ipproto
+    except socket.error:
+        return None, ""
+    finally:
         sock.close()
-        return (end - start)
-    except (socket.gaierror, socket.error):
-        return
 
 def serverup(phenny, input):
     arg = input.group(2)
     if not arg:
-        return phenny.reply("give me an address and port (optional)")
+        return phenny.reply("give me an address and (optionally) a port")
 
-    arg = arg.replace(":", " ")
+    if '.' in arg: # IPv4 or a domain name
+        arg = arg.replace(":", " ")
     if ' ' in arg:
         address, port = arg.split(' ')
         try:
@@ -42,17 +54,21 @@ def serverup(phenny, input):
         address = arg
         port = 30000
 
-    if '.' not in address:
-        return phenny.reply("invalid address")
     if port < 1024 and port >= 2**16:
         return phenny.reply("invalid port")
 
-    desc = "%s:%d" % (address, port)
-    result = check(address, port)
-    if result is None:
-        phenny.say("%s seems to be down" % desc)
+    if ":" in address:
+        desc = "[%s]:%d" % (address, port)
     else:
-        phenny.say("%s is up (%dms)" % (desc, result*1000))
+        desc = "%s:%d" % (address, port)
+    result, extra = check(address, port)
+    if result is None:
+        msg = "%s seems to be down" % desc
+    else:
+        msg = "%s is up (%dms)" % (desc, result*1000)
+    if extra != "":
+        msg += " (%s)" % extra
+    phenny.say(msg)
 
 serverup.commands = ['up']
 
