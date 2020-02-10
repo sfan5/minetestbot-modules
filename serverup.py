@@ -33,7 +33,7 @@ def check(host, port):
         sock.send(b"\x4f\x45\x74\x03" + peer_id + b"\x00\x00\x03")
         return end - start, ipproto
     except socket.error:
-        return None, ""
+        return None, ipproto
     finally:
         sock.close()
 
