@@ -25,10 +25,10 @@ def make_cmd(cmd, txt):
   m.commands = [cmd]
   return m
 
-rtfm = make_cmd("rtfm", "someone thinks you should read the manual. The development wiki is at http://dev.minetest.net, the regular wiki is at http://wiki.minetest.net.")
+rtfm = make_cmd("rtfm", "someone thinks you should read the manual. The development wiki is at http://dev.minetest.net, the regular wiki is at http://wiki.minetest.net")
 questions = make_cmd("questions", "someone thinks that your question is inaccurate or doesn't follow the guidelines. Read the guidelines here: http://catb.org/~esr/faqs/smart-questions.html")
-pil = make_cmd("pil", "someone thinks you need to brush up on or learn Lua, please go to: http://lua.org/pil/")
-git = make_cmd("git", "someone thinks you need to brush up on or learn Git, please go to: http://git-scm.com/book/")
+pil = make_cmd("pil", "someone thinks you need to brush up on or learn Lua, please read https://www.lua.org/pil/contents.html or https://www.lua.org/manual/5.1/")
+git = make_cmd("git", "someone thinks you need to brush up on or learn Git, please go to: https://git-scm.com/book/")
 stfu = make_cmd("stfu", "someone thinks you need to shut the fuck up before you get muted.")
 api = make_cmd("api", "someone thinks you should read the API docs, please go to: https://github.com/minetest/minetest/blob/master/doc/lua_api.txt")
 
@@ -152,31 +152,29 @@ def btc(phenny, input):
 		currency = 'USD'
 	if not currency in data.keys():
 		return phenny.reply('Unknown currency. Supported currencies: ' + ', '.join(data.keys()))
-	phenny.say('1 BTC = %.4f %s' % (data[currency]['15m'], data[currency]['symbol']))
+	phenny.say('1 BTC = %.2f %s' % (data[currency]['15m'], data[currency]['symbol']))
 
 btc.commands = ['btc']
 
 def resolve_generators(arr):
 	out = []
-	generator = type(_ for _ in [])
 	for e in arr:
-		if type(e) == generator:
+		if type(e) == str:
+			out.append(e)
+		else:
 			for ee in e:
 				out.append(ee)
-		else:
-			out.append(e)
 	return out
 
 def combine(phenny, input):
 	if not input.group(2): return
-	combiners = [
+	combiners = resolve_generators([
 		(chr(n) for n in range(0x0300, 0x034e + 1)),
 		(chr(n) for n in range(0x0350, 0x0362 + 1)),
 		(chr(n) for n in range(0x1dc0, 0x1dca + 1)),
 		"\u1dfe", "\u1dff", 
 		(chr(n) for n in range(0xfe20, 0xfe23 + 1)),
-	]
-	combiners = resolve_generators(combiners)
+	])
 	o = input.group(2)[0]
 	for char in input.group(2)[1:]:
 		o += random.choice(combiners) + char

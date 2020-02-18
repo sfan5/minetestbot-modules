@@ -53,14 +53,6 @@ def create_intcompare(name, most_least=True):
               if tbl[i][name] < ranking[0]:
                   ranking = (tbl[i][name], i)
           results.append(ranking[1])
-      elif arg.startswith("!"): # not comparing
-          try:
-              nu = float(arg[1:])
-          except:
-              return []
-          for i in range(0, len(tbl)):
-              if int(tbl[i][name]) != nu:
-                  results.append(i)
       else:
           if arg.startswith("="): # support "3" and "=3"
               arg = arg[1:]
