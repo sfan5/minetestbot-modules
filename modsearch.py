@@ -19,6 +19,8 @@ def mod(phenny, input):
 		answer = (data["title"] + 
 			" by " + data["author"] +
 			" - " + data["link"])
+		if "source" in data:
+			answer += " - " + data["source"]
 
 	phenny.reply(answer)
 
