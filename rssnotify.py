@@ -94,8 +94,8 @@ class RssNotify():
 		return "https://git.io/" + l
 	def _format_msg(self, feed_entry, log_format=False):
 		if log_format:
-			f_cshort = "[color=#cc0000]%s[/color]"
-			f_clong = "[color=#cc0000]%s[/color] ([color=#cc0000]%s[/color])"
+			f_cshort = "[color=#c00]%s[/color]"
+			f_clong = "[color=#c00]%s[/color] ([color=#c00]%s[/color])"
 			f_all = "[color=#3465a4][git][/color] %s -> [color=#73d216]%s[/color]: [b]%s[/b] [color=#a04265]%s[/color] %s ([color=#888a85]%s[/color])"
 		else:
 			f_cshort = "\x0304%s\x0f"
@@ -144,7 +144,7 @@ rssn = RssNotify({
 		('https://github.com/minetest/minetest/commits/master.atom', c),
 		('https://github.com/minetest/minetest_game/commits/master.atom', c),
 		('https://github.com/minetest/minetestmapper/commits/master.atom', c),
-		('https://github.com/minetest/master-server/commits/master.atom', c),
+		('https://github.com/minetest/serverlist/commits/master.atom', c),
 		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
 	],

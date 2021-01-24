@@ -38,7 +38,7 @@ def check(host, port):
         sock.close()
 
 def serverup(phenny, input):
-    arg = input.group(2)
+    arg = input.group(2).strip()
     if not arg:
         return phenny.reply("give me an address and (optionally) a port")
 
