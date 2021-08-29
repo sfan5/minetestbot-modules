@@ -47,6 +47,7 @@ def resolve_channels(phenny, l):
 	return ret
 
 class RssNotify():
+	MAX_MESSAGES = 6
 	def __init__(self, config):
 		self.config = config
 		self.last_updated = {}
@@ -61,27 +62,31 @@ class RssNotify():
 		print("[RssNotify]: Checking RSS feeds...")
 		for fid, feedspec in enumerate(self.config["feeds"]):
 			feed = feedparser.parse(feedspec[0], agent="Mozilla/5.0 (compatible; MinetestBot)")
-			updated = 0
+			if self.firstrun:
+				self.last_updated[fid] = max((to_unix_time(e.updated) for e in feed.entries), default=0)
+				continue
+			new = []
 			for entry in feed.entries:
-				if self.firstrun:
-					break
 				if self.last_updated[fid] >= to_unix_time(entry.updated):
 					continue
+				new.append(entry)
+			if len(new) == 0:
+				continue
+			print("[RssNotify]: Found %d update(s) for '%s'" % (len(new), feedspec[0]))
+			self.last_updated[fid] = max(to_unix_time(e.updated) for e in feed.entries)
+			new.reverse()
+			if self.config["logfile"] is not None:
+				with open(self.config["logfile"], "a", encoding="utf-8") as f:
+					for entry in new:
+						message = self._format_msg(entry, log_format=True)
+						f.write(message + "\n")
+			for entry in new[:RssNotify.MAX_MESSAGES]:
 				message = self._format_msg(entry)
 				self._announce(phenny, message, feedspec[1])
-				if self.config["logfile"] is not None:
-					with open(self.config["logfile"], "a", encoding="utf-8") as f:
-						message = self._format_msg(entry, log_format=True)
-						f.write(message)
-						f.write("\n")
-				updated += 1
-			new_time = max((to_unix_time(e.updated) for e in feed.entries), default=0)
-			if new_time > self.last_updated[fid]:
-				self.last_updated[fid] = new_time
-			if updated > 0:
-				print("[RssNotify]: Found %d update(s) for '%s'" % (updated, feedspec[0]))
-		if self.firstrun:
-			self.firstrun = False
+			if len(new) > RssNotify.MAX_MESSAGES:
+				message = self._get_cutoff_message(len(new) - RssNotify.MAX_MESSAGES)
+				self._announce(phenny, message, feedspec[1])
+		self.firstrun = False
 		print("[RssNotify]: Checked %d RSS feeds in %0.3f seconds" % (len(self.config["feeds"]), time.time()-start))
 	def _shorten(self, link):
 		# We can utilitze git.io to shorten *.github.com links
@@ -103,10 +108,10 @@ class RssNotify():
 			f_all = "\x0302[git]\x0f %s -> \x0303%s\x0f: \x02%s\x0f \x0313%s\x0f %s (\x0315%s\x0f)"
 		committer_realname = feed_entry.authors[0].name
 		if committer_realname == "":
-				try:
-					committer_realname = feed_entry.authors[0].email
-				except AttributeError:
-					committer_realname = ""
+			try:
+				committer_realname = feed_entry.authors[0].email
+			except AttributeError:
+				committer_realname = ""
 		try:
 			committer = feed_entry.authors[0].href.replace('https://github.com/',"")
 		except AttributeError:
@@ -127,6 +132,8 @@ class RssNotify():
 		else:
 			committer_final = f_clong % (committer, committer_realname)
 		return f_all % (committer_final, repo_name, commit_text, commit_hash, commit_link, commit_time)
+	def _get_cutoff_message(self, left):
+		return "\x0302[git]\x0f (%d newer commits not shown)" % left
 	def _announce(self, phenny, message, chans):
 		chans = resolve_channels(phenny, chans)
 		for ch in chans:
