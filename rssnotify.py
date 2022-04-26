@@ -88,15 +88,6 @@ class RssNotify():
 				self._announce(phenny, message, feedspec[1])
 		self.firstrun = False
 		print("[RssNotify]: Checked %d RSS feeds in %0.3f seconds" % (len(self.config["feeds"]), time.time()-start))
-	def _shorten(self, link):
-		# We can utilitze git.io to shorten *.github.com links
-		l, code = web.post("https://git.io/create", {'url': link})
-		if code != 200:
-			return None
-		l = str(l, 'utf-8')
-		if ' ' in l: # spaces means there was an error :(
-			return None
-		return "https://git.io/" + l
 	def _format_msg(self, feed_entry, log_format=False):
 		if log_format:
 			f_cshort = "[color=#c00]%s[/color]"
@@ -123,8 +114,6 @@ class RssNotify():
 		commit_text = feed_entry.title
 		if self.config["show_link"]:
 			commit_link = feed_entry.link
-			if self.config["shorten_link"]:
-				commit_link = self._shorten(commit_link) or commit_link
 		else:
 			commit_link = ""
 		if committer_realname == "" or committer_realname.lower() == committer.lower():
@@ -145,7 +134,6 @@ c = ['*', '-#minetest-hub']
 rssn = RssNotify({
 	"check_interval": 120,
 	"show_link": True,
-	"shorten_link": True,
 	"logfile": os.getcwd() + "/rssnotify.log",
 	"feeds": [
 		('https://github.com/minetest/minetest/commits/master.atom', c),
