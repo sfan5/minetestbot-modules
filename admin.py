@@ -73,11 +73,5 @@ def me(phenny, input):
 me.rule = (['me'], r'(#?\S+) (.+)')
 me.priority = 'low'
 
-def py(phenny, input):
-	if input.owner:
-		phenny.say(repr(eval(input.group(2))))
-py.commands = ['py']
-py.priority = 'high'
-
 if __name__ == '__main__':
    print(__doc__.strip())
