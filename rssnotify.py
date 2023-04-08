@@ -47,7 +47,7 @@ def resolve_channels(phenny, l):
 	return ret
 
 class RssNotify():
-	MAX_MESSAGES = 6
+	MAX_MESSAGES = 4
 	def __init__(self, config):
 		self.config = config
 		self.last_updated = {}
