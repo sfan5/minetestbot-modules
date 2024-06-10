@@ -47,12 +47,6 @@ def quit(phenny, input):
 quit.commands = ['quit']
 quit.priority = 'low'
 
-def quit2(phenny, input):
-    if input.sender.startswith('#'): input.sender = "this_is_not_a_channel" # Allows you to use it in a Channel
-    quit(phenny, input)
-quit2.rule = ('$nick', 'quit')
-quit2.priority = 'low'
-
 def msg(phenny, input):
    # Can only be done in privmsg by an admin
    if input.sender.startswith('#'): return

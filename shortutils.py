@@ -172,14 +172,14 @@ def combine(phenny, input):
 		(chr(n) for n in range(0x0300, 0x034e + 1)),
 		(chr(n) for n in range(0x0350, 0x0362 + 1)),
 		(chr(n) for n in range(0x1dc0, 0x1dca + 1)),
-		"\u1dfe", "\u1dff", 
+		"\u1dfe", "\u1dff",
 		(chr(n) for n in range(0xfe20, 0xfe23 + 1)),
 	])
 	o = input.group(2)[0]
 	for char in input.group(2)[1:]:
 		o += random.choice(combiners) + char
 	phenny.say(o)
-	
+
 combine.commands = ['combine']
 
 def resadj(phenny, input):

@@ -10,7 +10,6 @@ Required arguments are enclosed in &lt; and &gt;, optional arguments are enclose
     <tr> <td>!join &lt;channel&gt; [key]</td>        <td>Join the specified channel</td>                      <td>Admin-only</td>    </tr>
     <tr> <td>!part &lt;channel&gt;</td>              <td>Leave the specified channel</td>                     <td>Admin-only</td>    </tr>
     <tr> <td>!quit</td>                              <td>Disconnect from IRC server</td>                      <td>Owner-only</td>    </tr>
-    <tr> <td><i>$botname</i>: quit</td>              <td>Disconnect from IRC server</td>                      <td>Owner-only</td>    </tr>
     <tr> <td>!msg &lt;channel/user&gt; &lt;message&gt;</td><td>Send message to channel or user</td>           <td>Admin-only</td>    </tr>
     <tr> <td>!me &lt;channel/user&gt; &lt;message&gt;</td><td>Send action to channel or user</td>             <td>Admin-only</td>    </tr>
     <tr> <td><b>antiabuse.py</b></td>                <td></td>                                                <td></td>              </tr>
@@ -34,7 +33,6 @@ Required arguments are enclosed in &lt; and &gt;, optional arguments are enclose
     <tr> <td><b>reload.py</b></td>                   <td></td>                                                <td></td>              </tr>
     <tr> <td><i>$botname</i>: reload &lt;module&gt;</td><td>Reloads specified module</td>                     <td>Admin-only</td>    </tr>
     <tr> <td><b>rutils.py</b></td>                   <td></td>                                                <td></td>              </tr>
-    <tr> <td>!rev &lt;string&gt;</td>                <td>Reverse String</td>                                  <td></td>              </tr>
     <tr> <td>!b64e &lt;string&gt;</td>               <td>Base64-encode a string</td>                          <td></td>              </tr>
     <tr> <td>!b64d &lt;string&gt;</td>               <td>Base64-decode a string</td>                          <td></td>              </tr>
     <tr> <td>!rand [min] &lt;max&gt;</td>            <td>Get a random number inside [min, max]</td>           <td></td>              </tr>

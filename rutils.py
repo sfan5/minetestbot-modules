@@ -10,20 +10,6 @@ import random
 def rs(s):
     return repr(s)[1:-1]
 
-def rev(phenny, input):
-    """reverse string"""
-    if not input.group(2):
-        return phenny.reply("Nothing to reverse.")
-    q = input.group(2)
-    s = ""
-    for i in range(1,len(q)):
-        s += q[-i]
-    s += q[0]
-    return phenny.say(rs(s))
-
-rev.commands = ['rev','reverse']
-rev.priority = 'low'
-
 def make_thing(cmds, func):
   def m(phenny, input):
     if not input.group(2): return
