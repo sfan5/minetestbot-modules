@@ -194,7 +194,7 @@ def resadj(phenny, input):
 			v += delta
 			i += 1
 		return -1
-	args = input.group(2).split(" ")
+	args = (input.group(2) or "").split(" ")
 	if len(args) < 3:
 		return phenny.reply("Usage: resadj <original res.> <aspect ratio> <w or h>")
 	if not re.match(r'^\d+x\d+$', args[0]):

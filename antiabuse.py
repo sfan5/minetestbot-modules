@@ -85,7 +85,7 @@ def hmasktrans(va):
         return va
 
 def ignore(phenny, input):
-	if not input.admin:
+	if not input.admin or not input.group(2):
 		return
 	arg = hmasktrans(input.group(2).strip())
 	api_ignore(arg)
@@ -95,7 +95,7 @@ ignore.commands = ['ignore']
 ignore.priority = 'high'
 
 def unignore(phenny, input):
-	if not input.admin:
+	if not input.admin or not input.group(2):
 		return
 	arg = hmasktrans(input.group(2).strip())
 	r = api_unignore(arg)

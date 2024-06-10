@@ -18,7 +18,6 @@ def join(phenny, input):
          phenny.write(['JOIN'], channel)
       else: phenny.write(['JOIN', channel, key])
 join.rule = r'\!join (#\S+)(?: *(\S+))?'
-#join.commands = ['join']
 join.priority = 'low'
 join.example = '.join #example or .join #example key'
 
