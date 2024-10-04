@@ -130,7 +130,7 @@ class RssNotify():
 
 #################
 
-c = ['*', '-#minetest-hub']
+c = ['*', '-#minetest-de', '-#minetest-fr']
 rssn = RssNotify({
 	"check_interval": 120,
 	"show_link": True,
