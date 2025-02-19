@@ -54,7 +54,7 @@ def serverup(phenny, input):
         address = arg
         port = 30000
 
-    if port < 1024 and port >= 2**16:
+    if port < 1024 or port >= 2**16:
         return phenny.reply("invalid port")
 
     if ":" in address:
