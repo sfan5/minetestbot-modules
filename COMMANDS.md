@@ -58,12 +58,7 @@ Required arguments are enclosed in &lt; and &gt;, optional arguments are enclose
     <tr> <td>!up &lt;IP/hostname&gt; [port]</td>     <td>Check if Minetest server is responding</td>          <td></td>              </tr>
     <tr> <td><b>title.py</b></td>                    <td></td>                                                <td></td>              </tr>
     <tr> <td>!title [link]</td>                      <td>Get page title of given URL (or last seen)</td>      <td></td>              </tr>
-    <tr> <td><b>wiki.py</b></td>                     <td></td>                                                <td></td>              </tr>
-    <tr> <td>!wik &lt;term&gt;</td>                  <td>Query wiki.minetest.net for term</td>                <td></td>              </tr>
-    <tr> <td><b>devwiki.py</b></td>                  <td></td>                                                <td></td>              </tr>
-    <tr> <td>!dev &lt;term&gt;</td>                  <td>Query dev.minetest.net for term</td>                 <td></td>              </tr>
     <tr> <td><b>shortutils.py</b></td>               <td></td>                                                <td></td>              </tr>
-    <tr> <td>!rtfm [nick]</td>                       <td>Give links to wiki and dev wiki</td>                 <td></td>              </tr>
     <tr> <td>!questions [nick]</td>                  <td>Link to ESR's "How to ask smart questions"</td>      <td></td>              </tr>
     <tr> <td>!next</td>                              <td>Say: "Another satisfied customer. Next!"</td>        <td></td>              </tr>
     <tr> <td>!pil [nick]</td>                        <td>Link to Lua PIL and manual</td>                      <td></td>              </tr>

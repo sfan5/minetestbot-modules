@@ -25,7 +25,6 @@ def make_cmd(cmd, txt):
   m.commands = [cmd]
   return m
 
-rtfm = make_cmd("rtfm", "someone thinks you should read the manual. The development wiki is at http://dev.minetest.net, the regular wiki is at http://wiki.minetest.net")
 questions = make_cmd("questions", "someone thinks that your question is inaccurate or doesn't follow the guidelines. Read the guidelines here: http://catb.org/~esr/faqs/smart-questions.html")
 pil = make_cmd("pil", "someone thinks you need to brush up on or learn Lua, please read https://www.lua.org/pil/contents.html or https://www.lua.org/manual/5.1/")
 git = make_cmd("git", "someone thinks you need to brush up on or learn Git, please go to: https://git-scm.com/book/")
