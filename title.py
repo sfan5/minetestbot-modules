@@ -20,7 +20,7 @@ def title(phenny, input):
 		uri = phenny.bot.last_seen_uri
 	else:
 		return phenny.reply("Give me a link.")
-	data, sc = web.get(uri, 16384)
+	data, sc = web.get(uri, 100 * 1000)
 	if sc != 200:
 		return phenny.say("HTTP error %d" % sc)
 

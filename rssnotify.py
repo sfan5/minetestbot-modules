@@ -136,11 +136,10 @@ rssn = RssNotify({
 	"show_link": True,
 	"logfile": os.getcwd() + "/rssnotify.log",
 	"feeds": [
-		('https://github.com/minetest/minetest/commits/master.atom', c),
-		('https://github.com/minetest/minetest_game/commits/master.atom', c),
-		('https://github.com/minetest/minetestmapper/commits/master.atom', c),
-		('https://github.com/minetest/serverlist/commits/master.atom', c),
-		('https://github.com/sfan5/phenny/commits/master.atom', ['##minetestbot']),
+		('https://github.com/luanti-org/luanti/commits/master.atom', c),
+		('https://github.com/luanti-org/minetest_game/commits/master.atom', c),
+		('https://github.com/luanti-org/minetestmapper/commits/master.atom', c),
+		('https://github.com/luanti-org/serverlist/commits/master.atom', c),
 		('https://github.com/sfan5/minetestbot-modules/commits/master.atom', ['##minetestbot']),
 	],
 })

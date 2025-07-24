@@ -75,8 +75,7 @@ def tell_cmd(phenny, input):
 	if not ' ' in arg:
 		return phenny.reply("...and text")
 	teller = input.nick
-	target = arg.split(" ")[0]
-	text = " ".join(arg.split(" ")[1:])
+	target, _, text = arg.partition(" ")
 	if target.lower() == teller.lower():
 		return phenny.say("You can tell that to yourself")
 	if target.lower() == phenny.nick.lower():
@@ -128,18 +127,17 @@ note_join.event = 'JOIN'
 note_join.priority = 'low'
 note_join.nohook = True
 
-db = sqlite3.connect(DBPATH)
-c = db.cursor()
-c.execute("CREATE TABLE IF NOT EXISTS tell (id INTEGER PRIMARY KEY, nick TEXT, tellee TEXT, msg TEXT, time INTEGER)")
-c.execute("SELECT * FROM tell")
-while True:
-	e = c.fetchone()
-	if not e:
-		break
-	tell_list.append(e)
-c.close()
-db.commit()
-db.close()
+def _load():
+	db = sqlite3.connect(DBPATH)
+	c = db.cursor()
+	c.execute("CREATE TABLE IF NOT EXISTS tell (id INTEGER PRIMARY KEY, nick TEXT, tellee TEXT, msg TEXT, time INTEGER)")
+	c.execute("SELECT * FROM tell")
+	for e in c:
+		tell_list.append(e)
+	c.close()
+	db.commit()
+	db.close()
+_load()
 
 if __name__ == '__main__':
    print(__doc__.strip())

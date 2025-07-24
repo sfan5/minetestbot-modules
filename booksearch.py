@@ -7,12 +7,14 @@ Licensed under GNU General Public License v2.0
 
 import web
 
+BASEURL = "https://rubenwardy.com/minetest_modding_book/"
+
 def book(phenny, input):
 	query = (input.group(2) or "").lower().strip()
 	if not query:
-		return phenny.reply("Minetest Modding Book - https://rubenwardy.com/minetest_modding_book/")
+		return phenny.reply("Minetest Modding Book - " + BASEURL)
 
-	uri = "https://rubenwardy.com/minetest_modding_book/sitemap.json"
+	uri = BASEURL + "/sitemap.json"
 	text, status = web.get(uri)
 	text = str(text, 'utf-8')
 	data = web.json(text)

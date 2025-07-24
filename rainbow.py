@@ -23,7 +23,7 @@ def colorize(text, cyclelen=3):
 	j = 0
 	for c in text:
 		if j == 0:
-			if c in list(str(i) for i in range(10)):
+			if c.isdigit():
 				c = u"\u200b" + c # 'ZERO WIDTH SPACE' cuz IRC clients are stupid
 			out += "\x03" + str(rainbowcolors[i])
 		out += c

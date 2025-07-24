@@ -109,7 +109,7 @@ def server(phenny, input):
                 carg = a
             cmds.append((choicefunc, carg))
 
-    text, sc = web.get("http://servers.minetest.net/list")
+    text, sc = web.get("http://servers.luanti.org/list")
     text = str(text, 'utf-8')
     server_list = web.json(text)["list"]
     prep_table = server_list

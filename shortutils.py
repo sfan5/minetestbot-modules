@@ -40,10 +40,8 @@ next.commands = ['next']
 def doge(phenny, input):
 	"""much wow, very function, such programming"""
 	links = [
-		"http://is.gd/zgopNT", # http://fc09.deviantart.net/fs70/f/2014/002/d/f/wow_by_kawiku-d70lb8q.png
 		"http://i.imgur.com/JphfPur.jpg",
 		"http://i.imgur.com/2MmvpGR.jpg",
-		"https://people.mozilla.org/~smartell/meme/such-logo.gif",
 		"http://i.imgur.com/e16WWlK.gif",
 		"http://i.imgur.com/6wx9Mf9.png",
 		"http://i.imgur.com/1GVIKve.jpg",

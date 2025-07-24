@@ -27,29 +27,26 @@ b64d = make_thing(['b64d','base64decode'], base64.b64decode)
 
 def rand(phenny, input):
     """Returns a random number"""
-    if not input.group(2):
-        return
     arg = input.group(2)
+    if not arg:
+        return
     if " " in arg:
         try:
-            a = int(arg.split(" ")[0])
+            a = int(arg.split(" ")[0], base=0)
         except ValueError:
-            return phenny.reply("Could not parse argument 1")
+            return phenny.reply("Could not parse first argument")
         try:
-            b = int(arg.split(" ")[1]) + 1
+            b = int(arg.split(" ")[1], base=0) + 1
         except ValueError:
-            return phenny.reply("Could not parse argument 2")
+            return phenny.reply("Could not parse second argument")
         if b < a:
-            tmp = a
-            a = b
-            b = tmp
-            del tmp
+            a, b = b, a
         phenny.say(str(random.randrange(a, b)))
     else:
         try:
-            a = int(arg.split(" ")[0]) + 1
+            a = int(arg.split(" ")[0], base=0) + 1
         except ValueError:
-            return phenny.reply("Could not parse argument 1")
+            return phenny.reply("Could not parse first argument")
         phenny.say(str(random.randrange(a)))
 
 rand.commands = ['rand', 'random']
