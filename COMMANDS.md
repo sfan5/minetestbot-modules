@@ -68,7 +68,8 @@ Required arguments are enclosed in &lt; and &gt;, optional arguments are enclose
     <tr> <td><b>tell.py</b></td>                     <td></td>                                                <td></td>              </tr>
     <tr> <td>!tell &lt;nick&gt; &lt;message&gt;</td> <td>Tell somebody a message</td>                         <td></td>              </tr>
     <tr> <td><b>modsearch.py</b></td>                <td></td>                                                <td></td>              </tr>
-    <tr> <td>!mod &lt;modname&gt;</td>               <td>Searches for a mod</td>                              <td></td>              </tr>
+    <tr> <td>!mod &lt;search text&gt;</td>           <td>Searches for a mod</td>                              <td></td>              </tr>
+    <tr> <td>!cdb &lt;search text&gt;</td>           <td>Searches for a mod</td>                              <td></td>              </tr>
     <tr> <td><b>booksearch.py</b></td>               <td></td>                                                <td></td>              </tr>
     <tr> <td>!book &lt;term&gt;</td>                 <td>Searches for a chapter/page in the modding book</td> <td></td>              </tr>
 </table>
